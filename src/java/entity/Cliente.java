@@ -5,10 +5,25 @@
  */
 package entity;
 
+import java.io.Serializable;
+import java.sql.Blob;
+import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  *
  * @author 2dam
  */
-public class Cliente {
+@Entity
+@Table(name="cliente",schema="serverA4db")
+public class Cliente extends User implements Serializable{
+    private static final long serialVersionUID=1L;
     
+    
+    private Set <Compra> compras;
+    private Set <Apunte> apuntes;
+    private float saldo;
+    private Blob foto;
 }

@@ -10,5 +10,5 @@ package entity;
  * @author 2dam
  */
 public enum UserStatus {
-    
+    ENABLED,DISABLED;
 }

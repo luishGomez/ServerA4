@@ -1,14 +1,83 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
+
+import java.io.Serializable;
+import java.sql.Timestamp;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author 2dam
+ * @author Luis
  */
-public class Compra {
+@Entity
+@Table(name="compra",schema="serverA4db")
+public class Compra implements Serializable{
+    private static final Long serialVersionUID = 1L;
     
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Integer idCompra;
+    @NotNull
+    @ManyToOne
+    private Cliente propietario;
+    @NotNull
+    @ManyToOne
+    private Apunte apunte;
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    private Timestamp fecha;
+
+    public Integer getIdCompra() {
+        return idCompra;
+    }
+
+    public void setIdCompra(Integer idCompra) {
+        this.idCompra = idCompra;
+    }
+
+    public Cliente getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Cliente propietario) {
+        this.propietario = propietario;
+    }
+
+    public Apunte getApunte() {
+        return apunte;
+    }
+
+    public void setApunte(Apunte apunte) {
+        this.apunte = apunte;
+    }
+
+    public Timestamp getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Timestamp fecha) {
+        this.fecha = fecha;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString(); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+    }
 }

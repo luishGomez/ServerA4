@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -11,8 +6,13 @@ import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -20,18 +20,23 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="cliente",schema="serverA4db")
+@XmlRootElement
 public class Cliente extends User implements Serializable{
     private static final long serialVersionUID=1L;
     
     @OneToMany(cascade=ALL,mappedBy="propietario")
     private Set <Compra> compras;
+    @ManyToMany
+    @JoinTable(name="cliente_apunte",schema="serverA4db")
     private Set <Apunte> apuntes;
     private float saldo;
+    @Lob
     private Blob foto;
 
     /**
      * @return the compras
      */
+    @XmlTransient
     public Set <Compra> getCompras() {
         return compras;
     }

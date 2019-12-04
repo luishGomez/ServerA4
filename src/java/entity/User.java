@@ -1,18 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -20,20 +20,31 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "usuario", schema = "serverA4DB")
+@Inheritance(strategy=TABLE_PER_CLASS)
+@XmlRootElement
 public class User implements Serializable{
     private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO) //generar automaticament
-    @NotNull private Integer id;
-    @NotNull private String login;
-    @NotNull private String email;
-    @NotNull private String nombreCompleto;
-    @NotNull private UserStatus status;
-    @NotNull private UserPrivilege privilegio;
-    @NotNull private String contrasenia;
-    private Timestamp ultimoAcceso;
-    private Timestamp ultimoCambioContrasenia;
+    @NotNull
+    private Integer id;
+    @NotNull
+    private String login;
+    @NotNull
+    private String email;
+    @NotNull
+    private String nombreCompleto;
+    @NotNull
+    private UserStatus status;
+    @NotNull
+    private UserPrivilege privilegio;
+    @NotNull
+    private String contrasenia;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date ultimoAcceso;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date ultimoCambioContrasenia;
 
     /**
      * @return the id
@@ -136,28 +147,28 @@ public class User implements Serializable{
     /**
      * @return the ultimoAcceso
      */
-    public Timestamp getUltimoAcceso() {
+    public Date getUltimoAcceso() {
         return ultimoAcceso;
     }
 
     /**
      * @param ultimoAcceso the ultimoAcceso to set
      */
-    public void setUltimoAcceso(Timestamp ultimoAcceso) {
+    public void setUltimoAcceso(Date ultimoAcceso) {
         this.ultimoAcceso = ultimoAcceso;
     }
 
     /**
      * @return the ultimoCambioContrasenia
      */
-    public Timestamp getUltimoCambioContrasenia() {
+    public Date getUltimoCambioContrasenia() {
         return ultimoCambioContrasenia;
     }
 
     /**
      * @param ultimoCambioContrasenia the ultimoCambioContrasenia to set
      */
-    public void setUltimoCambioContrasenia(Timestamp ultimoCambioContrasenia) {
+    public void setUltimoCambioContrasenia(Date ultimoCambioContrasenia) {
         this.ultimoCambioContrasenia = ultimoCambioContrasenia;
     }
     

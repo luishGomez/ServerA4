@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -17,6 +19,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name="materia",schema="serverA4db")
+@XmlRootElement
 public class Materia implements Serializable{
     private static final Long serialVersionUID = 1L;
     
@@ -54,6 +57,7 @@ public class Materia implements Serializable{
         this.descripcion = descripcion;
     }
 
+    @XmlTransient
     public Set<Apunte> getApuntes() {
         return apuntes;
     }

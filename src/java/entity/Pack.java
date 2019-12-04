@@ -2,18 +2,19 @@ package entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
-import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -21,6 +22,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name="pack",schema="serverA4db")
+@XmlRootElement
 public class Pack implements Serializable{
     private static final Long serialVersionUID = 1L;
     
@@ -33,7 +35,7 @@ public class Pack implements Serializable{
     private String descripcion;
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp fechaModificacion;
+    private Date fechaModificacion;
     @NotNull
     @ManyToMany(mappedBy="packs")
     private Set<Apunte> apuntes;
@@ -64,14 +66,15 @@ public class Pack implements Serializable{
         this.descripcion = descripcion;
     }
 
-    public Timestamp getFechaModificacion() {
+    public Date getFechaModificacion() {
         return fechaModificacion;
     }
 
-    public void setFechaModificacion(Timestamp fechaModificacion) {
+    public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
 
+    @XmlTransient
     public Set<Apunte> getApuntes() {
         return apuntes;
     }
@@ -80,6 +83,7 @@ public class Pack implements Serializable{
         this.apuntes = apuntes;
     }
 
+    @XmlTransient
     public Set<Oferta> getOfertas() {
         return ofertas;
     }

@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -23,15 +22,22 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "oferta", schema = "serverA4DB")
+@XmlRootElement
 public class Oferta implements Serializable{
     private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @NotNull private Integer idOferta;
-    @NotNull private String titulo;
-    @NotNull private Timestamp fechaInicio;
-    @NotNull private Timestamp fechaFin;
+    @NotNull 
+    private Integer idOferta;
+    @NotNull 
+    private String titulo;
+    @NotNull 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaInicio;
+    @NotNull 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaFin;
     @ManyToMany
     @JoinTable(name = "oferta_pack", schema = "serverA4DB")
     private Set<Pack> packs;
@@ -67,34 +73,35 @@ public class Oferta implements Serializable{
     /**
      * @return the fechaInicio
      */
-    public Timestamp getFechaInicio() {
+    public Date getFechaInicio() {
         return fechaInicio;
     }
 
     /**
      * @param fechaInicio the fechaInicio to set
      */
-    public void setFechaInicio(Timestamp fechaInicio) {
+    public void setFechaInicio(Date fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
     /**
      * @return the fechaFin
      */
-    public Timestamp getFechaFin() {
+    public Date getFechaFin() {
         return fechaFin;
     }
 
     /**
      * @param fechaFin the fechaFin to set
      */
-    public void setFechaFin(Timestamp fechaFin) {
+    public void setFechaFin(Date fechaFin) {
         this.fechaFin = fechaFin;
     }
 
     /**
      * @return the packs
      */
+    @XmlTransient
     public Set<Pack> getPacks() {
         return packs;
     }

@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package entity;
 
 import java.io.Serializable;
@@ -15,11 +10,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -27,6 +27,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name="apunte",schema="serverA4db")
+@XmlRootElement
 public class Apunte implements Serializable {
     private static final long serialVersionUID=1L;
     
@@ -37,11 +38,14 @@ public class Apunte implements Serializable {
     private String titulo;
     @NotNull
     private String descripcion;
+    @Lob
     private Blob archivo;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaValidacion;
     private int likeCont;
     private int dislikeCont;
-    private Set <Cliente> votantes;
+    @ManyToMany
+    private Set<Cliente> votantes;
     @NotNull
     private float precio;
     @NotNull
@@ -199,6 +203,7 @@ public class Apunte implements Serializable {
     /**
      * @return the compras
      */
+    @XmlTransient
     public Set <Compra> getCompras() {
         return compras;
     }
@@ -213,6 +218,7 @@ public class Apunte implements Serializable {
     /**
      * @return the packs
      */
+    @XmlTransient
     public Set <Pack> getPacks() {
         return packs;
     }

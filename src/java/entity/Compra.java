@@ -1,7 +1,7 @@
 package entity;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name="compra",schema="serverA4db")
+@XmlRootElement
 public class Compra implements Serializable{
     private static final Long serialVersionUID = 1L;
     
@@ -32,7 +34,7 @@ public class Compra implements Serializable{
     private Apunte apunte;
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    private Timestamp fecha;
+    private Date fecha;
 
     public Integer getIdCompra() {
         return idCompra;
@@ -58,11 +60,11 @@ public class Compra implements Serializable{
         this.apunte = apunte;
     }
 
-    public Timestamp getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(Timestamp fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

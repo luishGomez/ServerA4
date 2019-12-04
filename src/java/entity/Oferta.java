@@ -28,7 +28,6 @@ public class Oferta implements Serializable{
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @NotNull 
     private Integer idOferta;
     @NotNull 
     private String titulo;

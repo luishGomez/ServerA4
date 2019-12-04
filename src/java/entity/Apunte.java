@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 2dam
+ * @author Ricardo Peinado Lastra
  */
 @Entity
 @Table(name="apunte",schema="serverA4db")
@@ -245,6 +245,29 @@ public class Apunte implements Serializable {
         this.materia = materia;
     }
     
-    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idApunte != null ? idApunte.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Apunte)) {
+            return false;
+        }
+        Apunte other = (Apunte) object;
+        if ((this.idApunte == null && other.idApunte != null) || (this.idApunte != null && !this.idApunte.equals(other.idApunte))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "entity.Apunte[ id=" + idApunte + " ]";
+    }
     
 }

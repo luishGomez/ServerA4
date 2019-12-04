@@ -5,10 +5,9 @@ import java.sql.Blob;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -16,7 +15,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 2dam
+ * @author Ricardo Peinado Lastra
  */
 @Entity
 @Table(name="cliente",schema="serverA4db")
@@ -26,8 +25,7 @@ public class Cliente extends User implements Serializable{
     
     @OneToMany(cascade=ALL,mappedBy="propietario")
     private Set <Compra> compras;
-    @ManyToMany
-    @JoinTable(name="cliente_apunte",schema="serverA4db")
+    @OneToMany(cascade=ALL,mappedBy="creador")
     private Set <Apunte> apuntes;
     private float saldo;
     @Lob

@@ -30,7 +30,7 @@ public class Cliente extends User implements Serializable{
     private float saldo;
     @Lob
     private Blob foto;
-
+    
     /**
      * @return the compras
      */
@@ -38,49 +38,49 @@ public class Cliente extends User implements Serializable{
     public Set <Compra> getCompras() {
         return compras;
     }
-
+    
     /**
      * @param compras the compras to set
      */
     public void setCompras(Set <Compra> compras) {
         this.compras = compras;
     }
-
+    
     /**
      * @return the apuntes
      */
     public Set <Apunte> getApuntes() {
         return apuntes;
     }
-
+    
     /**
      * @param apuntes the apuntes to set
      */
     public void setApuntes(Set <Apunte> apuntes) {
         this.apuntes = apuntes;
     }
-
+    
     /**
      * @return the saldo
      */
     public float getSaldo() {
         return saldo;
     }
-
+    
     /**
      * @param saldo the saldo to set
      */
     public void setSaldo(float saldo) {
         this.saldo = saldo;
     }
-
+    
     /**
      * @return the foto
      */
     public Blob getFoto() {
         return foto;
     }
-
+    
     /**
      * @param foto the foto to set
      */

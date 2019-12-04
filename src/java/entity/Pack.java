@@ -92,18 +92,28 @@ public class Pack implements Serializable{
         this.ofertas = ofertas;
     }
 
+   @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idPack != null ? idPack.hashCode() : 0);
+        return hash;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Pack)) {
+            return false;
+        }
+        Pack other = (Pack) object;
+        if ((this.idPack == null && other.idPack != null) || (this.idPack != null && !this.idPack.equals(other.idPack))) {
+            return false;
+        }
+        return true;
+    }
+    
     @Override
     public String toString() {
-        return super.toString(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+        return "serverApuntes4.entity.Pack[ idPack=" + idPack + " ]";
     }
 }

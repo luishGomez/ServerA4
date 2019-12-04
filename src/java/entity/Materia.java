@@ -32,52 +32,62 @@ public class Materia implements Serializable{
     private String descripcion;
     @OneToMany(cascade=ALL,mappedBy="materia")
     private Set<Apunte> apuntes;
-
+    
     public Integer getIdMateria() {
         return idMateria;
     }
-
+    
     public void setIdMateria(Integer idMateria) {
         this.idMateria = idMateria;
     }
-
+    
     public String getTitulo() {
         return titulo;
     }
-
+    
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-
+    
     public String getDescripcion() {
         return descripcion;
     }
-
+    
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
+    
     @XmlTransient
     public Set<Apunte> getApuntes() {
         return apuntes;
     }
-
+    
     public void setApuntes(Set<Apunte> apuntes) {
         this.apuntes = apuntes;
     }
-
-    @Override
-    public String toString() {
-        return super.toString(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public int hashCode() {
-        return super.hashCode(); //To change body of generated methods, choose Tools | Templates.
+        int hash = 0;
+        hash += (idMateria != null ? idMateria.hashCode() : 0);
+        return hash;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Materia)) {
+            return false;
+        }
+        Materia other = (Materia) object;
+        if ((this.idMateria == null && other.idMateria != null) || (this.idMateria != null && !this.idMateria.equals(other.idMateria))) {
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public String toString() {
+        return "serverApuntes4.entity.Materia[ idMateria=" + idMateria + " ]";
     }
 }

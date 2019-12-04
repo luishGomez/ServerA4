@@ -111,5 +111,29 @@ public class Oferta implements Serializable{
     public void setPacks(Set<Pack> packs) {
         this.packs = packs;
     }
+     @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idOferta != null ? idOferta.hashCode() : 0);
+        return hash;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Oferta)) {
+            return false;
+        }
+        Oferta other = (Oferta) object;
+        if ((this.idOferta == null && other.idOferta != null) || (this.idOferta != null && !this.idOferta.equals(other.idOferta))) {
+            return false;
+        }
+        return true;
+    }
+    
+    @Override
+    public String toString() {
+        return "serverApuntes4.entity.Oferta[ idOferta=" + idOferta + " ]";
+    }
     
 }

@@ -45,6 +45,7 @@ public class Apunte implements Serializable {
     private int likeCont;
     private int dislikeCont;
     @ManyToMany
+    @JoinTable(name="votaciones",schema="serverA4db")
     private Set<Cliente> votantes;
     @NotNull
     private float precio;

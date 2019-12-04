@@ -26,7 +26,7 @@ public class User implements Serializable{
     private static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO) //generar automaticament
+    @GeneratedValue(strategy=GenerationType.TABLE) //generar automaticament
     @NotNull
     private Integer id;
     @NotNull

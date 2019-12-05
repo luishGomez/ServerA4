@@ -6,11 +6,13 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Embeddable;
 
 /**
- *
+ * s
  * @author 2dam
  */
+@Embeddable
 public class CompraId implements Serializable{
     // 1L
     

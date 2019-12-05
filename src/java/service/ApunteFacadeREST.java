@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author 2dam
  */
 @Stateless
-@Path("entity.apunte")
+@Path("apunte")
 public class ApunteFacadeREST extends AbstractFacade<Apunte> {
 
     @PersistenceContext(unitName = "ServerA4PU")

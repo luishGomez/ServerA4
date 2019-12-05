@@ -49,6 +49,7 @@ public class Cliente extends User implements Serializable{
     /**
      * @return the apuntes
      */
+    @XmlTransient
     public Set <Apunte> getApuntes() {
         return apuntes;
     }

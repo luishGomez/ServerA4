@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author 2dam
  */
 @Stateless
-@Path("entity.pack")
+@Path("pack")
 public class PackFacadeREST extends AbstractFacade<Pack> {
 
     @PersistenceContext(unitName = "ServerA4PU")

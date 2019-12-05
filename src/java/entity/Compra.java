@@ -2,11 +2,13 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,24 +25,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Compra implements Serializable{
     private static final Long serialVersionUID = 1L;
     
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer idCompra;
-    @NotNull
+    @EmbeddedId
+    private CompraId idCompra;
+    @MapsId("clienteId")
     @ManyToOne
     private Cliente propietario;
-    @NotNull
+    @MapsId("apunteId")
     @ManyToOne
     private Apunte apunte;
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
 
-    public Integer getIdCompra() {
+    public CompraId getIdCompra() {
         return idCompra;
     }
 
-    public void setIdCompra(Integer idCompra) {
+    public void setIdCompra(CompraId idCompra) {
         this.idCompra = idCompra;
     }
 
@@ -68,13 +68,13 @@ public class Compra implements Serializable{
         this.fecha = fecha;
     }
 
-    @Override
+     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idCompra != null ? idCompra.hashCode() : 0);
+        hash += (getPropietario() != null && getApunte() != null ? getPropietario().hashCode()+ getApunte().hashCode() : 0);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -82,14 +82,19 @@ public class Compra implements Serializable{
             return false;
         }
         Compra other = (Compra) object;
-        if ((this.idCompra == null && other.idCompra != null) || (this.idCompra != null && !this.idCompra.equals(other.idCompra))) {
+        if ((this.getPropietario()== null && other.getPropietario() != null) || (this.getPropietario() != null && !this.propietario.equals(other.propietario))
+            || (this.getApunte()== null && other.getApunte() != null) || (this.getApunte() != null && !this.apunte.equals(other.apunte))) {
             return false;
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
-        return "serverApuntes4.entity.Compra[ idCompra=" + idCompra + " ]";
+        String retorno = "entity.Compra[ cliente=";
+        if(getPropietario() != null) retorno= retorno + getPropietario().getId(); 
+        if(getApunte() != null) retorno = retorno + " apunte=" + getApunte().getIdApunte();
+        
+        return retorno;
     }
 }

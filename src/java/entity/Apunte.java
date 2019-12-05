@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -39,7 +40,7 @@ public class Apunte implements Serializable {
     @NotNull
     private String descripcion;
     @Lob
-    private Blob archivo;
+    private SerialBlob archivo;
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaValidacion;
     private int likeCont;
@@ -106,14 +107,14 @@ public class Apunte implements Serializable {
     /**
      * @return the archivo
      */
-    public Blob getArchivo() {
+    public SerialBlob getArchivo() {
         return archivo;
     }
     
     /**
      * @param archivo the archivo to set
      */
-    public void setArchivo(Blob archivo) {
+    public void setArchivo(SerialBlob archivo) {
         this.archivo = archivo;
     }
     

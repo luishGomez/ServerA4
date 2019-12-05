@@ -5,11 +5,10 @@ import java.sql.Blob;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.sql.rowset.serial.SerialBlob;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -29,7 +28,7 @@ public class Cliente extends User implements Serializable{
     private Set <Apunte> apuntes;
     private float saldo;
     @Lob
-    private Blob foto;
+    private SerialBlob foto;
     
     /**
      * @return the compras
@@ -78,14 +77,14 @@ public class Cliente extends User implements Serializable{
     /**
      * @return the foto
      */
-    public Blob getFoto() {
+    public SerialBlob getFoto() {
         return foto;
     }
     
     /**
      * @param foto the foto to set
      */
-    public void setFoto(Blob foto) {
+    public void setFoto(SerialBlob foto) {
         this.foto = foto;
     }
     

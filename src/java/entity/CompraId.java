@@ -9,7 +9,7 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 
 /**
- * s
+ * 
  * @author 2dam
  */
 @Embeddable

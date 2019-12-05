@@ -162,6 +162,7 @@ public class Apunte implements Serializable {
     /**
      * @return the votantes
      */
+    @XmlTransient
     public Set <Cliente> getVotantes() {
         return votantes;
     }

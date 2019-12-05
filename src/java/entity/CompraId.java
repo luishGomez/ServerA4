@@ -8,7 +8,7 @@ package entity;
 import java.io.Serializable;
 
 /**
- *
+ * s
  * @author 2dam
  */
 public class CompraId implements Serializable{

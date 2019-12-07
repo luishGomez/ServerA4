@@ -3,8 +3,10 @@ package entity;
 import java.io.Serializable;
 import java.sql.Blob;
 import java.util.Set;
+import javax.persistence.Basic;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -28,7 +30,8 @@ public class Cliente extends User implements Serializable{
     private Set <Apunte> apuntes;
     private float saldo;
     @Lob
-    private SerialBlob foto;
+    @Basic(fetch=EAGER)
+    private byte[] foto;
     
     /**
      * @return the compras
@@ -77,14 +80,14 @@ public class Cliente extends User implements Serializable{
     /**
      * @return the foto
      */
-    public SerialBlob getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
     
     /**
      * @param foto the foto to set
      */
-    public void setFoto(SerialBlob foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
     

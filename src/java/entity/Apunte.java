@@ -1,11 +1,12 @@
 package entity;
 
 import java.io.Serializable;
-import java.sql.Blob;
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.Basic;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +41,8 @@ public class Apunte implements Serializable {
     @NotNull
     private String descripcion;
     @Lob
-    private SerialBlob archivo;
+    @Basic(fetch=EAGER)
+    private byte[] archivo;
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaValidacion;
     private int likeCont;
@@ -107,14 +109,14 @@ public class Apunte implements Serializable {
     /**
      * @return the archivo
      */
-    public SerialBlob getArchivo() {
+    public byte[] getArchivo() {
         return archivo;
     }
     
     /**
      * @param archivo the archivo to set
      */
-    public void setArchivo(SerialBlob archivo) {
+    public void setArchivo(byte[] archivo) {
         this.archivo = archivo;
     }
     

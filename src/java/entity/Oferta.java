@@ -40,6 +40,8 @@ public class Oferta implements Serializable{
     @ManyToMany
     @JoinTable(name = "oferta_pack", schema = "serverA4DB")
     private Set<Pack> packs;
+    @NotNull
+    private float rebaja;
 
     /**
      * @return the idOferta
@@ -111,6 +113,19 @@ public class Oferta implements Serializable{
     public void setPacks(Set<Pack> packs) {
         this.packs = packs;
     }
+       /**
+     * @return the rebaja
+     */
+    public float getRebaja() {
+        return rebaja;
+    }
+
+    /**
+     * @param rebaja the rebaja to set
+     */
+    public void setRebaja(float rebaja) {
+        this.rebaja = rebaja;
+    }
      @Override
     public int hashCode() {
         int hash = 0;
@@ -135,5 +150,7 @@ public class Oferta implements Serializable{
     public String toString() {
         return "serverApuntes4.entity.Oferta[ idOferta=" + idOferta + " ]";
     }
+
+ 
     
 }

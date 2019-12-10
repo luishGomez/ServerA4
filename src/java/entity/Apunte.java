@@ -14,11 +14,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.sql.rowset.serial.SerialBlob;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -27,6 +28,16 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Ricardo Peinado Lastra
  */
+@NamedQueries({
+    @NamedQuery(
+        name="getArchivoById", query="SELECT a FROM Apunte a WHERE a.idApunte=:idApunte"
+    )
+        /*,
+    @NamedQuery(
+            name="getVotantesId", query="SELECT v.votantes_id FROM Votaciones v WHERE v.apunte_idApunte=:idApunte"
+    )
+        */
+})
 @Entity
 @Table(name="apunte",schema="serverA4db")
 @XmlRootElement

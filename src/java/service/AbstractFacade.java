@@ -5,6 +5,7 @@
  */
 package service;
 
+import entity.Apunte;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -60,5 +61,14 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
+    public byte[] getArchivoById(Integer id){
+        return (byte[]) getEntityManager().createNamedQuery("getArchivoById").setParameter("idApunte", id).getSingleResult();
+    }
+    
+    /*
+    public List <Integer> getVotantesId(Integer id){
+        return (List <Integer>) getEntityManager().createNamedQuery("getVotantesId").setParameter("idApunte", id).getResultList();
+    }
+    */
     
 }

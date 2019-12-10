@@ -83,6 +83,21 @@ public class ApunteFacadeREST extends AbstractFacade<Apunte> {
         return String.valueOf(super.count());
     }
 
+    @GET
+    @Path("archivo/{id}")
+    @Produces({MediaType.APPLICATION_XML})
+    public byte[] getArchivoById(@PathParam("id") Integer id) {
+        return super.getArchivoById(id);
+    }
+    
+    /*
+    @GET
+    @Path("votantes/{id}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List <Integer> getVotantesId(@PathParam("id") Integer id) {
+        return super.getVotantesId(id);
+    }
+    */
     @Override
     protected EntityManager getEntityManager() {
         return em;

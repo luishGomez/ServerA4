@@ -6,7 +6,10 @@
 package service;
 
 import entity.Apunte;
+import entity.Cliente;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.EntityManager;
 
 /**
@@ -64,11 +67,19 @@ public abstract class AbstractFacade<T> {
     public byte[] getArchivoById(Integer id){
         return (byte[]) getEntityManager().createNamedQuery("getArchivoById").setParameter("idApunte", id).getSingleResult();
     }
-    
-    /*
-    public List <Integer> getVotantesId(Integer id){
-        return (List <Integer>) getEntityManager().createNamedQuery("getVotantesId").setParameter("idApunte", id).getResultList();
+    public Set<Apunte> getApuntesByCreador(Integer id){
+       List<Apunte> sourceList=(List<Apunte>)getEntityManager().createNamedQuery("getApuntesByCreador").setParameter("idCliente", id).getResultList();
+       return new HashSet<>(sourceList);
     }
-    */
+    public Set<Apunte> getApuntesByComprador(Integer id){
+       List<Apunte> sourceList=(List<Apunte>)getEntityManager().createNamedQuery("getApuntesByComprador").setParameter("idCliente", id).getResultList();
+       return new HashSet<>(sourceList);
+    }
+    
+    
+    public List <Cliente> getVotantesId(Integer id){
+        return (List <Cliente>) getEntityManager().createNamedQuery("getVotantesId").setParameter("idApunte", id).getResultList();
+    }
+    
     
 }

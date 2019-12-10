@@ -6,7 +6,9 @@
 package service;
 
 import entity.Apunte;
+import entity.Cliente;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -89,15 +91,26 @@ public class ApunteFacadeREST extends AbstractFacade<Apunte> {
     public byte[] getArchivoById(@PathParam("id") Integer id) {
         return super.getArchivoById(id);
     }
+    @GET
+    @Path("creador/{id}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Set<Apunte> getApuntesByCreador(@PathParam("id") Integer id) {
+        return super.getApuntesByCreador(id);
+    }
+    @GET
+    @Path("cliente/{id}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Set<Apunte> getApuntesByComprador(@PathParam("id") Integer id) {
+        return super.getApuntesByComprador(id);
+    }
     
-    /*
     @GET
     @Path("votantes/{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public List <Integer> getVotantesId(@PathParam("id") Integer id) {
+    public List <Cliente> getVotantesId(@PathParam("id") Integer id) {
         return super.getVotantesId(id);
     }
-    */
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;

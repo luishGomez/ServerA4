@@ -10,7 +10,6 @@ import static javax.persistence.FetchType.EAGER;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.sql.rowset.serial.SerialBlob;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 

@@ -31,12 +31,18 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(
         name="getArchivoById", query="SELECT a FROM Apunte a WHERE a.idApunte=:idApunte"
-    )
-        /*,
+    ),
     @NamedQuery(
-            name="getVotantesId", query="SELECT v.votantes_id FROM Votaciones v WHERE v.apunte_idApunte=:idApunte"
+            name="getApuntesByCreador", query="SELECT a FROM Apunte a WHERE a.creador.id=:idCliente"
+    ),
+    @NamedQuery(
+            name="getApuntesByComprador", query="SELECT a FROM Apunte a WHERE a.idApunte in (Select apunte.idApunte FROM Compra where propietario.id=:idCliente)"
+    ),
+    @NamedQuery(
+            name="getVotantesId", //query="SELECT a.votantes.id FROM Apunte a WHERE a.idApunte=:idApunte"
+            query="SELECT a.votantes FROM Apunte a WHERE a.idApunte=:idApunte"
     )
-        */
+        
 })
 @Entity
 @Table(name="apunte",schema="serverA4db")

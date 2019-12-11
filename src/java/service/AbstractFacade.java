@@ -10,14 +10,17 @@ import entity.Cliente;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 
 /**
  *
  * @author 2dam
  */
 public abstract class AbstractFacade<T> {
-
+    private static final Logger LOGGER = Logger.getLogger("ServerA4.service.AbstractFacade");
     private Class<T> entityClass;
 
     public AbstractFacade(Class<T> entityClass) {
@@ -64,9 +67,21 @@ public abstract class AbstractFacade<T> {
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
+    /*
     public byte[] getArchivoById(Integer id){
-        return (byte[]) getEntityManager().createNamedQuery("getArchivoById").setParameter("idApunte", id).getSingleResult();
+        byte[] bytes=null;
+        SerialBlob blob=null;
+        try{
+         blob=(SerialBlob) getEntityManager().createNamedQuery("getArchivoById").setParameter("idApunte", id).getSingleResult();
+        bytes=blob.getBytes(1, (int) blob.length());
+        }catch(ClassCastException e){
+            LOGGER.severe("ERROR: de caseteo"+2+" \n El archivo del apunte no se a castedo bien a un arrary de bytes \"byte[]\"");
+        }catch(SerialException e){
+            LOGGER.severe("ERROR:  serial"+2+" \n El archivo del apunte no se a castedo bien a un arrary de bytes \"byte[]\"");
+        }
+        return  bytes;
     }
+    */
     public Set<Apunte> getApuntesByCreador(Integer id){
        List<Apunte> sourceList=(List<Apunte>)getEntityManager().createNamedQuery("getApuntesByCreador").setParameter("idCliente", id).getResultList();
        return new HashSet<>(sourceList);
@@ -80,6 +95,18 @@ public abstract class AbstractFacade<T> {
     public List <Cliente> getVotantesId(Integer id){
         return (List <Cliente>) getEntityManager().createNamedQuery("getVotantesId").setParameter("idApunte", id).getResultList();
     }
-    
+    //De cliente
+    public void actualizarContrasenia(Cliente cliente){
+        getEntityManager().merge(cliente);
+        getEntityManager().flush();
+    }
+    public void actualizarCliente(Cliente cliente){
+        getEntityManager().merge(cliente);
+        getEntityManager().flush();
+    }
+     public Set <Apunte> getMisApuntes(Integer id){
+        return getEntityManager().find(Cliente.class, id).getApuntes();
+     }
+     
     
 }

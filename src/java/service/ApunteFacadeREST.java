@@ -84,13 +84,14 @@ public class ApunteFacadeREST extends AbstractFacade<Apunte> {
     public String countREST() {
         return String.valueOf(super.count());
     }
-
+    /*
     @GET
     @Path("archivo/{id}")
     @Produces({MediaType.APPLICATION_XML})
     public byte[] getArchivoById(@PathParam("id") Integer id) {
         return super.getArchivoById(id);
     }
+    */
     @GET
     @Path("creador/{id}")
     @Produces({MediaType.APPLICATION_XML})

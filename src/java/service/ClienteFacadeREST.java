@@ -5,8 +5,10 @@
  */
 package service;
 
+import entity.Apunte;
 import entity.Cliente;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -82,7 +84,28 @@ public class ClienteFacadeREST extends AbstractFacade<Cliente> {
     public String countREST() {
         return String.valueOf(super.count());
     }
-
+    
+    @PUT
+    @Path("password")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void actualizarContrasenia(Cliente cliente) {
+        super.actualizarContrasenia(cliente);
+    }
+    
+    @PUT
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void actualizarCliente(Cliente cliente) {
+        super.actualizarCliente(cliente);
+    }
+    
+    @GET
+    @Path("misApuntes/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Set <Apunte> getMisApuntes(@PathParam("id") Integer id) {
+        return super.getMisApuntes(id);
+    }
+    
+    
     @Override
     protected EntityManager getEntityManager() {
         return em;

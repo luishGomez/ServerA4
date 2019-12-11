@@ -7,10 +7,12 @@ package service;
 
 import entity.Apunte;
 import entity.Cliente;
+import entity.User;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 /**
  *
@@ -81,5 +83,14 @@ public abstract class AbstractFacade<T> {
         return (List <Cliente>) getEntityManager().createNamedQuery("getVotantesId").setParameter("idApunte", id).getResultList();
     }
     
-    
+    //-------
+    public User enocntrarLogin(String login){
+        return (User) getEntityManager().createNamedQuery("encontrarContrasenia").setParameter("login", login).getSingleResult();
+    }
+    public User comprobarContrasenia(String[] usuario){
+        Query query = getEntityManager().createNamedQuery("comprobarContrasenia");
+        query.setParameter("login", usuario[0]);
+        query.setParameter("contrasenia", usuario[1]);
+        return (User) query.getSingleResult();
+    }
 }

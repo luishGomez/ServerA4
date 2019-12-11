@@ -87,5 +87,18 @@ public class UserFacadeREST extends AbstractFacade<User> {
     protected EntityManager getEntityManager() {
         return em;
     }
+    //----------------
+    @GET
+    @Path("login/{login}")
+    @Produces({MediaType.APPLICATION_XML})
+    public User encontrarContrasenia(@PathParam("login") String login) {
+        return super.enocntrarLogin(login);
+    }
     
+    @GET
+    @Path("{login}/{contrasenia}")
+    @Produces({MediaType.APPLICATION_XML})
+    public User comprobarContrasenia(@PathParam("login") String login, @PathParam("contrasenia") String contrasenia) {
+        return super.comprobarContrasenia(new String[]{login,contrasenia});
+    }
 }

@@ -12,6 +12,7 @@ import exception.DeleteException;
 import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
+import exception.YaEstaVendidoException;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -157,7 +158,17 @@ public class ApunteFacadeREST  {
          return resultado;
     }
        
-    
+    @DELETE
+    @Path("borrarApunte/{id}")
+    public void borrarApunte(@PathParam("id") Integer id) {
+         try {
+             ejb.borrarApunte(id);
+         } catch (DeleteException ex) {
+             Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (YaEstaVendidoException ex) {
+             Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
     
     
     /* DEL CLIENTE !!!!!

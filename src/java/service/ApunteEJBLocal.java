@@ -11,6 +11,7 @@ import exception.DeleteException;
 import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
+import exception.YaEstaVendidoException;
 import java.util.Set;
 import javax.ejb.Local;
 
@@ -28,4 +29,5 @@ public interface ApunteEJBLocal {
     public Set<Apunte> getApuntesByCreador(Integer id) throws SelectCollectionException;
     public Set<Apunte> getApuntesByComprador(Integer id)throws SelectCollectionException;
     public Set <Apunte> getMisApuntes(Integer id)throws SelectCollectionException;
+    public void borrarApunte(Integer id) throws YaEstaVendidoException, DeleteException;
 }

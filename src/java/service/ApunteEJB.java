@@ -12,6 +12,7 @@ import exception.DeleteException;
 import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
+import exception.YaEstaVendidoException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -144,6 +145,20 @@ public class ApunteEJB implements ApunteEJBLocal{
             throw new SelectCollectionException(e.getMessage());
         }
         return resultado;
+    }
+    @Override
+    public void borrarApunte(Integer id) throws YaEstaVendidoException, DeleteException{
+        try{
+        Apunte apunte=em.find(Apunte.class, id);
+        if(!apunte.getCompras().isEmpty())
+            throw new YaEstaVendidoException();
+        else{
+            em.remove(em.merge(em.find(Apunte.class, id)));
+        }
+        }catch(Exception e){
+        LOGGER.severe("ApunteEJB -> borrarApunte() "+e.getMessage());
+            throw new DeleteException(e.getMessage());
+        }
     }
     @Override
     public Set <Apunte> getMisApuntes(Integer id)throws SelectCollectionException{

@@ -6,15 +6,16 @@
 package service;
 
 import entity.User;
-import java.util.List;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.UserNoExistException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -24,81 +25,48 @@ import javax.ws.rs.core.MediaType;
  *
  * @author 2dam
  */
-@Stateless
 @Path("user")
-public class UserFacadeREST extends AbstractFacade<User> {
-
-    @PersistenceContext(unitName = "ServerA4PU")
-    private EntityManager em;
-
-    public UserFacadeREST() {
-        super(User.class);
-    }
+public class UserFacadeREST {
+    private static final Logger LOGGER = Logger.getLogger("servera4db.service.UserFacadeRest");
+    
+    @EJB
+    private UsuarioEJBLocal ejb;
 
     @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(User entity) {
-        super.create(entity);
-    }
-
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, User entity) {
-        super.edit(entity);
+    @Consumes({MediaType.APPLICATION_XML})
+    public void createUser(User usuario) {
+        try {
+            ejb.createUser(usuario);
+        } catch (CreateException ex) {
+            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
-    }
-
-    @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public User find(@PathParam("id") Integer id) {
-        return super.find(id);
-    }
-
-    @GET
-    @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<User> findAll() {
-        return super.findAll();
-    }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<User> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
+    @Path("id/{id}")
+    public void deleteUser(@PathParam("id") String id) {
+        try {
+            try {
+                ejb.deleteUser(ejb.findUserByLogin(id));
+                
+            } catch (UserNoExistException ex) {
+                Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (DeleteException ex) {
+            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     //----------------
     @GET
     @Path("login/{login}")
     @Produces({MediaType.APPLICATION_XML})
-    public User encontrarContrasenia(@PathParam("login") String login) {
-        return super.enocntrarLogin(login);
-    }
-    
-    @GET
-    @Path("{login}/{contrasenia}")
-    @Produces({MediaType.APPLICATION_XML})
-    public User comprobarContrasenia(@PathParam("login") String login, @PathParam("contrasenia") String contrasenia) {
-        return super.comprobarContrasenia(new String[]{login,contrasenia});
+    public User findUserByLogin(@PathParam("login") String login) {
+        User usuario = null;
+        try {
+            usuario = ejb.findUserByLogin(login);
+        } catch (UserNoExistException ex) {
+            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return usuario;
     }
 }

@@ -7,8 +7,16 @@ package service;
 
 import entity.Apunte;
 import entity.Cliente;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.SelectCollectionException;
+import exception.SelectException;
+import exception.UpdateException;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,51 +34,70 @@ import javax.ws.rs.core.MediaType;
  *
  * @author 2dam
  */
-@Stateless
+
 @Path("apunte")
-public class ApunteFacadeREST extends AbstractFacade<Apunte> {
+public class ApunteFacadeREST  {
+     private static final Logger LOGGER = Logger.getLogger("ServerA4.service.ApunteFacadeREST");
+    @EJB
+    private ApunteEJBLocal ejb;
 
-    @PersistenceContext(unitName = "ServerA4PU")
-    private EntityManager em;
-
-    public ApunteFacadeREST() {
-        super(Apunte.class);
-    }
-
+    
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Apunte entity) {
-        super.create(entity);
+    public void create(Apunte apunte) {
+         try {
+             ejb.createApunte(apunte);
+         } catch (CreateException ex) {
+             LOGGER.log(Level.SEVERE, null, ex);
+         }
     }
 
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Apunte entity) {
-        super.edit(entity);
+    public void edit( Apunte apunte) {
+         try {
+             ejb.editApunte(apunte);
+         } catch (UpdateException ex) {
+             Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+         try {
+             ejb.removeApunte(id);
+         } catch (DeleteException ex) {
+             Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Apunte find(@PathParam("id") Integer id) {
-        return super.find(id);
+        Apunte resultado = null;
+         try {
+             resultado=ejb.findApunte(id);
+         } catch (SelectException ex) {
+             Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        return resultado;
+
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Apunte> findAll() {
-        return super.findAll();
+    public Set<Apunte> findAll() {
+        Set <Apunte> resultado = null;
+         try {
+             resultado=ejb.findAllApuntes();
+         } catch (SelectCollectionException ex) {
+             Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        return resultado;
     }
-
+    /*
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -84,6 +111,7 @@ public class ApunteFacadeREST extends AbstractFacade<Apunte> {
     public String countREST() {
         return String.valueOf(super.count());
     }
+    */
     /*
     @GET
     @Path("archivo/{id}")
@@ -96,25 +124,51 @@ public class ApunteFacadeREST extends AbstractFacade<Apunte> {
     @Path("creador/{id}")
     @Produces({MediaType.APPLICATION_XML})
     public Set<Apunte> getApuntesByCreador(@PathParam("id") Integer id) {
-        return super.getApuntesByCreador(id);
+        Set <Apunte> resultado = null; 
+        try {             
+             resultado=ejb.getApuntesByCreador(id);             
+         } catch (SelectCollectionException ex) {
+             Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         return resultado;
     }
     @GET
     @Path("cliente/{id}")
     @Produces({MediaType.APPLICATION_XML})
     public Set<Apunte> getApuntesByComprador(@PathParam("id") Integer id) {
-        return super.getApuntesByComprador(id);
+        Set <Apunte> resultado = null; 
+        try {
+            resultado=ejb.getApuntesByComprador(id);
+            } catch (SelectCollectionException ex) {
+             Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         return resultado;
+     }
+    @GET
+    @Path("misApuntes/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Set <Apunte> getMisApuntes(@PathParam("id") Integer id) {
+        Set <Apunte> resultado = null; 
+        try {
+            resultado=ejb.getMisApuntes(id);
+            } catch (SelectCollectionException ex) {
+             Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         return resultado;
     }
+       
     
+    
+    
+    /* DEL CLIENTE !!!!!
     @GET
     @Path("votantes/{id}")
     @Produces({MediaType.APPLICATION_XML})
     public List <Cliente> getVotantesId(@PathParam("id") Integer id) {
         return super.getVotantesId(id);
     }
+    */
     
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
+   
     
 }

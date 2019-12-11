@@ -7,8 +7,16 @@ package service;
 
 import entity.Apunte;
 import entity.Cliente;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.SelectCollectionException;
+import exception.SelectException;
+import exception.UpdateException;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,57 +34,76 @@ import javax.ws.rs.core.MediaType;
  *
  * @author 2dam
  */
-@Stateless
+
 @Path("cliente")
-public class ClienteFacadeREST extends AbstractFacade<Cliente> {
-
-    @PersistenceContext(unitName = "ServerA4PU")
-    private EntityManager em;
-
-    public ClienteFacadeREST() {
-        super(Cliente.class);
-    }
+public class ClienteFacadeREST  {
+    private static final Logger LOGGER = Logger.getLogger("ServerA4.service.ClienteFacadeREST");
+    
+    @EJB
+    private ClienteEJBLocal ejb;
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Cliente entity) {
-        super.create(entity);
+    public void create(Cliente cliente) {
+        try {
+            ejb.createCliente(cliente);
+        } catch (CreateException ex) {
+            Logger.getLogger(ClienteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Cliente entity) {
-        super.edit(entity);
+    public void edit( Cliente cliente) {
+        try {
+            ejb.editCliente(cliente);
+        } catch (UpdateException ex) {
+            Logger.getLogger(ClienteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+        try {
+            ejb.removeCliente(id);
+        } catch (DeleteException ex) {
+            Logger.getLogger(ClienteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Cliente find(@PathParam("id") Integer id) {
-        return super.find(id);
+        Cliente resultado=null;
+        try {
+           resultado= ejb.findCliente(id);
+        } catch (SelectException ex) {
+            Logger.getLogger(ClienteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Cliente> findAll() {
-        return super.findAll();
+    public Set<Cliente> findAll() {
+        Set <Cliente> resultado=null;
+        try {
+           resultado= ejb.findAllClientes();
+        } catch (SelectCollectionException ex) {
+            Logger.getLogger(ClienteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
     }
-
+    /*
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Cliente> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
+    
 
     @GET
     @Path("count")
@@ -84,20 +111,42 @@ public class ClienteFacadeREST extends AbstractFacade<Cliente> {
     public String countREST() {
         return String.valueOf(super.count());
     }
+    */
     
+    @GET
+    @Path("votantes/{id}")
+    @Produces({MediaType.APPLICATION_XML})
+    public List <Cliente> getVotantesId(@PathParam("id") Integer id) {
+        List <Cliente> resultado =null;
+        try {
+            resultado=ejb.getVotantesId(id);
+        } catch (SelectCollectionException ex) {
+            Logger.getLogger(ClienteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
+    }
     @PUT
     @Path("password")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void actualizarContrasenia(Cliente cliente) {
-        super.actualizarContrasenia(cliente);
+        try {
+            ejb.actualizarContrasenia(cliente);
+        } catch (UpdateException ex) {
+            Logger.getLogger(ClienteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+    /*
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void actualizarCliente(Cliente cliente) {
-        super.actualizarCliente(cliente);
+        try {
+            ejb.actualizarCliente(cliente);
+        } catch (UpdateException ex) {
+            Logger.getLogger(ClienteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
+    */
+    /* SE TRANSALDO
     @GET
     @Path("misApuntes/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -105,10 +154,7 @@ public class ClienteFacadeREST extends AbstractFacade<Cliente> {
         return super.getMisApuntes(id);
     }
     
+    */
     
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
     
 }

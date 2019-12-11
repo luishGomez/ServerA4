@@ -29,11 +29,10 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Ricardo Peinado Lastra
  */
 @NamedQueries({
-    /*
+    
     @NamedQuery(
-        name="getArchivoById", query="SELECT a.archivo FROM Apunte a WHERE a.idApunte=:idApunte"
+        name="findAllApuntes", query="SELECT a FROM Apunte a ORDER BY a.titulo ASC"
     ),
-    */
     @NamedQuery(
             name="getApuntesByCreador", query="SELECT a FROM Apunte a WHERE a.creador.id=:idCliente"
     ),

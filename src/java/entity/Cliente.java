@@ -8,6 +8,7 @@ import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.Lob;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -17,6 +18,9 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Ricardo Peinado Lastra
  */
+@NamedQuery(
+        name="findAllCliente", query="SELECT a FROM Cliente a ORDER BY a.nombreCompleto ASC"
+    )
 @Entity
 @Table(name="cliente",schema="serverA4db")
 @XmlRootElement

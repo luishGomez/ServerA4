@@ -25,7 +25,7 @@ public class Cliente extends User implements Serializable{
     
     @OneToMany(cascade=ALL,mappedBy="propietario")
     private Set <Compra> compras;
-    @OneToMany(cascade=ALL,mappedBy="creador")
+    @OneToMany(cascade=ALL,mappedBy="creador",fetch=EAGER)
     private Set <Apunte> apuntes;
     private float saldo;
     @Lob

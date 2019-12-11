@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
-import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialException;
 
 /**
  *
@@ -95,6 +93,7 @@ public abstract class AbstractFacade<T> {
     public List <Cliente> getVotantesId(Integer id){
         return (List <Cliente>) getEntityManager().createNamedQuery("getVotantesId").setParameter("idApunte", id).getResultList();
     }
+    
     //De cliente
     public void actualizarContrasenia(Cliente cliente){
         getEntityManager().merge(cliente);
@@ -105,7 +104,16 @@ public abstract class AbstractFacade<T> {
         getEntityManager().flush();
     }
      public Set <Apunte> getMisApuntes(Integer id){
-        return getEntityManager().find(Cliente.class, id).getApuntes();
+        
+        Set <Apunte> apuntes=null; 
+        try{
+        if(getEntityManager().find(Cliente.class, id).getApuntes()!=null)
+            apuntes=getEntityManager().find(Cliente.class, id).getApuntes();
+        }catch(NullPointerException e){
+            apuntes=new HashSet <Apunte>();   
+        }            
+        return apuntes;
+                
      }
      
     

@@ -56,22 +56,10 @@ public class UserFacadeREST {
             Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
         }
     }
-    @DELETE
-    @Path("borrarPorId/{id}")
-    @Consumes({MediaType.APPLICATION_XML})
-    public void deleteUser(@PathParam("login") Integer id) {
-        try {
-            ejb.deleteUser(ejb.findUserByLogin(id));
-        } catch (DeleteException | UserNoExistException ex) {
-            Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
-            throw new InternalServerErrorException(ex);
-        }
-    }
-    //----------------
     @GET
-    @Path("buscarPorLogin/{id}")
+    @Path("buscarPorLogin/{login}")
     @Produces({MediaType.APPLICATION_XML})
-    public User findUserByLogin(@PathParam("id") Integer login) {
+    public User findUserByLogin(@PathParam("login") String login) {
         User usuario = null;
         try {
             usuario = ejb.findUserByLogin(login);
@@ -83,22 +71,22 @@ public class UserFacadeREST {
     }
     
     @GET
-    @Path("contrasenia/{id}")
+    @Path("contrasenia/{login}")
     @Produces({MediaType.APPLICATION_XML})
-    public User contraseniaCorrecta(@PathParam("id") User usuario) throws WrongPasswordException {
+    public User contraseniaCorrecta(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) throws WrongPasswordException {
         User usuarioComprobado = null;
-        try {
+       
             try {
-                usuarioComprobado = ejb.findUserByLogin(usuario.getId());
-                if(!usuarioComprobado.getContrasenia().equals(usuario.getContrasenia()))
-                throw new WrongPasswordException("Contraseña erronea");
-            } catch (UserNoExistException ex) {
-                Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+                usuarioComprobado.setLogin(login);
+                usuarioComprobado.setContrasenia(contrasenia);
+                usuarioComprobado = ejb.contraseniaCorrecta(usuarioComprobado);
+            } catch (WrongPasswordException ex) {
+                LOGGER.log(Level.SEVERE,
+                "UserRESTful service: Exception deleting user by id, {0}",
+                ex.getMessage());
+                throw new InternalServerErrorException(ex);
             }  
-        } catch (WrongPasswordException ex) {
-            Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
-            throw new InternalServerErrorException(ex);
-        }
+       
         return usuarioComprobado;
     }
 }

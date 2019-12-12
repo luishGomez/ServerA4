@@ -72,7 +72,7 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
      * @throws exception.UserNoExistException
      */
     @Override
-    public User findUserByLogin(Integer login) throws UserNoExistException{
+    public User findUserByLogin(String login) throws UserNoExistException{
         User usuario = null;
         try{
            usuario =em.find(User.class, login);
@@ -86,7 +86,7 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
     public User contraseniaCorrecta(User usuario) throws WrongPasswordException {       
        User usuarioComprobado = null;
         try{
-           usuarioComprobado = (User) em.createNamedQuery("contraseniaCorrecta").setParameter("lgin", usuario.getLogin()).getSingleResult();
+           usuarioComprobado = (User) em.createNamedQuery("contraseniaCorrecta").setParameter("lgin", usuario.getLogin()).setParameter("contrasenia", usuario.getContrasenia()).getSingleResult();
         }catch(Exception e){            
          throw new WrongPasswordException(e.getMessage());
         }

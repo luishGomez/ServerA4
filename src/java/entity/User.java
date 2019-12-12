@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import static javax.persistence.InheritanceType.TABLE_PER_CLASS;
+import static javax.persistence.InheritanceType.SINGLE_TABLE;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,14 +20,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "usuario", schema = "serverA4DB")
-@Inheritance(strategy=TABLE_PER_CLASS)
+@Inheritance(strategy=SINGLE_TABLE)
 @XmlRootElement
 public class User implements Serializable{
     private static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue(strategy=GenerationType.TABLE) //generar automaticament
-    @NotNull
+    @GeneratedValue(strategy=GenerationType.AUTO) 
     private Integer id;
     @NotNull
     private String login;
@@ -195,5 +194,4 @@ public class User implements Serializable{
     public String toString() {
         return "serverApuntes4.entity.User[ id=" + id + " ]";
     }
-    
 }

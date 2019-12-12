@@ -3,11 +3,11 @@ package entity;
 import java.io.Serializable;
 import java.sql.Blob;
 import java.util.Set;
+import javax.persistence.Basic;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
-import javax.persistence.JoinTable;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,11 +25,12 @@ public class Cliente extends User implements Serializable{
     
     @OneToMany(cascade=ALL,mappedBy="propietario")
     private Set <Compra> compras;
-    @OneToMany(cascade=ALL,mappedBy="creador")
+    @OneToMany(cascade=ALL,mappedBy="creador",fetch=EAGER)
     private Set <Apunte> apuntes;
     private float saldo;
     @Lob
-    private Blob foto;
+    @Basic(fetch=EAGER)
+    private byte[] foto;
     
     /**
      * @return the compras
@@ -78,16 +79,14 @@ public class Cliente extends User implements Serializable{
     /**
      * @return the foto
      */
-    public Blob getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
     
     /**
      * @param foto the foto to set
      */
-    public void setFoto(Blob foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
-    
-    
 }

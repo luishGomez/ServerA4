@@ -63,18 +63,18 @@ public class Apunte implements Serializable {
     private byte[] archivo;
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaValidacion;
-    private int likeCont;
-    private int dislikeCont;
+    private Integer likeCont;
+    private Integer dislikeCont;
     @ManyToMany
     @JoinTable(name="votaciones",schema="serverA4db")
     private Set<Cliente> votantes;
     @NotNull
-    private float precio;
+    private Float precio;
     @NotNull
     @ManyToOne
     private Cliente creador;
-    @OneToMany(cascade=ALL,mappedBy="apunte")
-    private Set <Compra> compras;
+    /*@OneToMany(cascade=ALL,mappedBy="apunte")
+    private Set <Compra> compras;*/
     @ManyToMany
     @JoinTable(name="apunte_pack",schema="serverA4db")
     private Set <Pack> packs;
@@ -155,28 +155,28 @@ public class Apunte implements Serializable {
     /**
      * @return the likeCont
      */
-    public int getLikeCont() {
+    public Integer getLikeCont() {
         return likeCont;
     }
     
     /**
      * @param likeCont the likeCont to set
      */
-    public void setLikeCont(int likeCont) {
+    public void setLikeCont(Integer likeCont) {
         this.likeCont = likeCont;
     }
     
     /**
      * @return the dislikeCont
      */
-    public int getDislikeCont() {
+    public Integer getDislikeCont() {
         return dislikeCont;
     }
     
     /**
      * @param dislikeCont the dislikeCont to set
      */
-    public void setDislikeCont(int dislikeCont) {
+    public void setDislikeCont(Integer dislikeCont) {
         this.dislikeCont = dislikeCont;
     }
     
@@ -198,14 +198,14 @@ public class Apunte implements Serializable {
     /**
      * @return the precio
      */
-    public float getPrecio() {
+    public Float getPrecio() {
         return precio;
     }
     
     /**
      * @param precio the precio to set
      */
-    public void setPrecio(float precio) {
+    public void setPrecio(Float precio) {
         this.precio = precio;
     }
     
@@ -226,17 +226,18 @@ public class Apunte implements Serializable {
     /**
      * @return the compras
      */
-    @XmlTransient
+    /*@XmlTransient
     public Set <Compra> getCompras() {
         return compras;
-    }
+    }*/
     
     /**
      * @param compras the compras to set
      */
+    /*
     public void setCompras(Set <Compra> compras) {
         this.compras = compras;
-    }
+    }*/
     
     /**
      * @return the packs

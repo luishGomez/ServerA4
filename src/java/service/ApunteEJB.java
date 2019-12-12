@@ -52,9 +52,11 @@ public class ApunteEJB implements ApunteEJBLocal{
         }
     }
     @Override
-    public void removeApunte(Integer idApunte) throws DeleteException {
+    public void removeApunte(Apunte apunte) throws DeleteException {
         try{
-            em.remove(em.merge(em.find(Apunte.class, idApunte)));
+            apunte=em.merge(apunte);
+            em.remove(apunte);
+            em.flush();
         }catch (Exception e){
             LOGGER.severe("ApunteEJB -> removeApunte() "+e.getMessage());
             throw new DeleteException(e.getMessage());
@@ -146,6 +148,7 @@ public class ApunteEJB implements ApunteEJBLocal{
         }
         return resultado;
     }
+    /*
     @Override
     public void borrarApunte(Integer id) throws YaEstaVendidoException, DeleteException{
         try{
@@ -160,6 +163,8 @@ public class ApunteEJB implements ApunteEJBLocal{
             throw new DeleteException(e.getMessage());
         }
     }
+    */
+    /*
     @Override
     public Set <Apunte> getMisApuntes(Integer id)throws SelectCollectionException{
         
@@ -171,7 +176,7 @@ public class ApunteEJB implements ApunteEJBLocal{
             throw new SelectCollectionException(e.getMessage());
         }
         return apuntes;
-        /*
+        ////aqui nop
         Set <Apunte> apuntes=null;
         try{
         if(em.find(Cliente.class, id).getApuntes()!=null)
@@ -180,9 +185,27 @@ public class ApunteEJB implements ApunteEJBLocal{
         apuntes=new HashSet <Apunte>();
         }
         return apuntes;
-        */
         
+        ///aqui nop
     }
-    
+    */
+    @Override
+    public void votacion (Integer idCliente, Integer like, Apunte apunte) throws UpdateException{
+        try{
+            Apunte apunteActualizado=em.find(Apunte.class, apunte.getIdApunte());
+            Cliente cliente=em.find(Cliente.class, idCliente);
+            if(like<0){
+                apunteActualizado.setDislikeCont(apunteActualizado.getDislikeCont()+1);
+            }else{
+                apunteActualizado.setLikeCont(apunteActualizado.getLikeCont()+1);
+            }
+            apunteActualizado.getVotantes().add(cliente);
+            em.merge(apunteActualizado);
+            em.flush();
+        }catch(Exception e){
+            LOGGER.severe("ApunteEJB -> votacion() "+e.getMessage());
+            throw new UpdateException(e.getMessage());
+        }
+    }
     
 }

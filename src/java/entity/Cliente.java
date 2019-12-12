@@ -8,6 +8,7 @@ import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -31,6 +32,8 @@ public class Cliente extends User implements Serializable{
     private Set <Compra> compras;
     @OneToMany(cascade=ALL,mappedBy="creador",fetch=EAGER)
     private Set <Apunte> apuntes;
+    @ManyToMany(mappedBy="votantes")
+    private Set <Apunte> misVotaciones;
     private float saldo;
     @Lob
     @Basic(fetch=EAGER)
@@ -93,6 +96,23 @@ public class Cliente extends User implements Serializable{
     public void setFoto(byte[] foto) {
         this.foto = foto;
     }
+
+    /**
+     * @return the misVotaciones
+     */
+    @XmlTransient
+    public Set <Apunte> getMisVotaciones() {
+        return misVotaciones;
+    }
+
+    /**
+     * @param misVotaciones the misVotaciones to set
+     */
+    public void setMisVotaciones(Set <Apunte> misVotaciones) {
+        this.misVotaciones = misVotaciones;
+    }
+
+   
     
     
 }

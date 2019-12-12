@@ -67,8 +67,8 @@ public class ApunteFacadeREST  {
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
          try {
-             ejb.removeApunte(id);
-         } catch (DeleteException ex) {
+             ejb.removeApunte(ejb.findApunte(id));
+         } catch (DeleteException | SelectException ex) {
              Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
          }
     }
@@ -145,6 +145,17 @@ public class ApunteFacadeREST  {
          }
          return resultado;
      }
+    @PUT
+    @Path("votar/{idCliente}/{like}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void votacion(@PathParam("idCliente") Integer idCliente,@PathParam("like") Integer like, Apunte apunte) {
+         try {
+             ejb.votacion(idCliente, like, apunte);
+         } catch (UpdateException ex) {
+             Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }
+    /*
     @GET
     @Path("misApuntes/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -169,7 +180,7 @@ public class ApunteFacadeREST  {
              Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
          }
     }
-    
+    */
     
     /* DEL CLIENTE !!!!!
     @GET

@@ -7,7 +7,7 @@ package service;
 
 import entity.User;
 import exception.CreateException;
-import exception.DeleteException;
+import exception.SelectException;
 import exception.UpdateException;
 import exception.UserNoExistException;
 import exception.WrongPasswordException;
@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
@@ -35,17 +34,26 @@ public class UserFacadeREST {
     
     @EJB
     private UsuarioEJBLocal ejb;
-
+    /**
+     * Metodo Post de Restful para crear Usuario a partir de un xml
+     * @param usuario  Objeto que contiene los datos del usuario 
+     */
     @POST
     @Consumes({MediaType.APPLICATION_XML})
     public void createUser(User usuario) {
         try {
             ejb.createUser(usuario);
         } catch (CreateException ex) {
-            Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
+            LOGGER.log(Level.SEVERE,
+            "UserRESTful service: Exception create user, {0}",
+            ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
     }
+    /**
+     * Metodo Put de Restful para actualizar Usuario a partir de un xml
+     * @param usuario Objeto que contiene los datos del usuario
+     */
     @PUT
     @Path("actualizar")
     @Consumes({MediaType.APPLICATION_XML})
@@ -53,36 +61,52 @@ public class UserFacadeREST {
         try {
             ejb.updateUser(usuario);
         } catch (UpdateException ex) {
-            Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
+            LOGGER.log(Level.SEVERE,
+            "UserRESTful service: Exception update user, {0}",
+            ex.getMessage());
+            throw new InternalServerErrorException(ex);
         }
     }
+    /**
+     * Metodo Get de Restful para buscar Usuario a partir de un xml
+     * @param login El Login del Usuario a ser encontrado
+     * @return Objeto Usuario con sus datos
+     * @throws exception.SelectException
+     */
     @GET
     @Path("buscarPorLogin/{login}")
     @Produces({MediaType.APPLICATION_XML})
-    public User findUserByLogin(@PathParam("login") String login) {
+    public User findUserByLogin(@PathParam("login") String login) throws SelectException{
         User usuario = null;
         try {
             usuario = ejb.findUserByLogin(login);
         } catch (UserNoExistException ex) {
-            Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
-            throw new InternalServerErrorException(ex);
+            LOGGER.log(Level.SEVERE,
+                "UserRESTful service: Exception find user by login, {0}",
+                ex.getMessage());
+                throw new InternalServerErrorException(ex);
         }
         return usuario;
     }
-    
+    /**
+     * Metodo Get de Restful para buscar Usuario a partir de un xml
+     * @param login Login del Objeto a leer
+     * @param contrasenia Contrasenia del Objeto a leer
+     * @return Usuario con login existente y contraseña correcta
+     * @throws WrongPasswordException si hay una excepcion durante el proceso
+     */
     @GET
-    @Path("contrasenia/{login}")
+    @Path("contrasenia/{login}/{contrasenia}")
     @Produces({MediaType.APPLICATION_XML})
     public User contraseniaCorrecta(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) throws WrongPasswordException {
-        User usuarioComprobado = null;
-       
+        User usuarioComprobado = new User();
             try {
                 usuarioComprobado.setLogin(login);
                 usuarioComprobado.setContrasenia(contrasenia);
                 usuarioComprobado = ejb.contraseniaCorrecta(usuarioComprobado);
             } catch (WrongPasswordException ex) {
                 LOGGER.log(Level.SEVERE,
-                "UserRESTful service: Exception deleting user by id, {0}",
+                "UserRESTful service: Exception comprobar usuario by login and contrasenia, {0}",
                 ex.getMessage());
                 throw new InternalServerErrorException(ex);
             }  

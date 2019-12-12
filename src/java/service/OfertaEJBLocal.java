@@ -43,7 +43,7 @@ public interface OfertaEJBLocal {
      */
     public List<Oferta> findAllOfertas() throws SelectCollectionException;
     /**
-     * Busca oferta por id
+     * Busca ofertas por id
      * @param idOferta La id de la oferta para encontrar
      * @return Oferta 
      * @throws SelectException si hay una excepcion durante el proceso

@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     query="SELECT a FROM User a WHERE a.login=:login"),
    @NamedQuery(
     name="contraseniaCorrecta",
-    query="SELECT a FROM User a WHERE a.login=:login")
+    query="SELECT a FROM User a WHERE a.login=:login and a.contrasenia=:contrasenia")
 
 })
 @Inheritance(strategy=SINGLE_TABLE)

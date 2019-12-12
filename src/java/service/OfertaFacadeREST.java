@@ -31,13 +31,13 @@ import javax.ws.rs.core.MediaType;
  *
  * @author 2dam
  */
-@Stateless
+
 @Path("oferta")
 public class OfertaFacadeREST{
     private static final Logger LOGGER =
             Logger.getLogger("javafxserverside");
     
-    @EJB(beanName = "OfertaEJB")
+    @EJB
     private OfertaEJBLocal ejb;
     
     /**
@@ -73,7 +73,7 @@ public class OfertaFacadeREST{
             oferta = ejb.findOfertaById(idOferta);
         } catch (SelectException ex) {
             LOGGER.log(Level.SEVERE,
-                    "UserRESTful service: Exception reading user by id, {0}",
+                    "UserRESTful service: Exception reading oferta by idOferta, {0}",
                     ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
@@ -98,7 +98,7 @@ public class OfertaFacadeREST{
             }
         } catch (DeleteException ex) {
             LOGGER.log(Level.SEVERE,
-                "UserRESTful service: Exception deleting user by id, {0}",
+                "UserRESTful service: Exception deleting oferta by idOferta, {0}",
                 ex.getMessage());
         throw new InternalServerErrorException(ex);
         }
@@ -116,7 +116,7 @@ public class OfertaFacadeREST{
             ofertas = ejb.findAllOfertas();
         } catch (SelectCollectionException ex) {
             LOGGER.log(Level.SEVERE,
-                "UserRESTful service: Exception deleting user by id, {0}",
+                "UserRESTful service: Exception reading list ofertas by idOferta, {0}",
                 ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
@@ -135,7 +135,7 @@ public class OfertaFacadeREST{
             ejb.updateOferta(oferta);
         } catch (UpdateException ex) {
             LOGGER.log(Level.SEVERE,
-                "UserRESTful service: Exception deleting user by id, {0}",
+                "UserRESTful service: Exception update oferta by Object oferta, {0}",
                 ex.getMessage());
             throw new InternalServerErrorException(ex);
         }

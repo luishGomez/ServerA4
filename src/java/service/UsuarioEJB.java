@@ -25,7 +25,11 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
     @PersistenceContext
     private  EntityManager em;
     
-
+    /**
+     * Crea un Usuario (administrador) nuevo
+     * @param usuario Objeto con sus datos a crear
+     * @throws CreateException si hay una excepcion durante el proceso
+     */
     @Override
     public void createUser(User usuario) throws CreateException{
         try {
@@ -35,24 +39,25 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
         }
         
     }
-
+    /**
+     * Borra un Usuario
+     * @param usuario Objeto a borrar
+     * @throws DeleteException si hay una excepcion durante el proceso
+     */
     @Override
     public void deleteUser(User usuario) throws DeleteException{
         try {
             usuario=em.merge(usuario);
             em.remove(usuario);
         } catch (Exception e) {
-            
+            throw new DeleteException(e.getMessage());
         }
-        
-       /*
-        try{
-          em.createNamedQuery("deleteUser").setParameter("id", usuario.getId());
-        }catch(Exception e){            
-        
-        }
-       */
     }
+    /**
+     * Actualiza un Usuario
+     * @param usuario Objeto con datos a actualizar
+     * @throws UpdateException si hay una excepcion durante el proceso
+     */
     @Override
     public void updateUser(User usuario) throws UpdateException{
         try {
@@ -62,33 +67,35 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
             throw new UpdateException(e.getMessage());
         }
     }
-    
-    //-------
-
     /**
-     *
-     * @param login
-     * @return
-     * @throws exception.UserNoExistException
+     * Busca un Usuario por el Login
+     * @param login Login del Usuario a buscar
+     * @return Usuario encontrado
+     * @throws exception.UserNoExistException si hay una excepcion durante el proceso
      */
     @Override
     public User findUserByLogin(String login) throws UserNoExistException{
         User usuario = null;
         try{
-           usuario =em.find(User.class, login);
+           usuario =(User) em.createNamedQuery("findUserByLogin").setParameter("login", login).getSingleResult();
         }catch(Exception e){            
-         throw new UserNoExistException(e.getMessage());
+            throw new UserNoExistException(e.getMessage());
         }
         return usuario;
     }
-
+    /**
+     * Verifica que un Usuario existe comprobando su Login y Contraseña
+     * @param usuario conteniendo su contraseña y logins a comprobar
+     * @return Usuario encontrado
+     * @throws WrongPasswordException si hay una excepcion durante el proceso
+     */
     @Override
     public User contraseniaCorrecta(User usuario) throws WrongPasswordException {       
        User usuarioComprobado = null;
         try{
-           usuarioComprobado = (User) em.createNamedQuery("contraseniaCorrecta").setParameter("lgin", usuario.getLogin()).setParameter("contrasenia", usuario.getContrasenia()).getSingleResult();
+           usuarioComprobado = (User) em.createNamedQuery("contraseniaCorrecta").setParameter("login", usuario.getLogin()).setParameter("contrasenia", usuario.getContrasenia()).getSingleResult();
         }catch(Exception e){            
-         throw new WrongPasswordException(e.getMessage());
+            throw new WrongPasswordException(e.getMessage());
         }
         return usuarioComprobado;
     }

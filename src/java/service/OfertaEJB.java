@@ -19,7 +19,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author 2dam
+ * @author Sergio
  */
 @Stateless
 public  class OfertaEJB implements OfertaEJBLocal{
@@ -30,7 +30,7 @@ public  class OfertaEJB implements OfertaEJBLocal{
     
     /**
      * Crea una Oferta nueva
-     * @param oferta
+     * @param oferta Objeto que contiene los datos de la oferta
      * @throws CreateException si hay una excepcion durante el proceso
      */
     @Override
@@ -43,7 +43,7 @@ public  class OfertaEJB implements OfertaEJBLocal{
     }
     /**
      * Borra una Oferta
-     * @param oferta
+     * @param oferta Objeto que contiene los datos de la oferta
      * @throws DeleteException si hay una excepcion durante el proceso
      */
     @Override
@@ -57,7 +57,7 @@ public  class OfertaEJB implements OfertaEJBLocal{
     }
     /**
      * Actualiza una oferta
-     * @param oferta
+     * @param oferta Objeto que contiene los datos de la oferta
      * @throws UpdateException si hay una excepcion durante el proceso
      */
     @Override
@@ -71,7 +71,7 @@ public  class OfertaEJB implements OfertaEJBLocal{
     }
     /**
      * Busca todas las ofertas disponibles
-     * @return Lista de Ofertas
+     * @return Lista de Ofertas 
      * @throws SelectCollectionException si hay una excepcion durante el proceso
      */
     @Override
@@ -87,7 +87,7 @@ public  class OfertaEJB implements OfertaEJBLocal{
 
     /**
      * Busca una oferta por su Id
-     * @param idOferta Id de Oferta
+     * @param idOferta La id de la oferta para encontrar
      * @return Oferta encontradas
      * @throws SelectException si hay una excepcion durante el proceso
      */

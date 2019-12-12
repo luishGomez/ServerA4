@@ -47,9 +47,9 @@ public class UserFacadeREST {
         }
     }
     @PUT
-    @Path("{id}")
+    @Path("actualizar")
     @Consumes({MediaType.APPLICATION_XML})
-    public void updateUser(@PathParam("id") String id, User usuario) {
+    public void updateUser(User usuario) {
         try {
             ejb.updateUser(usuario);
         } catch (UpdateException ex) {
@@ -57,7 +57,7 @@ public class UserFacadeREST {
         }
     }
     @DELETE
-    @Path("id/{id}")
+    @Path("borrarPorId/{id}")
     public void deleteUser(@PathParam("id") String id) {
         try {
             try {
@@ -73,7 +73,7 @@ public class UserFacadeREST {
     }
     //----------------
     @GET
-    @Path("login/{login}")
+    @Path("buscarPorLogin/{login}")
     @Produces({MediaType.APPLICATION_XML})
     public User findUserByLogin(@PathParam("login") String login) {
         User usuario = null;

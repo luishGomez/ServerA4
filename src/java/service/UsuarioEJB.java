@@ -33,16 +33,24 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
         } catch (Exception e) {
             throw new CreateException(e.getMessage());
         }
+        
     }
 
     @Override
     public void deleteUser(User usuario) throws DeleteException{
         try {
-            em.remove(em.merge(usuario));
+            em.remove(usuario);
         } catch (Exception e) {
             
         }
         
+       /*
+        try{
+          em.createNamedQuery("deleteUser").setParameter("id", usuario.getId());
+        }catch(Exception e){            
+        
+        }
+       */
     }
     @Override
     public void updateUser(User usuario) throws UpdateException{

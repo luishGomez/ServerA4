@@ -16,12 +16,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * Es una clase JPA para almacenar los datos de un Cliente.
  * @author Ricardo Peinado Lastra
  */
 @NamedQuery(
         name="findAllCliente", query="SELECT a FROM Cliente a ORDER BY a.nombreCompleto ASC"
-    )
+)
 @Entity
 @Table(name="cliente",schema="serverA4db")
 @XmlRootElement
@@ -96,7 +96,7 @@ public class Cliente extends User implements Serializable{
     public void setFoto(byte[] foto) {
         this.foto = foto;
     }
-
+    
     /**
      * @return the misVotaciones
      */
@@ -104,15 +104,15 @@ public class Cliente extends User implements Serializable{
     public Set <Apunte> getMisVotaciones() {
         return misVotaciones;
     }
-
+    
     /**
      * @param misVotaciones the misVotaciones to set
      */
     public void setMisVotaciones(Set <Apunte> misVotaciones) {
         this.misVotaciones = misVotaciones;
     }
-
-   
+    
+    
     
     
 }

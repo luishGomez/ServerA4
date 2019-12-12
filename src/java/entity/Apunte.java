@@ -25,13 +25,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * Es una clase JPA para almacenar los datos de un Apunte.
  * @author Ricardo Peinado Lastra
  */
 @NamedQueries({
     
     @NamedQuery(
-        name="findAllApuntes", query="SELECT a FROM Apunte a ORDER BY a.titulo ASC"
+            name="findAllApuntes", query="SELECT a FROM Apunte a ORDER BY a.titulo ASC"
     ),
     @NamedQuery(
             name="getApuntesByCreador", query="SELECT a FROM Apunte a WHERE a.creador.id=:idCliente"
@@ -228,7 +228,7 @@ public class Apunte implements Serializable {
      */
     /*@XmlTransient
     public Set <Compra> getCompras() {
-        return compras;
+    return compras;
     }*/
     
     /**
@@ -236,7 +236,7 @@ public class Apunte implements Serializable {
      */
     /*
     public void setCompras(Set <Compra> compras) {
-        this.compras = compras;
+    this.compras = compras;
     }*/
     
     /**
@@ -267,14 +267,21 @@ public class Apunte implements Serializable {
     public void setMateria(Materia materia) {
         this.materia = materia;
     }
-    
+    /**
+     * La implementación del método HashCode para la entidad.
+     * @return Retorna una lista de {@link Apunte}.
+     */
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (idApunte != null ? idApunte.hashCode() : 0);
         return hash;
     }
-    
+    /**
+     * Este metodo compra entre dos apuntes, referente a su identificador.
+     * @param object El objeto a comprar.
+     * @return TRUE: Si es verdad | FALSE: En los demas casos.
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -287,7 +294,10 @@ public class Apunte implements Serializable {
         }
         return true;
     }
-    
+    /**
+     * Este método retorna la representacion en una cadena del objeto de un apunte.
+     * @return La representación en una cadena de un apunte.
+     */
     @Override
     public String toString() {
         return "entity.Apunte[ id=" + idApunte + " ]";

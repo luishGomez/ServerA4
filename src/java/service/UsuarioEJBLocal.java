@@ -19,8 +19,8 @@ import exception.WrongPasswordException;
 public interface UsuarioEJBLocal {
     public void createUser(User usuario) throws CreateException;
     public void deleteUser(User usuario) throws DeleteException;
-   // public User findUserByLogin(String login) throws UserNoExistException;
     public void updateUser(User usuario) throws UpdateException;
     //-------
     public User findUserByLogin(String login) throws UserNoExistException;
+    public User contraseniaCorrecta(User usuario) throws WrongPasswordException;
 }

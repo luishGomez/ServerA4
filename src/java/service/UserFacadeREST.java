@@ -8,14 +8,18 @@ package service;
 import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
+import exception.UpdateException;
 import exception.UserNoExistException;
+import exception.WrongPasswordException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -38,10 +42,20 @@ public class UserFacadeREST {
         try {
             ejb.createUser(usuario);
         } catch (CreateException ex) {
-            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
+            throw new InternalServerErrorException(ex);
         }
     }
-
+    @PUT
+    @Path("{id}")
+    @Consumes({MediaType.APPLICATION_XML})
+    public void updateUser(@PathParam("id") String id, User usuario) {
+        try {
+            ejb.updateUser(usuario);
+        } catch (UpdateException ex) {
+            Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
+        }
+    }
     @DELETE
     @Path("id/{id}")
     public void deleteUser(@PathParam("id") String id) {
@@ -50,10 +64,11 @@ public class UserFacadeREST {
                 ejb.deleteUser(ejb.findUserByLogin(id));
                 
             } catch (UserNoExistException ex) {
-                Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
             }
         } catch (DeleteException ex) {
-            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
+            throw new InternalServerErrorException(ex);
         }
     }
     //----------------
@@ -65,8 +80,28 @@ public class UserFacadeREST {
         try {
             usuario = ejb.findUserByLogin(login);
         } catch (UserNoExistException ex) {
-            Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
+            throw new InternalServerErrorException(ex);
         }
         return usuario;
+    }
+    @GET
+    @Path("contrasenia/{login}")
+    @Produces({MediaType.APPLICATION_XML})
+    public User contraseniaCorrecta(@PathParam("login") User usuario) throws WrongPasswordException {
+        User usuarioComprobado = null;
+        try {
+            try {
+                usuarioComprobado = ejb.findUserByLogin(usuario.getLogin());
+                if(!usuarioComprobado.getContrasenia().equals(usuario.getContrasenia()))
+                throw new WrongPasswordException("Contraseña erronea");
+            } catch (UserNoExistException ex) {
+                Logger.getLogger(UserFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            }  
+        } catch (WrongPasswordException ex) {
+            Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }
+        return usuarioComprobado;
     }
 }

@@ -28,6 +28,9 @@ import javax.xml.bind.annotation.XmlRootElement;
    @NamedQuery(
     name="findUserByLogin",
     query="SELECT a FROM User a WHERE a.login=:login"),
+   @NamedQuery(
+    name="contraseniaCorrecta",
+    query="SELECT a FROM User a WHERE a.login=:login"),
 })
 @Inheritance(strategy=SINGLE_TABLE)
 @XmlRootElement

@@ -31,6 +31,7 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
         try {
             em.persist(usuario);
         } catch (Exception e) {
+            throw new CreateException(e.getMessage());
         }
     }
 
@@ -38,8 +39,8 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
     public void deleteUser(User usuario) throws DeleteException{
         try {
             em.remove(em.merge(usuario));
-            em.flush();
         } catch (Exception e) {
+            
         }
         
     }
@@ -47,8 +48,9 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
     public void updateUser(User usuario) throws UpdateException{
         try {
             em.merge(usuario);
-        em.flush();
+            em.flush();
         } catch (Exception e) {
+            throw new UpdateException(e.getMessage());
         }
     }
     
@@ -58,11 +60,28 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
      *
      * @param login
      * @return
-     * @throws WrongPasswordException
+     * @throws exception.UserNoExistException
      */
     @Override
     public User findUserByLogin(String login) throws UserNoExistException{
-        return (User) em.createNamedQuery("findUserByLogin").setParameter("login", login).getSingleResult();
+        User usuario = null;
+        try{
+           usuario = (User) em.createNamedQuery("findUserByLogin").setParameter("login", login).getSingleResult();
+        }catch(Exception e){            
+         throw new UserNoExistException(e.getMessage());
+        }
+        return usuario;
+    }
+
+    @Override
+    public User contraseniaCorrecta(User usuario) throws WrongPasswordException {       
+       User usuarioComprobado = null;
+        try{
+           usuarioComprobado = (User) em.createNamedQuery("contraseniaCorrecta").setParameter("lgin", usuario.getLogin()).getSingleResult();
+        }catch(Exception e){            
+         throw new WrongPasswordException(e.getMessage());
+        }
+        return usuarioComprobado;
     }
 
 }

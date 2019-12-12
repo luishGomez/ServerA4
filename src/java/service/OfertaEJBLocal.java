@@ -20,7 +20,7 @@ import java.util.List;
 public interface OfertaEJBLocal {
     public void createOferta(Oferta oferta) throws CreateException;
     public void deleteOferta(Oferta oferta) throws DeleteException;
-    public void updateUser(Oferta usuario) throws UpdateException;
+    public void updateOferta(Oferta oferta) throws UpdateException;
     public List<Oferta> findAllOfertas() throws SelectCollectionException;
     public Oferta findOfertaById(Integer idOferta) throws SelectException;
 }

@@ -39,6 +39,7 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
     @Override
     public void deleteUser(User usuario) throws DeleteException{
         try {
+            usuario=em.merge(usuario);
             em.remove(usuario);
         } catch (Exception e) {
             
@@ -71,10 +72,10 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
      * @throws exception.UserNoExistException
      */
     @Override
-    public User findUserByLogin(String login) throws UserNoExistException{
+    public User findUserByLogin(Integer login) throws UserNoExistException{
         User usuario = null;
         try{
-           usuario = (User) em.createNamedQuery("findUserByLogin").setParameter("login", login).getSingleResult();
+           usuario =em.find(User.class, login);
         }catch(Exception e){            
          throw new UserNoExistException(e.getMessage());
         }

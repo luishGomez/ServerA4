@@ -10,6 +10,7 @@ import exception.CreateException;
 import exception.DeleteException;
 import exception.SelectCollectionException;
 import exception.SelectException;
+import exception.UpdateException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +20,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -32,7 +34,7 @@ import javax.ws.rs.core.MediaType;
 @Path("oferta")
 public class OfertaFacadeREST{
 
-    @EJB
+    @EJB(beanName = "OfertaEJB")
     private OfertaEJBLocal ejb;
 
     @POST
@@ -81,5 +83,15 @@ public class OfertaFacadeREST{
             Logger.getLogger(OfertaFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ofertas;
+    }
+    @PUT
+    @Path("actualizar")
+    @Consumes({MediaType.APPLICATION_XML})
+    public void updateUser(Oferta oferta) {
+        try {
+            ejb.updateOferta(oferta);
+        } catch (UpdateException ex) {
+            
+        }
     }
 }

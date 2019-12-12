@@ -38,17 +38,17 @@ public  class OfertaEJB implements OfertaEJBLocal{
     @Override
     public void deleteOferta(Oferta oferta) throws DeleteException{
         try {
-            em.remove(em.merge(oferta));
+            em.remove(em.find(Oferta.class, oferta.getIdOferta()));
         } catch (Exception e) {
             throw new DeleteException(e.getMessage());
         }
         
     }
     @Override
-    public void updateUser(Oferta usuario) throws UpdateException{
+    public void updateOferta(Oferta oferta) throws UpdateException{
         try {
-            em.merge(usuario);
-        em.flush();
+            em.merge(oferta);
+            em.flush();
         } catch (Exception e) {
             throw new UpdateException(e.getMessage());
         }

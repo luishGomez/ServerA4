@@ -21,6 +21,6 @@ public interface UsuarioEJBLocal {
     public void deleteUser(User usuario) throws DeleteException;
     public void updateUser(User usuario) throws UpdateException;
     //-------
-    public User findUserByLogin(String login) throws UserNoExistException;
+    public User findUserByLogin(Integer login) throws UserNoExistException;
     public User contraseniaCorrecta(User usuario) throws WrongPasswordException;
 }

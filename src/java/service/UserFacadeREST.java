@@ -58,24 +58,20 @@ public class UserFacadeREST {
     }
     @DELETE
     @Path("borrarPorId/{id}")
-    public void deleteUser(@PathParam("id") String id) {
+    @Consumes({MediaType.APPLICATION_XML})
+    public void deleteUser(@PathParam("login") Integer id) {
         try {
-            try {
-                ejb.deleteUser(ejb.findUserByLogin(id));
-                
-            } catch (UserNoExistException ex) {
-                Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
-            }
-        } catch (DeleteException ex) {
+            ejb.deleteUser(ejb.findUserByLogin(id));
+        } catch (DeleteException | UserNoExistException ex) {
             Logger.getLogger(UserFacadeREST.class.getName()).severe(ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
     }
     //----------------
     @GET
-    @Path("buscarPorLogin/{login}")
+    @Path("buscarPorLogin/{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public User findUserByLogin(@PathParam("login") String login) {
+    public User findUserByLogin(@PathParam("id") Integer login) {
         User usuario = null;
         try {
             usuario = ejb.findUserByLogin(login);
@@ -85,14 +81,15 @@ public class UserFacadeREST {
         }
         return usuario;
     }
+    
     @GET
-    @Path("contrasenia/{login}")
+    @Path("contrasenia/{id}")
     @Produces({MediaType.APPLICATION_XML})
-    public User contraseniaCorrecta(@PathParam("login") User usuario) throws WrongPasswordException {
+    public User contraseniaCorrecta(@PathParam("id") User usuario) throws WrongPasswordException {
         User usuarioComprobado = null;
         try {
             try {
-                usuarioComprobado = ejb.findUserByLogin(usuario.getLogin());
+                usuarioComprobado = ejb.findUserByLogin(usuario.getId());
                 if(!usuarioComprobado.getContrasenia().equals(usuario.getContrasenia()))
                 throw new WrongPasswordException("Contraseña erronea");
             } catch (UserNoExistException ex) {

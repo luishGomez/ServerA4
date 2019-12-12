@@ -25,12 +25,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "usuario", schema = "serverA4DB", uniqueConstraints = @UniqueConstraint(columnNames = {"login"}))
 @NamedQueries({
-   @NamedQuery(
+   /*@NamedQuery(
     name="findUserByLogin",
-    query="SELECT a FROM User a WHERE a.login=:login"),
+    query="SELECT a FROM User a WHERE a.login=:login"),*/
    @NamedQuery(
     name="contraseniaCorrecta",
-    query="SELECT a FROM User a WHERE a.login=:login"),
+    query="SELECT a FROM User a WHERE a.login=:login")
 
 })
 @Inheritance(strategy=SINGLE_TABLE)

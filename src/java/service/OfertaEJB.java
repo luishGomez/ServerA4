@@ -12,6 +12,7 @@ import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
 import java.util.List;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,11 +23,16 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public  class OfertaEJB implements OfertaEJBLocal{
-    
+    private static final Logger LOGGER =
+            Logger.getLogger("javafxserverside");
     @PersistenceContext
     private  EntityManager em;
     
-
+    /**
+     * Crea una Oferta nueva
+     * @param oferta
+     * @throws CreateException si hay una excepcion durante el proceso
+     */
     @Override
     public void createOferta(Oferta oferta) throws CreateException{
         try {
@@ -35,6 +41,11 @@ public  class OfertaEJB implements OfertaEJBLocal{
             throw new CreateException(e.getMessage());
         }
     }
+    /**
+     * Borra una Oferta
+     * @param oferta
+     * @throws DeleteException si hay una excepcion durante el proceso
+     */
     @Override
     public void deleteOferta(Oferta oferta) throws DeleteException{
         try {
@@ -44,6 +55,11 @@ public  class OfertaEJB implements OfertaEJBLocal{
         }
         
     }
+    /**
+     * Actualiza una oferta
+     * @param oferta
+     * @throws UpdateException si hay una excepcion durante el proceso
+     */
     @Override
     public void updateOferta(Oferta oferta) throws UpdateException{
         try {
@@ -53,11 +69,16 @@ public  class OfertaEJB implements OfertaEJBLocal{
             throw new UpdateException(e.getMessage());
         }
     }
+    /**
+     * Busca todas las ofertas disponibles
+     * @return Lista de Ofertas
+     * @throws SelectCollectionException si hay una excepcion durante el proceso
+     */
     @Override
     public List<Oferta> findAllOfertas() throws SelectCollectionException{
         List<Oferta> ofertas = null;
         try {
-            ofertas = em.createNamedQuery("findAllClients").getResultList();
+            ofertas = em.createNamedQuery("findAllOfertas").getResultList();
         } catch (Exception e) {
             throw new SelectCollectionException(e.getMessage());
         }
@@ -65,16 +86,17 @@ public  class OfertaEJB implements OfertaEJBLocal{
     }
 
     /**
-     *
-     * @param idOferta
-     * @return
-     * @throws SelectException
+     * Busca una oferta por su Id
+     * @param idOferta Id de Oferta
+     * @return Oferta encontradas
+     * @throws SelectException si hay una excepcion durante el proceso
      */
     @Override
     public Oferta findOfertaById(Integer idOferta) throws SelectException{
         Oferta oferta = null;
         try {
-            oferta = (Oferta) em.createNamedQuery("findOfertaById").setParameter("idOferta", idOferta).getSingleResult();
+            
+            oferta = em.find(Oferta.class, idOferta);
         } catch (Exception e) {
             throw new SelectException(e.getMessage());
         }

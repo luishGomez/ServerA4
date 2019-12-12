@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,6 +21,9 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Luis
  */
+@NamedQuery(
+    name="findAllPack",
+    query="SELECT p FROM Pack p ORDER BY p.idPack")
 @Entity
 @Table(name="pack",schema="serverA4db")
 @XmlRootElement

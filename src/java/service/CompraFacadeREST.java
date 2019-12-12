@@ -86,12 +86,20 @@ public class CompraFacadeREST extends AbstractFacade<Compra> {
         entity.CompraId key = getPrimaryKey(id);
         return super.find(key);
     }
-
+    
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Compra> findAll() {
-        return super.findAll();
+        return super.findAllCompra();
+    }
+
+    @GET
+    @Path("byCliente/{id}")
+    @Override
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Compra> findAllCompraByClienteId(@PathParam("id") Integer idCliente) {
+        return super.findAllCompraByClienteId(idCliente);
     }
 
     @GET

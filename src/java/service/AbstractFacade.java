@@ -43,6 +43,23 @@ public abstract class AbstractFacade<T> {
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
     }
+    
+    public List<T> findAllMateria() {
+        return getEntityManager().createNamedQuery("findAllMateria").getResultList();
+    }
+    
+    public List<T> findAllPack() {
+        return getEntityManager().createNamedQuery("findAllMateria").getResultList();
+    }
+    
+    public List<T> findAllCompra() {
+        return getEntityManager().createNamedQuery("findAllCompra").getResultList();
+    }
+    
+    public List<T> findAllCompraByClienteId(Integer idCliente) {
+        return getEntityManager().createNamedQuery("findAllCompraByClienteId")
+                .setParameter("idCliente", idCliente) .getResultList();
+    }
 
     public List<T> findRange(int[] range) {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();

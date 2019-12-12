@@ -66,7 +66,7 @@ public class MateriaFacadeREST extends AbstractFacade<Materia> {
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Materia> findAll() {
-        return super.findAll();
+        return super.findAllMateria();
     }
 
     @GET

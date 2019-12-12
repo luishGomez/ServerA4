@@ -66,7 +66,7 @@ public class PackFacadeREST extends AbstractFacade<Pack> {
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Pack> findAll() {
-        return super.findAll();
+        return super.findAllPack();
     }
 
     @GET

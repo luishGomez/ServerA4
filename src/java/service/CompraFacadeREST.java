@@ -1,5 +1,6 @@
 package service;
 
+import ejb.CompraEJBLocal;
 import entity.Compra;
 import entity.CompraId;
 import exception.CreateException;

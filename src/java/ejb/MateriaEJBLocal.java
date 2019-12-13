@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package service;
+package ejb;
 
-import entity.Pack;
+import entity.Materia;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.SelectCollectionException;
@@ -19,10 +19,10 @@ import javax.ejb.Local;
  * @author Luis
  */
 @Local
-public interface PackEJBLocal {
-    public void createPack(Pack pack) throws CreateException;
-    public void editPack(Pack pack) throws UpdateException;
-    public void removePack(Pack pack) throws DeleteException;
-    public Pack findPack(Integer idPack) throws SelectException;
-    public Set<Pack> findAllPack() throws SelectCollectionException;
+public interface MateriaEJBLocal {
+    public void createMateria(Materia materia) throws CreateException;
+    public void editMateria(Materia materia) throws UpdateException;
+    public void removeMateria(Materia materia) throws DeleteException;
+    public Materia findMateria(Integer idMateria) throws SelectException;
+    public Set<Materia> findAllMateria() throws SelectCollectionException;
 }

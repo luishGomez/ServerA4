@@ -1,4 +1,4 @@
-package service;
+package ejb;
 
 import entity.Compra;
 import entity.CompraId;

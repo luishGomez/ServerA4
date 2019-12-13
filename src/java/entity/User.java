@@ -8,9 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import static javax.persistence.InheritanceType.SINGLE_TABLE;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,17 +21,26 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author sergio
  */
+
 @Entity
-@Table(name = "usuario", schema = "serverA4DB")
+@Table(name = "usuario", schema = "serverA4DB", uniqueConstraints = @UniqueConstraint(columnNames = {"login"}))
+@NamedQueries({
+    @NamedQuery(
+            name="findUserByLogin",
+            query="SELECT a FROM User a WHERE a.login=:login"),
+    @NamedQuery(
+            name="contraseniaCorrecta",
+            query="SELECT a FROM User a WHERE a.login=:login and a.contrasenia=:contrasenia")
+        
+})
 @Inheritance(strategy=SINGLE_TABLE)
 @XmlRootElement
 public class User implements Serializable{
     private static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO) 
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
-    @NotNull
     private String login;
     @NotNull
     private String email;

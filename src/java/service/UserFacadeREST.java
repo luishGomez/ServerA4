@@ -1,18 +1,23 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package service;
 
+import ejb.UsuarioEJBLocal;
 import entity.User;
-import java.util.List;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import exception.CreateException;
+import exception.SelectException;
+import exception.UpdateException;
+import exception.UserNoExistException;
+import exception.WrongPasswordException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -22,70 +27,91 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 2dam
+ * @author Sergio
  */
-@Stateless
 @Path("user")
-public class UserFacadeREST extends AbstractFacade<User> {
-
-    @PersistenceContext(unitName = "ServerA4PU")
-    private EntityManager em;
-
-    public UserFacadeREST() {
-        super(User.class);
-    }
-
-    @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(User entity) {
-        super.create(entity);
-    }
-
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, User entity) {
-        super.edit(entity);
-    }
-
-    @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
-    }
-
-    @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public User find(@PathParam("id") Integer id) {
-        return super.find(id);
-    }
-
-    @GET
-    @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<User> findAll() {
-        return super.findAll();
-    }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<User> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
+public class UserFacadeREST {
+    private static final Logger LOGGER = Logger.getLogger("servera4db.service.UserFacadeRest");
     
+    @EJB
+    private UsuarioEJBLocal ejb;
+    /**
+     * Metodo Post de Restful para crear Usuario a partir de un xml
+     * @param usuario  Objeto que contiene los datos del usuario
+     */
+    @POST
+    @Consumes({MediaType.APPLICATION_XML})
+    public void createUser(User usuario) {
+        try {
+            ejb.createUser(usuario);
+        } catch (CreateException ex) {
+            LOGGER.log(Level.SEVERE,
+                    "UserRESTful service: Exception create user, {0}",
+                    ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }
+    }
+    /**
+     * Metodo Put de Restful para actualizar Usuario a partir de un xml
+     * @param usuario Objeto que contiene los datos del usuario
+     */
+    @PUT
+    @Path("actualizar")
+    @Consumes({MediaType.APPLICATION_XML})
+    public void updateUser(User usuario) {
+        try {
+            ejb.updateUser(usuario);
+        } catch (UpdateException ex) {
+            LOGGER.log(Level.SEVERE,
+                    "UserRESTful service: Exception update user, {0}",
+                    ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }
+    }
+    /**
+     * Metodo Get de Restful para buscar Usuario a partir de un xml
+     * @param login El Login del Usuario a ser encontrado
+     * @return Objeto Usuario con sus datos
+     * @throws exception.SelectException
+     */
+    @GET
+    @Path("buscarPorLogin/{login}")
+    @Produces({MediaType.APPLICATION_XML})
+    public User findUserByLogin(@PathParam("login") String login) throws SelectException{
+        User usuario = null;
+        try {
+            usuario = ejb.findUserByLogin(login);
+        } catch (UserNoExistException ex) {
+            LOGGER.log(Level.SEVERE,
+                    "UserRESTful service: Exception find user by login, {0}",
+                    ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }
+        return usuario;
+    }
+    /**
+     * Metodo Get de Restful para buscar Usuario a partir de un xml
+     * @param login Login del Objeto a leer
+     * @param contrasenia Contrasenia del Objeto a leer
+     * @return Usuario con login existente y contraseña correcta
+     * @throws WrongPasswordException si hay una excepcion durante el proceso
+     */
+    @GET
+    @Path("contrasenia/{login}/{contrasenia}")
+    @Produces({MediaType.APPLICATION_XML})
+    public User contraseniaCorrecta(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) throws WrongPasswordException {
+        User usuarioComprobado = new User();
+        try {
+            usuarioComprobado.setLogin(login);
+            usuarioComprobado.setContrasenia(contrasenia);
+            usuarioComprobado = ejb.contraseniaCorrecta(usuarioComprobado);
+        } catch (WrongPasswordException ex) {
+            LOGGER.log(Level.SEVERE,
+                    "UserRESTful service: Exception comprobar usuario by login and contrasenia, {0}",
+                    ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }
+        
+        return usuarioComprobado;
+    }
 }

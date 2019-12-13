@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +24,11 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "oferta", schema = "serverA4DB")
+@NamedQueries({
+   @NamedQuery(name="findAllOfertas",
+            query="SELECT u FROM Oferta u ORDER BY u.idOferta DESC"
+    )
+})
 @XmlRootElement
 public class Oferta implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -42,7 +49,7 @@ public class Oferta implements Serializable{
     private Set<Pack> packs;
     @NotNull
     private float rebaja;
-    
+
     /**
      * @return the idOferta
      */
@@ -113,8 +120,7 @@ public class Oferta implements Serializable{
     public void setPacks(Set<Pack> packs) {
         this.packs = packs;
     }
-    
-    /**
+       /**
      * @return the rebaja
      */
     public float getRebaja() {
@@ -127,8 +133,7 @@ public class Oferta implements Serializable{
     public void setRebaja(float rebaja) {
         this.rebaja = rebaja;
     }
-    
-    @Override
+     @Override
     public int hashCode() {
         int hash = 0;
         hash += (idOferta != null ? idOferta.hashCode() : 0);
@@ -152,5 +157,7 @@ public class Oferta implements Serializable{
     public String toString() {
         return "serverApuntes4.entity.Oferta[ idOferta=" + idOferta + " ]";
     }
+
+ 
     
 }

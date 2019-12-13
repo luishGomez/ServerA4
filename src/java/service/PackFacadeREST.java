@@ -6,13 +6,18 @@
 package service;
 
 import entity.Pack;
-import java.util.List;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.SelectCollectionException;
+import exception.SelectException;
+import exception.UpdateException;
+import java.util.Set;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -22,70 +27,71 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 2dam
+ * @author Luis
  */
-@Stateless
 @Path("pack")
-public class PackFacadeREST extends AbstractFacade<Pack> {
+public class PackFacadeREST {
 
-    @PersistenceContext(unitName = "ServerA4PU")
-    private EntityManager em;
-
-    public PackFacadeREST() {
-        super(Pack.class);
-    }
-
+    @EJB
+    private PackEJBLocal ejb;
+    
     @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Pack entity) {
-        super.create(entity);
+    @Consumes(MediaType.APPLICATION_XML)
+    public void create(Pack pack) {
+        try{
+            ejb.createPack(pack);
+        }catch(CreateException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST create()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
     }
 
     @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Pack entity) {
-        super.edit(entity);
+    @Consumes(MediaType.APPLICATION_XML)
+    public void edit(Pack pack) {
+        try{
+            ejb.editPack(pack);
+        }catch(UpdateException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST edit()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+        try{
+            ejb.removePack(ejb.findPack(id));
+        }catch(DeleteException | SelectException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST remove()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
     }
 
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_XML)
     public Pack find(@PathParam("id") Integer id) {
-        return super.find(id);
+        Pack pack = null;
+        try{
+            pack = ejb.findPack(id);
+        }catch(SelectException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST find()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+        return pack;
     }
 
     @GET
-    @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Pack> findAll() {
-        return super.findAllPack();
+    @Produces(MediaType.APPLICATION_XML)
+    public Set<Pack> findAll() {
+        Set<Pack> packs = null;
+        try{
+            packs = ejb.findAllPack();
+        }catch(SelectCollectionException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST findAll()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+        return packs;
     }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Pack> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
 }

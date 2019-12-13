@@ -58,7 +58,7 @@ public abstract class AbstractFacade<T> {
     
     public List<T> findAllCompraByClienteId(Integer idCliente) {
         return getEntityManager().createNamedQuery("findAllCompraByClienteId")
-                .setParameter("idCliente", idCliente) .getResultList();
+                .setParameter("idCliente", idCliente).getResultList();
     }
 
     public List<T> findRange(int[] range) {

@@ -6,13 +6,18 @@
 package service;
 
 import entity.Materia;
-import java.util.List;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.SelectCollectionException;
+import exception.SelectException;
+import exception.UpdateException;
+import java.util.Set;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -22,70 +27,71 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 2dam
+ * @author Luis
  */
-@Stateless
 @Path("materia")
-public class MateriaFacadeREST extends AbstractFacade<Materia> {
+public class MateriaFacadeREST {
 
-    @PersistenceContext(unitName = "ServerA4PU")
-    private EntityManager em;
-
-    public MateriaFacadeREST() {
-        super(Materia.class);
-    }
-
+    @EJB
+    private MateriaEJBLocal ejb;
+    
     @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Materia entity) {
-        super.create(entity);
+    @Consumes(MediaType.APPLICATION_XML)
+    public void create(Materia materia) {
+        try{
+            ejb.createMateria(materia);
+        }catch(CreateException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("MateriaREST create()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
     }
 
     @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Materia entity) {
-        super.edit(entity);
+    @Consumes(MediaType.APPLICATION_XML)
+    public void edit(Materia materia) {
+        try{
+            ejb.editMateria(materia);
+        }catch(UpdateException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("MateriaREST edit()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+        try{
+            ejb.removeMateria(ejb.findMateria(id));
+        }catch(DeleteException | SelectException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("MateriaREST remove()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
     }
 
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_XML)
     public Materia find(@PathParam("id") Integer id) {
-        return super.find(id);
+        Materia materia = null;
+        try{
+            materia = ejb.findMateria(id);
+        }catch(SelectException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("MateriaREST find()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+        return materia;
     }
 
     @GET
-    @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Materia> findAll() {
-        return super.findAllMateria();
+    @Produces(MediaType.APPLICATION_XML)
+    public Set<Materia> findAll() {
+        Set<Materia> materias = null;
+        try{
+            materias = ejb.findAllMateria();
+        }catch(SelectCollectionException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("MateriaREST findAll()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+        return materias;
     }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Materia> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
 }

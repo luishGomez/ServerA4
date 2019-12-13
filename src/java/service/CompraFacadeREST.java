@@ -1,19 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import entity.Compra;
 import entity.CompraId;
-import java.util.List;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import exception.CreateException;
+import exception.DeleteException;
+import exception.SelectCollectionException;
+import exception.SelectException;
+import exception.UpdateException;
+import java.util.Set;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -24,14 +24,13 @@ import javax.ws.rs.core.PathSegment;
 
 /**
  *
- * @author 2dam
+ * @author Luis
  */
-@Stateless
 @Path("compra")
-public class CompraFacadeREST extends AbstractFacade<Compra> {
+public class CompraFacadeREST {
 
-    @PersistenceContext(unitName = "ServerA4PU")
-    private EntityManager em;
+    @EJB
+    private CompraEJBLocal ejb;
 
     private CompraId getPrimaryKey(PathSegment pathSegment) {
         /*
@@ -54,71 +53,77 @@ public class CompraFacadeREST extends AbstractFacade<Compra> {
         return key;
     }
 
-    public CompraFacadeREST() {
-        super(Compra.class);
-    }
-
     @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Compra entity) {
-        super.create(entity);
+    @Consumes(MediaType.APPLICATION_XML)
+    public void create(Compra compra) {
+        try{
+            ejb.createCompra(compra);
+        }catch(CreateException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("CompraREST create()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
     }
 
     @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") PathSegment id, Compra entity) {
-        super.edit(entity);
+    @Consumes(MediaType.APPLICATION_XML)
+    public void edit(Compra compra) {
+        try{
+            ejb.editCompra(compra);
+        }catch(UpdateException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("CompraREST edit()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") PathSegment id) {
         entity.CompraId key = getPrimaryKey(id);
-        super.remove(super.find(key));
+        try{
+            ejb.removeCompra(ejb.findCompra(key));
+        }catch(SelectException | DeleteException e){
+            throw new InternalServerErrorException(e);
+        }
     }
 
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_XML)
     public Compra find(@PathParam("id") PathSegment id) {
         entity.CompraId key = getPrimaryKey(id);
-        return super.find(key);
+        Compra compra = null;
+        try{
+            compra = ejb.findCompra(key);
+        }catch(SelectException e){
+            throw new InternalServerErrorException(e);
+        }
+        return compra;
     }
     
     @GET
-    @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Compra> findAll() {
-        return super.findAllCompra();
+    @Produces(MediaType.APPLICATION_XML)
+    public Set<Compra> findAll() {
+        Set<Compra> compras = null;
+        try{
+            compras = ejb.findAllCompra();
+        }catch(SelectCollectionException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("CompraREST findAll()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+        return compras;
     }
 
     @GET
     @Path("byCliente/{id}")
-    @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Compra> findAllCompraByClienteId(@PathParam("id") Integer idCliente) {
-        return super.findAllCompraByClienteId(idCliente);
+    @Produces(MediaType.APPLICATION_XML)
+    public Set<Compra> findAllCompraByClienteId(@PathParam("id") Integer idCliente) {
+        Set<Compra> compras = null;
+        try{
+            compras = ejb.findAllCompraByClienteId(idCliente);
+        }catch(SelectCollectionException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("CompraREST findAllCompraByClienteId()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+        return compras;
     }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Compra> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
 }

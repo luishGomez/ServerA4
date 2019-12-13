@@ -25,12 +25,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * Es una clase JPA para almacenar los datos de un Apunte.
  * @author Ricardo Peinado Lastra
  */
 @NamedQueries({
+    
     @NamedQuery(
-        name="getArchivoById", query="SELECT a FROM Apunte a WHERE a.idApunte=:idApunte"
+            name="findAllApuntes", query="SELECT a FROM Apunte a ORDER BY a.titulo ASC"
     ),
     @NamedQuery(
             name="getApuntesByCreador", query="SELECT a FROM Apunte a WHERE a.creador.id=:idCliente"
@@ -62,18 +63,18 @@ public class Apunte implements Serializable {
     private byte[] archivo;
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaValidacion;
-    private int likeCont;
-    private int dislikeCont;
+    private Integer likeCont;
+    private Integer dislikeCont;
     @ManyToMany
     @JoinTable(name="votaciones",schema="serverA4db")
     private Set<Cliente> votantes;
     @NotNull
-    private float precio;
+    private Float precio;
     @NotNull
     @ManyToOne
     private Cliente creador;
-    @OneToMany(cascade=ALL,mappedBy="apunte")
-    private Set <Compra> compras;
+    /*@OneToMany(cascade=ALL,mappedBy="apunte")
+    private Set <Compra> compras;*/
     @ManyToMany
     @JoinTable(name="apunte_pack",schema="serverA4db")
     private Set <Pack> packs;
@@ -154,28 +155,28 @@ public class Apunte implements Serializable {
     /**
      * @return the likeCont
      */
-    public int getLikeCont() {
+    public Integer getLikeCont() {
         return likeCont;
     }
     
     /**
      * @param likeCont the likeCont to set
      */
-    public void setLikeCont(int likeCont) {
+    public void setLikeCont(Integer likeCont) {
         this.likeCont = likeCont;
     }
     
     /**
      * @return the dislikeCont
      */
-    public int getDislikeCont() {
+    public Integer getDislikeCont() {
         return dislikeCont;
     }
     
     /**
      * @param dislikeCont the dislikeCont to set
      */
-    public void setDislikeCont(int dislikeCont) {
+    public void setDislikeCont(Integer dislikeCont) {
         this.dislikeCont = dislikeCont;
     }
     
@@ -197,14 +198,14 @@ public class Apunte implements Serializable {
     /**
      * @return the precio
      */
-    public float getPrecio() {
+    public Float getPrecio() {
         return precio;
     }
     
     /**
      * @param precio the precio to set
      */
-    public void setPrecio(float precio) {
+    public void setPrecio(Float precio) {
         this.precio = precio;
     }
     
@@ -225,17 +226,18 @@ public class Apunte implements Serializable {
     /**
      * @return the compras
      */
-    @XmlTransient
+    /*@XmlTransient
     public Set <Compra> getCompras() {
-        return compras;
-    }
+    return compras;
+    }*/
     
     /**
      * @param compras the compras to set
      */
+    /*
     public void setCompras(Set <Compra> compras) {
-        this.compras = compras;
-    }
+    this.compras = compras;
+    }*/
     
     /**
      * @return the packs
@@ -265,14 +267,21 @@ public class Apunte implements Serializable {
     public void setMateria(Materia materia) {
         this.materia = materia;
     }
-    
+    /**
+     * La implementación del método HashCode para la entidad.
+     * @return Retorna una lista de {@link Apunte}.
+     */
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (idApunte != null ? idApunte.hashCode() : 0);
         return hash;
     }
-    
+    /**
+     * Este metodo compra entre dos apuntes, referente a su identificador.
+     * @param object El objeto a comprar.
+     * @return TRUE: Si es verdad | FALSE: En los demas casos.
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -285,7 +294,10 @@ public class Apunte implements Serializable {
         }
         return true;
     }
-    
+    /**
+     * Este método retorna la representacion en una cadena del objeto de un apunte.
+     * @return La representación en una cadena de un apunte.
+     */
     @Override
     public String toString() {
         return "entity.Apunte[ id=" + idApunte + " ]";

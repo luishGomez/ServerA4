@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package service;
 
 import entity.User;
@@ -26,7 +26,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 2dam
+ * @author Sergio
  */
 @Path("user")
 public class UserFacadeREST {
@@ -36,7 +36,7 @@ public class UserFacadeREST {
     private UsuarioEJBLocal ejb;
     /**
      * Metodo Post de Restful para crear Usuario a partir de un xml
-     * @param usuario  Objeto que contiene los datos del usuario 
+     * @param usuario  Objeto que contiene los datos del usuario
      */
     @POST
     @Consumes({MediaType.APPLICATION_XML})
@@ -45,8 +45,8 @@ public class UserFacadeREST {
             ejb.createUser(usuario);
         } catch (CreateException ex) {
             LOGGER.log(Level.SEVERE,
-            "UserRESTful service: Exception create user, {0}",
-            ex.getMessage());
+                    "UserRESTful service: Exception create user, {0}",
+                    ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
     }
@@ -62,8 +62,8 @@ public class UserFacadeREST {
             ejb.updateUser(usuario);
         } catch (UpdateException ex) {
             LOGGER.log(Level.SEVERE,
-            "UserRESTful service: Exception update user, {0}",
-            ex.getMessage());
+                    "UserRESTful service: Exception update user, {0}",
+                    ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
     }
@@ -82,9 +82,9 @@ public class UserFacadeREST {
             usuario = ejb.findUserByLogin(login);
         } catch (UserNoExistException ex) {
             LOGGER.log(Level.SEVERE,
-                "UserRESTful service: Exception find user by login, {0}",
-                ex.getMessage());
-                throw new InternalServerErrorException(ex);
+                    "UserRESTful service: Exception find user by login, {0}",
+                    ex.getMessage());
+            throw new InternalServerErrorException(ex);
         }
         return usuario;
     }
@@ -100,17 +100,17 @@ public class UserFacadeREST {
     @Produces({MediaType.APPLICATION_XML})
     public User contraseniaCorrecta(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) throws WrongPasswordException {
         User usuarioComprobado = new User();
-            try {
-                usuarioComprobado.setLogin(login);
-                usuarioComprobado.setContrasenia(contrasenia);
-                usuarioComprobado = ejb.contraseniaCorrecta(usuarioComprobado);
-            } catch (WrongPasswordException ex) {
-                LOGGER.log(Level.SEVERE,
-                "UserRESTful service: Exception comprobar usuario by login and contrasenia, {0}",
-                ex.getMessage());
-                throw new InternalServerErrorException(ex);
-            }  
-       
+        try {
+            usuarioComprobado.setLogin(login);
+            usuarioComprobado.setContrasenia(contrasenia);
+            usuarioComprobado = ejb.contraseniaCorrecta(usuarioComprobado);
+        } catch (WrongPasswordException ex) {
+            LOGGER.log(Level.SEVERE,
+                    "UserRESTful service: Exception comprobar usuario by login and contrasenia, {0}",
+                    ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }
+        
         return usuarioComprobado;
     }
 }

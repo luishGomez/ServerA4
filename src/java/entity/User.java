@@ -25,13 +25,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "usuario", schema = "serverA4DB", uniqueConstraints = @UniqueConstraint(columnNames = {"login"}))
 @NamedQueries({
-   @NamedQuery(
-    name="findUserByLogin",
-    query="SELECT a FROM User a WHERE a.login=:login"),
-   @NamedQuery(
-    name="contraseniaCorrecta",
-    query="SELECT a FROM User a WHERE a.login=:login and a.contrasenia=:contrasenia")
-
+    @NamedQuery(
+            name="findUserByLogin",
+            query="SELECT a FROM User a WHERE a.login=:login"),
+    @NamedQuery(
+            name="contraseniaCorrecta",
+            query="SELECT a FROM User a WHERE a.login=:login and a.contrasenia=:contrasenia")
+        
 })
 @Inheritance(strategy=SINGLE_TABLE)
 @XmlRootElement
@@ -39,7 +39,7 @@ public class User implements Serializable{
     private static final long serialVersionUID = 1L;
     
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO) 
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
     private String login;
     @NotNull

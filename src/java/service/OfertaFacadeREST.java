@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package service;
 
 import entity.Oferta;
@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -29,7 +28,7 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 2dam
+ * @author Sergio
  */
 
 @Path("oferta")
@@ -51,7 +50,7 @@ public class OfertaFacadeREST{
             LOGGER.log(Level.INFO,"UserRESTful service: create {0}.",oferta);
             ejb.createOferta(oferta);
         } catch (CreateException ex) {
-            LOGGER.log(Level.SEVERE, 
+            LOGGER.log(Level.SEVERE,
                     "UserRESTful service: Exception creating oferta, {0}",
                     ex.getMessage());
             throw new InternalServerErrorException(ex);
@@ -61,7 +60,7 @@ public class OfertaFacadeREST{
      * Metodo Get de Restful para leer una Oferta a partir de un xml
      * @param idOferta Id del Objeto a leer
      * @return Objeto Oferta con sus datos
-     * @throws SelectException 
+     * @throws SelectException
      */
     @GET
     @Path("{idOferta}")
@@ -92,15 +91,15 @@ public class OfertaFacadeREST{
                 ejb.deleteOferta(ejb.findOfertaById(idOferta));
             } catch (SelectException ex) {
                 LOGGER.log(Level.SEVERE,
-                    "UserRESTful service: Exception reading user by id, {0}",
-                    ex.getMessage());
-            throw new InternalServerErrorException(ex);
+                        "UserRESTful service: Exception reading user by id, {0}",
+                        ex.getMessage());
+                throw new InternalServerErrorException(ex);
             }
         } catch (DeleteException ex) {
             LOGGER.log(Level.SEVERE,
-                "UserRESTful service: Exception deleting oferta by idOferta, {0}",
-                ex.getMessage());
-        throw new InternalServerErrorException(ex);
+                    "UserRESTful service: Exception deleting oferta by idOferta, {0}",
+                    ex.getMessage());
+            throw new InternalServerErrorException(ex);
         }
     }
     /**
@@ -116,8 +115,8 @@ public class OfertaFacadeREST{
             ofertas = ejb.findAllOfertas();
         } catch (SelectCollectionException ex) {
             LOGGER.log(Level.SEVERE,
-                "UserRESTful service: Exception reading list ofertas by idOferta, {0}",
-                ex.getMessage());
+                    "UserRESTful service: Exception reading list ofertas by idOferta, {0}",
+                    ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
         return ofertas;
@@ -135,8 +134,8 @@ public class OfertaFacadeREST{
             ejb.updateOferta(oferta);
         } catch (UpdateException ex) {
             LOGGER.log(Level.SEVERE,
-                "UserRESTful service: Exception update oferta by Object oferta, {0}",
-                ex.getMessage());
+                    "UserRESTful service: Exception update oferta by Object oferta, {0}",
+                    ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
     }

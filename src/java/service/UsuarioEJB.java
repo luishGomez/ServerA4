@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package service;
 
 import entity.User;
@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author 2dam
+ * @author Sergio
  */
 @Stateless
 public  class UsuarioEJB implements UsuarioEJBLocal{
@@ -77,8 +77,8 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
     public User findUserByLogin(String login) throws UserNoExistException{
         User usuario = null;
         try{
-           usuario =(User) em.createNamedQuery("findUserByLogin").setParameter("login", login).getSingleResult();
-        }catch(Exception e){            
+            usuario =(User) em.createNamedQuery("findUserByLogin").setParameter("login", login).getSingleResult();
+        }catch(Exception e){
             throw new UserNoExistException(e.getMessage());
         }
         return usuario;
@@ -90,14 +90,14 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
      * @throws WrongPasswordException si hay una excepcion durante el proceso
      */
     @Override
-    public User contraseniaCorrecta(User usuario) throws WrongPasswordException {       
-       User usuarioComprobado = null;
+    public User contraseniaCorrecta(User usuario) throws WrongPasswordException {
+        User usuarioComprobado = null;
         try{
-           usuarioComprobado = (User) em.createNamedQuery("contraseniaCorrecta").setParameter("login", usuario.getLogin()).setParameter("contrasenia", usuario.getContrasenia()).getSingleResult();
-        }catch(Exception e){            
+            usuarioComprobado = (User) em.createNamedQuery("contraseniaCorrecta").setParameter("login", usuario.getLogin()).setParameter("contrasenia", usuario.getContrasenia()).getSingleResult();
+        }catch(Exception e){
             throw new WrongPasswordException(e.getMessage());
         }
         return usuarioComprobado;
     }
-
+    
 }

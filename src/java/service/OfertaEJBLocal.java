@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package service;
 
 import entity.Oferta;
@@ -45,7 +45,7 @@ public interface OfertaEJBLocal {
     /**
      * Busca ofertas por id
      * @param idOferta La id de la oferta para encontrar
-     * @return Oferta 
+     * @return Oferta
      * @throws SelectException si hay una excepcion durante el proceso
      */
     public Oferta findOfertaById(Integer idOferta) throws SelectException;

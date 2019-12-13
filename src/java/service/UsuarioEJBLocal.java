@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package service;
 
 import entity.User;
@@ -26,9 +26,9 @@ public interface UsuarioEJBLocal {
      */
     public void createUser(User usuario) throws CreateException;
     /**
-     * Borra un Usuario 
+     * Borra un Usuario
      * @param usuario El Objeto Usuario que contiene los datos
-     * @throws DeleteException si hay una excepcion durante el proceso 
+     * @throws DeleteException si hay una excepcion durante el proceso
      */
     public void deleteUser(User usuario) throws DeleteException;
     /**
@@ -40,12 +40,12 @@ public interface UsuarioEJBLocal {
     /**
      * Busca un Usuario por Login
      * @param login El Login de un Usuario a encontrar
-     * @return Usuario 
+     * @return Usuario
      * @throws UserNoExistException si hay una excepcion durante el proceso
      */
     public User findUserByLogin(String login) throws UserNoExistException;
     /**
-     * Verifica que un Usuario existe comprobando su Login y Contraseña 
+     * Verifica que un Usuario existe comprobando su Login y Contraseña
      * @param usuario El Objeto Usuario que contiene los datos.
      * @return Usuario encontrado
      * @throws WrongPasswordException si hay una excepcion durante el proceso

@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  * La clase que se encarga de la logia de los <b>apuntes</b> de la aplicacion.
@@ -69,9 +70,9 @@ public class ApunteEJB implements ApunteEJBLocal{
     @Override
     public void removeApunte(Apunte apunte) throws DeleteException {
         try{
-            apunte=em.merge(apunte);
-            em.remove(apunte);
-            em.flush();
+            Query q = em.createQuery ("DELETE FROM Apunte a WHERE a.idApunte = :idApunte");
+            q.setParameter ("idApunte",apunte.getIdApunte());
+            int deleted = q.executeUpdate ();
         }catch (Exception e){
             LOGGER.severe("ApunteEJB -> removeApunte() "+e.getMessage());
             throw new DeleteException(e.getMessage());

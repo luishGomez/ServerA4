@@ -55,10 +55,11 @@ public class CompraFacadeREST {
     }
 
     @POST
-    @Consumes(MediaType.APPLICATION_XML)
-    public void create(Compra compra) {
+    @Path("{idApunte}/{idCliente}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void create(@PathParam("idApunte") Integer idApunte,@PathParam("idCliente") Integer idCliente) {
         try{
-            ejb.createCompra(compra);
+            ejb.createCompra(idApunte, idCliente);
         }catch(CreateException e){
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("CompraREST create()"+e.getMessage());
             throw new InternalServerErrorException(e);

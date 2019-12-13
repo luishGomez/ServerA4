@@ -16,7 +16,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface CompraEJBLocal {
-    public void createCompra(Compra compra) throws CreateException;
+    public void createCompra(Integer idApunte, Integer idCliente) throws CreateException;
     public void editCompra(Compra compra) throws UpdateException;
     public void removeCompra(Compra compra) throws DeleteException;
     public Compra findCompra(CompraId idCompra) throws SelectException;

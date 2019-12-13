@@ -1,5 +1,7 @@
 package ejb;
 
+import entity.Apunte;
+import entity.Cliente;
 import entity.Compra;
 import entity.CompraId;
 import exception.CreateException;
@@ -7,6 +9,7 @@ import exception.DeleteException;
 import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -25,9 +28,17 @@ public class CompraEJB implements CompraEJBLocal{
     private EntityManager em;
 
     @Override
-    public void createCompra(Compra compra) throws CreateException {
+    public void createCompra( Integer idApunte, Integer idCliente) throws CreateException {
         try{
-            em.persist(compra);
+            Compra nuevaCompra= new Compra();
+            Apunte elApunte=em.find(Apunte.class, idApunte);
+            Cliente elCliente=em.find(Cliente.class, idCliente);
+            nuevaCompra.setApunte(elApunte);
+            nuevaCompra.setPropietario(elCliente);
+            Date fecha=new Date();
+            nuevaCompra.setFecha(fecha);
+            nuevaCompra.setIdCompra(new CompraId(idCliente,idApunte));
+            em.persist(nuevaCompra);
         }catch (Exception e){
             LOGGER.severe("createCompra()" + e.getMessage());
             throw new CreateException(e.getMessage());

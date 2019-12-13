@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(
         name="findAllCompraByClienteId",
-        query="SELECT c FROM Compra c WHERE c.propietario = :idCliente"),
+        query="SELECT c FROM Compra c WHERE c.propietario.id = :idCliente"),
     @NamedQuery(
         name="findAllCompra",
         query="SELECT c FROM Compra c ORDER BY c.idCompra")

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.Entity;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +41,7 @@ public class Pack implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
     @NotNull
-    @ManyToMany(mappedBy="packs")
+    @ManyToMany(mappedBy="packs",fetch=EAGER)
     private Set<Apunte> apuntes;
     @ManyToMany(mappedBy="packs")
     private Set<Oferta> ofertas;
@@ -77,7 +78,7 @@ public class Pack implements Serializable{
         this.fechaModificacion = fechaModificacion;
     }
 
-    @XmlTransient
+    
     public Set<Apunte> getApuntes() {
         return apuntes;
     }

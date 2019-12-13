@@ -56,8 +56,8 @@ public class CompraFacadeREST {
 
     @POST
     @Path("{idApunte}/{idCliente}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(@PathParam("idApunte") Integer idApunte,@PathParam("idCliente") Integer idCliente) {
+    @Consumes(MediaType.APPLICATION_XML)
+    public void create(@PathParam("idApunte") Integer idApunte,@PathParam("idCliente") Integer idCliente, Compra compra) {
         try{
             ejb.createCompra(idApunte, idCliente);
         }catch(CreateException e){
@@ -87,7 +87,7 @@ public class CompraFacadeREST {
             throw new InternalServerErrorException(e);
         }
     }
-
+    /*
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_XML)
@@ -101,7 +101,7 @@ public class CompraFacadeREST {
         }
         return compra;
     }
-    
+    */
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public Set<Compra> findAll() {

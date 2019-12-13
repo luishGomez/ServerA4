@@ -3,7 +3,7 @@
 * To change this template file, choose Tools | Templates
 * and open the template in the editor.
 */
-package service;
+package ejb;
 
 import entity.Apunte;
 import entity.Cliente;
@@ -70,12 +70,7 @@ public class ApunteEJB implements ApunteEJBLocal{
     @Override
     public void removeApunte(Apunte apunte) throws DeleteException {
         try{
-            /*
-            apunte=em.merge(apunte);
-            em.remove(apunte);
-            em.flush();
-            */
-            Query q = em.createQuery ("DELETE a FROM Apunte a WHERE a.idApunte = :idApunte");
+            Query q = em.createQuery ("DELETE FROM Apunte a WHERE a.idApunte = :idApunte");
             q.setParameter ("idApunte",apunte.getIdApunte());
             int deleted = q.executeUpdate ();
         }catch (Exception e){

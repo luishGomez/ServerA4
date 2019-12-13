@@ -206,5 +206,4 @@ public class User implements Serializable{
     public String toString() {
         return "serverApuntes4.entity.User[ id=" + id + " ]";
     }
-    
 }

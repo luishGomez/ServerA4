@@ -5,6 +5,7 @@
 */
 package service;
 
+import ejb.ApunteEJBLocal;
 import entity.Apunte;
 import entity.Cliente;
 import exception.CreateException;

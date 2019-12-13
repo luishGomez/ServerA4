@@ -5,6 +5,7 @@
 */
 package service;
 
+import ejb.OfertaEJBLocal;
 import entity.Oferta;
 import exception.CreateException;
 import exception.DeleteException;

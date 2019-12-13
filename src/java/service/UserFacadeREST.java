@@ -5,6 +5,7 @@
 */
 package service;
 
+import ejb.UsuarioEJBLocal;
 import entity.User;
 import exception.CreateException;
 import exception.SelectException;

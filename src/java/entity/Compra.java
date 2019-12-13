@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,6 +21,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Luis
  */
+@NamedQueries({
+    @NamedQuery(
+        name="findAllCompraByClienteId",
+        query="SELECT c FROM Compra c WHERE c.propietario.id = :idCliente"),
+    @NamedQuery(
+        name="findAllCompra",
+        query="SELECT c FROM Compra c ORDER BY c.idCompra")
+})
 @Entity
 @Table(name="compra",schema="serverA4db")
 @XmlRootElement

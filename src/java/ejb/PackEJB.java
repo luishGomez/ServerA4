@@ -6,12 +6,14 @@
 package ejb;
 
 import entity.Apunte;
+import entity.Oferta;
 import entity.Pack;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -126,6 +128,19 @@ public class PackEJB implements PackEJBLocal {
             LOGGER.severe("eliminarApunte()" + e.getMessage());
             throw new UpdateException(e.getMessage());
         }
-    };
+    }
+    @Override
+    public Oferta dameOferta(Integer idPack) throws SelectException{
+        Oferta resultado=null;
+        Pack pack=em.find(Pack.class, idPack);
+        for(Oferta o:pack.getOfertas()){
+            if(o.getFechaFin().after(new Date()) && o.getFechaInicio().before(new Date())){
+                resultado=o;
+                break;
+            }
+        }
+        return resultado;
+    }
+    
     
 }

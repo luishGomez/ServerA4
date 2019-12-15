@@ -5,6 +5,7 @@
  */
 package ejb;
 
+import entity.Oferta;
 import entity.Pack;
 import exception.CreateException;
 import exception.DeleteException;
@@ -27,4 +28,5 @@ public interface PackEJBLocal {
     public Set<Pack> findAllPack() throws SelectCollectionException;
     public void insertarApunte(Pack pack, Integer idApunte) throws UpdateException;
     public void eliminarApunte(Pack pack, Integer idApunte) throws UpdateException;
+    public Oferta dameOferta(Integer idPack) throws SelectException;
 }

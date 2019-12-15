@@ -6,6 +6,7 @@
 package service;
 
 import ejb.PackEJBLocal;
+import entity.Oferta;
 import entity.Pack;
 import exception.CreateException;
 import exception.DeleteException;
@@ -116,5 +117,18 @@ public class PackFacadeREST {
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST eliminarApunte()"+e.getMessage());
             throw new InternalServerErrorException(e);
         }
+    }
+    @GET
+    @Path("oferta/{idPack}")
+    @Produces(MediaType.APPLICATION_XML)
+    public Oferta dameOferta(@PathParam("idPack") Integer idPack) {
+        Oferta oferta = null;
+        try{
+            oferta = ejb.dameOferta(idPack);
+        }catch(SelectException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST dameOferta()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+        return oferta;
     }
 }

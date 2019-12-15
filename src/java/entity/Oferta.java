@@ -3,10 +3,14 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -44,8 +48,9 @@ public class Oferta implements Serializable{
     @NotNull 
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFin;
-    @ManyToMany
-    @JoinTable(name = "oferta_pack", schema = "serverA4DB")
+    @ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.REMOVE)
+    @JoinTable(name = "oferta_pack", schema = "serverA4DB",joinColumns = @JoinColumn(name="ofertas_idOferta", referencedColumnName="idOferta"),
+            inverseJoinColumns = @JoinColumn(name = "packs_idPack", referencedColumnName="idPack"))
     private Set<Pack> packs;
     @NotNull
     private float rebaja;
@@ -109,7 +114,7 @@ public class Oferta implements Serializable{
     /**
      * @return the packs
      */
-    @XmlTransient
+    
     public Set<Pack> getPacks() {
         return packs;
     }

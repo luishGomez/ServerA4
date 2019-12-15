@@ -6,6 +6,7 @@
 package ejb;
 
 import entity.Oferta;
+import entity.Pack;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.SelectCollectionException;
@@ -16,6 +17,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -49,7 +51,27 @@ public  class OfertaEJB implements OfertaEJBLocal{
     @Override
     public void deleteOferta(Oferta oferta) throws DeleteException{
         try {
-            em.remove(em.find(Oferta.class, oferta.getIdOferta()));
+            /*
+            pack=em.find(Pack.class, pack.getIdPack());
+            for(Apunte a:pack.getApuntes()){
+                a.getPacks().remove(pack);
+            }
+            pack=em.merge(pack);
+            em.flush();
+            Query q1 = em.createQuery ("DELETE FROM Pack a WHERE a.idPack = :idPack");
+            q1.setParameter ("idPack",pack.getIdPack());
+            int deleted1 = q1.executeUpdate ();
+            */
+            oferta=em.find(Oferta.class, oferta.getIdOferta());
+            for(Pack p:oferta.getPacks()){
+                p.getOfertas().remove(oferta);
+            }
+            oferta=em.merge(oferta);
+            em.flush();
+            Query q1 = em.createQuery ("DELETE FROM Oferta a WHERE a.idOferta = :idOferta");
+            q1.setParameter ("idPack",oferta.getIdOferta());
+            int deleted1 = q1.executeUpdate ();
+            //em.remove(em.find(Oferta.class, oferta.getIdOferta()));
         } catch (Exception e) {
             throw new DeleteException(e.getMessage());
         }
@@ -102,4 +124,34 @@ public  class OfertaEJB implements OfertaEJBLocal{
         }
         return oferta;
     }
+    @Override
+    public void insertarPack(Oferta oferta, Integer idPack) throws UpdateException{
+        try{
+            oferta=em.find(Oferta.class, oferta.getIdOferta());
+            oferta.getPacks().add(em.find(Pack.class, idPack));
+            em.merge(oferta);
+            Pack pack=em.find(Pack.class, idPack);
+            pack.getOfertas().add(oferta);
+            em.merge(pack);
+            em.flush();
+        }catch (Exception e){
+            LOGGER.severe("insertarApunte()" + e.getMessage());
+            throw new UpdateException(e.getMessage());
+        }
+    };
+    @Override
+    public void eliminarPack(Oferta oferta, Integer idPack) throws UpdateException{
+        try{
+            oferta=em.find(Oferta.class, oferta.getIdOferta());
+            oferta.getPacks().remove(em.find(Pack.class, idPack));
+            em.merge(oferta);
+            Pack pack=em.find(Pack.class, idPack);
+            pack.getOfertas().remove(oferta);
+            em.merge(pack);
+            em.flush();
+        }catch (Exception e){
+            LOGGER.severe("eliminarApunte()" + e.getMessage());
+            throw new UpdateException(e.getMessage());
+        }
+    };
 }

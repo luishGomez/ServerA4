@@ -43,9 +43,9 @@ public class Pack implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
     //@NotNull
-    @ManyToMany(mappedBy="packs",fetch=EAGER,cascade=CascadeType.ALL)
+    @ManyToMany(mappedBy="packs",fetch=EAGER,cascade=CascadeType.REMOVE)
     private Set<Apunte> apuntes;
-    @ManyToMany(mappedBy="packs")
+    @ManyToMany(mappedBy="packs",fetch=EAGER,cascade=CascadeType.REMOVE)
     private Set<Oferta> ofertas;
 
     public Integer getIdPack() {

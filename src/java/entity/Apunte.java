@@ -80,7 +80,7 @@ public class Apunte implements Serializable {
     //JAVI QUITO
     @OneToMany(cascade=ALL,mappedBy="apunte")
     private Set <Compra> compras;
-    @ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.REMOVE)
     @JoinTable(name="apunte_pack",schema="serverA4db",joinColumns = @JoinColumn(name="apuntes_idApunte", referencedColumnName="idApunte"),
             inverseJoinColumns = @JoinColumn(name = "packs_idPack", referencedColumnName="idPack"))
     private Set <Pack> packs;

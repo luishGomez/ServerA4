@@ -49,4 +49,6 @@ public interface OfertaEJBLocal {
      * @throws SelectException si hay una excepcion durante el proceso
      */
     public Oferta findOfertaById(Integer idOferta) throws SelectException;
+    public void insertarPack(Oferta oferta, Integer idPack) throws UpdateException;
+    public void eliminarPack(Oferta oferta, Integer idPack) throws UpdateException;
 }

@@ -7,6 +7,7 @@ package ejb;
 
 import entity.Apunte;
 import entity.Cliente;
+import entity.Compra;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.SelectCollectionException;
@@ -70,9 +71,32 @@ public class ApunteEJB implements ApunteEJBLocal{
     @Override
     public void removeApunte(Apunte apunte) throws DeleteException {
         try{
+            //  for(Cliente cliente:apunte.getVotantes()){
+            //cliente.getMisVotaciones().remove(apunte);
+            //   Query q = em.createQuery ("DELETE FROM Apunte.votantes a WHERE a.id = :idCliente");
+            //   q.setParameter ("idCliente",cliente.getId());
+            //    int deleted = q.executeUpdate ();
+            //  }
+            //em.merge(apunte);
+            //em.flush();
+            for(Cliente cliente:apunte.getVotantes())
+                cliente.getMisVotaciones().remove(apunte);
+            //for(Compra compra:apunte.getCompras()){
+            Query q1 = em.createQuery ("DELETE FROM Compra a WHERE a.idCompra.apunteId = :idApunte");
+            q1.setParameter ("idApunte",apunte.getIdApunte());
+            int deleted1 = q1.executeUpdate ();
+            //}
+            
             Query q = em.createQuery ("DELETE FROM Apunte a WHERE a.idApunte = :idApunte");
             q.setParameter ("idApunte",apunte.getIdApunte());
             int deleted = q.executeUpdate ();
+            /*
+            em.remove(em.merge(materia));
+            em.flush();
+            */
+            
+            // em.remove(em.merge(apunte));
+            em.flush();
         }catch (Exception e){
             LOGGER.severe("ApunteEJB -> removeApunte() "+e.getMessage());
             throw new DeleteException(e.getMessage());

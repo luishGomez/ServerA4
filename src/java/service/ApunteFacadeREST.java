@@ -47,7 +47,7 @@ public class ApunteFacadeREST  {
      * @param apunte El objeto Apunte con sus datos.
      */
     @POST
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_XML)
     public void create(Apunte apunte) {
         try {
             
@@ -62,7 +62,7 @@ public class ApunteFacadeREST  {
      * @param apunte El objeto Apunte con sus datos.
      */
     @PUT
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_XML)
     public void edit( Apunte apunte) {
         try {
             ejb.editApunte(apunte);
@@ -102,7 +102,7 @@ public class ApunteFacadeREST  {
      */
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_XML)
     public Apunte find(@PathParam("id") Integer id) {
         Apunte resultado = null;
         try {
@@ -119,7 +119,7 @@ public class ApunteFacadeREST  {
      * @return Retorna una lista de {@link Apunte} existentes.
      */
     @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_XML)
     public Set<Apunte> findAll() {
         Set <Apunte> resultado = null;
         try {
@@ -197,7 +197,7 @@ public class ApunteFacadeREST  {
      */
     @PUT
     @Path("votar/{idCliente}/{like}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_XML)
     public void votacion(@PathParam("idCliente") Integer idCliente,@PathParam("like") Integer like, Apunte apunte) {
         try {
             ejb.votacion(idCliente, like, apunte);

@@ -6,10 +6,12 @@ import java.util.Set;
 import javax.persistence.Basic;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
@@ -65,16 +67,18 @@ public class Apunte implements Serializable {
     private Date fechaValidacion;
     private Integer likeCont;
     private Integer dislikeCont;
-    @ManyToMany
-    @JoinTable(name="votaciones",schema="serverA4db")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="votaciones",schema="serverA4db", joinColumns = @JoinColumn(name="misVotaciones_idApunte", referencedColumnName="idApunte"),
+            inverseJoinColumns = @JoinColumn(name = "votantes_id", referencedColumnName="id"))
     private Set<Cliente> votantes;
     @NotNull
     private Float precio;
     @NotNull
     @ManyToOne
     private Cliente creador;
-    /*@OneToMany(cascade=ALL,mappedBy="apunte")
-    private Set <Compra> compras;*/
+    //JAVI QUITO
+    @OneToMany(cascade=ALL,mappedBy="apunte")
+    private Set <Compra> compras;
     @ManyToMany
     @JoinTable(name="apunte_pack",schema="serverA4db")
     private Set <Pack> packs;
@@ -226,18 +230,17 @@ public class Apunte implements Serializable {
     /**
      * @return the compras
      */
-    /*@XmlTransient
+    @XmlTransient
     public Set <Compra> getCompras() {
     return compras;
-    }*/
+    }
     
     /**
      * @param compras the compras to set
      */
-    /*
     public void setCompras(Set <Compra> compras) {
     this.compras = compras;
-    }*/
+    }
     
     /**
      * @return the packs

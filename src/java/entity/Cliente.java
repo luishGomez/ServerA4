@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.persistence.Basic;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
@@ -32,7 +33,7 @@ public class Cliente extends User implements Serializable{
     private Set <Compra> compras;
     @OneToMany(cascade=ALL,mappedBy="creador",fetch=EAGER)
     private Set <Apunte> apuntes;
-    @ManyToMany(mappedBy="votantes")
+    @ManyToMany(mappedBy="votantes",fetch = FetchType.EAGER)
     private Set <Apunte> misVotaciones;
     private float saldo;
     @Lob

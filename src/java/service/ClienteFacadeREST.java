@@ -49,7 +49,7 @@ public class ClienteFacadeREST  {
      * @param cliente El objeto Cliente con sus datos.
      */
     @POST
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_XML)
     public void create(Cliente cliente) {
         try {
             ejb.createCliente(cliente);
@@ -63,7 +63,7 @@ public class ClienteFacadeREST  {
      * @param cliente El bojecto Cliente con sus datos.
      */
     @PUT
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_XML)
     public void edit( Cliente cliente) {
         try {
             ejb.editCliente(cliente);
@@ -93,7 +93,7 @@ public class ClienteFacadeREST  {
      */
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_XML)
     public Cliente find(@PathParam("id") Integer id) {
         Cliente resultado=null;
         try {
@@ -109,7 +109,7 @@ public class ClienteFacadeREST  {
      * @return Retorna una lista de {@link Cliente}-
      */
     @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_XML)
     public Set<Cliente> findAll() {
         Set <Cliente> resultado=null;
         try {
@@ -160,7 +160,7 @@ public class ClienteFacadeREST  {
      */
     @PUT
     @Path("password")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_XML)
     public void actualizarContrasenia(Cliente cliente) {
         try {
             ejb.actualizarContrasenia(cliente);

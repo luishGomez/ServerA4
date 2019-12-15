@@ -1,10 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package ejb;
 
+import entity.Apunte;
 import entity.Pack;
 import exception.CreateException;
 import exception.DeleteException;
@@ -17,6 +18,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,7 +29,7 @@ public class PackEJB implements PackEJBLocal {
     private static final Logger LOGGER = Logger.getLogger("ServerA4.service.PackEJB");
     @PersistenceContext(unitName = "ServerA4PU")
     private EntityManager em;
-
+    
     @Override
     public void createPack(Pack pack) throws CreateException {
         try{
@@ -37,7 +39,7 @@ public class PackEJB implements PackEJBLocal {
             throw new CreateException(e.getMessage());
         }
     }
-
+    
     @Override
     public void editPack(Pack pack) throws UpdateException {
         try{
@@ -48,18 +50,30 @@ public class PackEJB implements PackEJBLocal {
             throw new UpdateException(e.getMessage());
         }
     }
-
+    
     @Override
     public void removePack(Pack pack) throws DeleteException {
         try{
-            em.remove(em.merge(pack));
+            /*for(Cliente cliente:apunte.getVotantes())
+            cliente.getMisVotaciones().remove(apunte);
+            */
+            pack=em.find(Pack.class, pack.getIdPack());
+            for(Apunte a:pack.getApuntes()){
+                a.getPacks().remove(pack);
+            }
+            pack=em.merge(pack);
             em.flush();
+            Query q1 = em.createQuery ("DELETE FROM Pack a WHERE a.idPack = :idPack");
+            q1.setParameter ("idPack",pack.getIdPack());
+            int deleted1 = q1.executeUpdate ();
+            //em.remove(pack);
+            //em.flush();
         }catch (Exception e){
             LOGGER.severe("removePack()" + e.getMessage());
             throw new DeleteException(e.getMessage());
         }
     }
-
+    
     @Override
     public Pack findPack(Integer idPack) throws SelectException {
         Pack pack = null;
@@ -71,7 +85,7 @@ public class PackEJB implements PackEJBLocal {
         }
         return pack;
     }
-
+    
     @Override
     public Set<Pack> findAllPack() throws SelectCollectionException {
         Set<Pack> packs = null;
@@ -83,4 +97,35 @@ public class PackEJB implements PackEJBLocal {
         }
         return packs;
     }
+    @Override
+    public void insertarApunte(Pack pack, Integer idApunte) throws UpdateException{
+        try{
+            pack=em.find(Pack.class, pack.getIdPack());
+            pack.getApuntes().add(em.find(Apunte.class, idApunte));
+            em.merge(pack);
+            Apunte apunte=em.find(Apunte.class, idApunte);
+            apunte.getPacks().add(pack);
+            em.merge(apunte);
+            em.flush();
+        }catch (Exception e){
+            LOGGER.severe("insertarApunte()" + e.getMessage());
+            throw new UpdateException(e.getMessage());
+        }
+    }
+    @Override
+    public void eliminarApunte(Pack pack, Integer idApunte) throws UpdateException{
+        try{
+            pack=em.find(Pack.class, pack.getIdPack());
+            pack.getApuntes().remove(em.find(Apunte.class, idApunte));
+            em.merge(pack);
+            Apunte apunte=em.find(Apunte.class, idApunte);
+            apunte.getPacks().remove(pack);
+            em.merge(apunte);
+            em.flush();
+        }catch (Exception e){
+            LOGGER.severe("eliminarApunte()" + e.getMessage());
+            throw new UpdateException(e.getMessage());
+        }
+    };
+    
 }

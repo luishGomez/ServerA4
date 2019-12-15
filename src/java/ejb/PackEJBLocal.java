@@ -25,4 +25,6 @@ public interface PackEJBLocal {
     public void removePack(Pack pack) throws DeleteException;
     public Pack findPack(Integer idPack) throws SelectException;
     public Set<Pack> findAllPack() throws SelectCollectionException;
+    public void insertarApunte(Pack pack, Integer idApunte) throws UpdateException;
+    public void eliminarApunte(Pack pack, Integer idApunte) throws UpdateException;
 }

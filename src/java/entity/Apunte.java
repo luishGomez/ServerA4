@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -79,8 +80,9 @@ public class Apunte implements Serializable {
     //JAVI QUITO
     @OneToMany(cascade=ALL,mappedBy="apunte")
     private Set <Compra> compras;
-    @ManyToMany
-    @JoinTable(name="apunte_pack",schema="serverA4db")
+    @ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+    @JoinTable(name="apunte_pack",schema="serverA4db",joinColumns = @JoinColumn(name="apuntes_idApunte", referencedColumnName="idApunte"),
+            inverseJoinColumns = @JoinColumn(name = "packs_idPack", referencedColumnName="idPack"))
     private Set <Pack> packs;
     @NotNull
     @ManyToOne

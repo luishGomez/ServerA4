@@ -3,6 +3,7 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -40,8 +42,8 @@ public class Pack implements Serializable{
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaModificacion;
-    @NotNull
-    @ManyToMany(mappedBy="packs",fetch=EAGER)
+    //@NotNull
+    @ManyToMany(mappedBy="packs",fetch=EAGER,cascade=CascadeType.ALL)
     private Set<Apunte> apuntes;
     @ManyToMany(mappedBy="packs")
     private Set<Oferta> ofertas;

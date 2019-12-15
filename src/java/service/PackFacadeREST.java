@@ -95,4 +95,26 @@ public class PackFacadeREST {
         }
         return packs;
     }
+    @PUT
+    @Path("insertarApunte/{idApunte}")
+    @Consumes(MediaType.APPLICATION_XML)
+    public void insertarApunte(Pack pack,@PathParam("idApunte") Integer idApunte) {
+        try{
+            ejb.insertarApunte(pack, idApunte);
+        }catch(UpdateException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST insertarApunte()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+    }
+    @PUT
+    @Path("eliminarApunte/{idApunte}")
+    @Consumes(MediaType.APPLICATION_XML)
+    public void eliminarApunte(Pack pack,@PathParam("idApunte") Integer idApunte) {
+        try{
+            ejb.eliminarApunte(pack, idApunte);
+        }catch(UpdateException e){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST eliminarApunte()"+e.getMessage());
+            throw new InternalServerErrorException(e);
+        }
+    }
 }

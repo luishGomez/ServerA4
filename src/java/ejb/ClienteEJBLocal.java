@@ -13,6 +13,7 @@ import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
 import exception.YaExisteLoginException;
+import exception.YaTieneCompradoException;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Local;
@@ -67,5 +68,6 @@ public interface ClienteEJBLocal {
      * @throws UpdateException Salta si ocurre un error al modificar.
      */
     public void actualizarContrasenia(Cliente cliente) throws UpdateException;
+    public void comprarApunte(Cliente cliente, Integer idApunte) throws CreateException;
     
 }

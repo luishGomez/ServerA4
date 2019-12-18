@@ -54,10 +54,10 @@ public class CompraFacadeREST {
         return key;
     }
 
-    @POST
+    @PUT
     @Path("comprar/{idApunte}/{idCliente}")
     @Consumes(MediaType.APPLICATION_XML)
-    public void create(@PathParam("idApunte") Integer idApunte,@PathParam("idCliente") Integer idCliente, Compra compra) {
+    public void createCompra(@PathParam("idApunte") Integer idApunte,@PathParam("idCliente") Integer idCliente, Compra compra) {
         try{
             ejb.createCompra(idApunte, idCliente);
         }catch(CreateException e){

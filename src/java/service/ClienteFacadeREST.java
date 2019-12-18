@@ -16,6 +16,7 @@ import exception.SelectException;
 import exception.UpdateException;
 import exception.UserNoExistException;
 import exception.YaExisteLoginException;
+import exception.YaTieneCompradoException;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -57,7 +58,7 @@ public class ClienteFacadeREST  {
     @POST
     @Consumes(MediaType.APPLICATION_XML)
     public void create(Cliente cliente) {
-       
+        
         try{
             ejbUser.findUserByLogin(cliente.getLogin());
             throw new YaExisteLoginException("Ya existe ese login");
@@ -209,6 +210,19 @@ public class ClienteFacadeREST  {
     }
     
     */
-    
+    //comprarApunte
+    @POST
+    @Path("comprar/{idApunte}")
+    @Consumes(MediaType.APPLICATION_XML)
+    public void comprarApunte(Cliente cliente,@PathParam("idApunte") Integer idApunte) {
+        
+        try {
+            ejb.comprarApunte(cliente, idApunte);
+        } catch (CreateException ex) {
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> comprarApunte() ERROR: "+ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        
+    }
     
 }

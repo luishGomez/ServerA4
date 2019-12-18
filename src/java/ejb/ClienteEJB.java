@@ -5,13 +5,17 @@
 */
 package ejb;
 
+import entity.Apunte;
 import entity.Cliente;
+import entity.Compra;
+import entity.CompraId;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
 import exception.YaExisteLoginException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -151,6 +155,22 @@ public class ClienteEJB implements ClienteEJBLocal{
             throw new UpdateException(e.getMessage());
         }
     }
-    
-    
+    @Override
+    public void comprarApunte(Cliente cliente, Integer idApunte) throws CreateException{
+        try{
+            Cliente clienteRenovado = em.find(Cliente.class, cliente.getId());
+            Compra nuevaCompra= new Compra();
+            Apunte elApunte=em.find(Apunte.class, idApunte);
+            nuevaCompra.setApunte(elApunte);
+            nuevaCompra.setPropietario(clienteRenovado);
+            Date fecha=new Date();
+            nuevaCompra.setFecha(fecha);
+            nuevaCompra.setIdCompra(new CompraId(clienteRenovado.getId(),idApunte));
+            em.persist(nuevaCompra);
+        }catch (Exception e){
+            LOGGER.severe("ClienteEJB -> comprarApunte() "+e.getMessage());
+            throw new CreateException(e.getMessage());
+        }
+        
+    }
 }

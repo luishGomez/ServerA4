@@ -8,11 +8,13 @@ package ejb;
 import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
+import exception.SelectException;
 import exception.UpdateException;
 import exception.UserNoExistException;
 import exception.WrongPasswordException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -74,12 +76,14 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
      * @throws exception.UserNoExistException si hay una excepcion durante el proceso
      */
     @Override
-    public User findUserByLogin(String login) throws UserNoExistException{
+    public User findUserByLogin(String login) throws SelectException,UserNoExistException{
         User usuario = null;
         try{
             usuario =(User) em.createNamedQuery("findUserByLogin").setParameter("login", login).getSingleResult();
-        }catch(Exception e){
+        }catch(NoResultException e){
             throw new UserNoExistException(e.getMessage());
+        }catch(Exception e){
+            throw new SelectException(e.getMessage());
         }
         return usuario;
     }
@@ -90,12 +94,14 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
      * @throws WrongPasswordException si hay una excepcion durante el proceso
      */
     @Override
-    public User contraseniaCorrecta(User usuario) throws WrongPasswordException {
+    public User contraseniaCorrecta(User usuario) throws SelectException,WrongPasswordException {
         User usuarioComprobado = null;
         try{
             usuarioComprobado = (User) em.createNamedQuery("contraseniaCorrecta").setParameter("login", usuario.getLogin()).setParameter("contrasenia", usuario.getContrasenia()).getSingleResult();
-        }catch(Exception e){
+        }catch(NoResultException e){
             throw new WrongPasswordException(e.getMessage());
+        }catch(Exception e){
+            throw new SelectException(e.getMessage());
         }
         return usuarioComprobado;
     }

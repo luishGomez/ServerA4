@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -20,9 +21,8 @@ import javax.xml.bind.annotation.XmlTransient;
  * Es una clase JPA para almacenar los datos de un Cliente.
  * @author Ricardo Peinado Lastra
  */
-@NamedQuery(
-        name="findAllCliente", query="SELECT a FROM Cliente a ORDER BY a.nombreCompleto ASC"
-)
+
+@NamedQuery(name="findAllCliente", query="SELECT a FROM Cliente a ORDER BY a.nombreCompleto ASC")
 @Entity
 @Table(name="cliente",schema="serverA4db")
 @XmlRootElement

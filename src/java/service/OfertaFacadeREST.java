@@ -129,7 +129,7 @@ public class OfertaFacadeREST{
     @PUT
     @Path("actualizar")
     @Consumes({MediaType.APPLICATION_XML})
-    public void updateUser(Oferta oferta) {
+    public void updateOferta(Oferta oferta) {
         try {
             LOGGER.log(Level.INFO,"UserRESTful service: find User by id={0}.",oferta);
             ejb.updateOferta(oferta);
@@ -143,9 +143,9 @@ public class OfertaFacadeREST{
     @PUT
     @Path("insertarPack/{idPack}")
     @Consumes(MediaType.APPLICATION_XML)
-    public void insertarApunte(Oferta oferta,@PathParam("idPack") Integer idPack) {
+    public void insertarPack(Oferta oferta,@PathParam("idPack") Integer idPack) {
         try{
-            LOGGER.log(Level.INFO,"UserRESTful service: find User by id={0}.",oferta);
+            LOGGER.log(Level.INFO,"UserRESTful service: find User by id={0}.",oferta.getIdOferta());
             ejb.insertarPack(oferta, idPack);
         }catch(UpdateException e){
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST insertarApunte()"+e.getMessage());
@@ -155,9 +155,9 @@ public class OfertaFacadeREST{
     @PUT
     @Path("eliminarPack/{idPack}")
     @Consumes(MediaType.APPLICATION_XML)
-    public void eliminarApunte(Oferta oferta,@PathParam("idPack") Integer idPack) {
+    public void eliminarPack(Oferta oferta,@PathParam("idPack") Integer idPack) {
         try{
-            LOGGER.log(Level.INFO,"UserRESTful service: find User by id={0}.",oferta);
+            LOGGER.log(Level.INFO,"UserRESTful service: find User by id={0}.",oferta.getIdOferta());
             ejb.eliminarPack(oferta, idPack);
         }catch(UpdateException e){
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST eliminarApunte()"+e.getMessage());

@@ -6,6 +6,7 @@
 package service;
 
 import ejb.ClienteEJBLocal;
+import ejb.UsuarioEJBLocal;
 import entity.Apunte;
 import entity.Cliente;
 import exception.CreateException;
@@ -13,6 +14,8 @@ import exception.DeleteException;
 import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
+import exception.UserNoExistException;
+import exception.YaExisteLoginException;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -25,6 +28,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -44,6 +48,8 @@ public class ClienteFacadeREST  {
      */
     @EJB
     private ClienteEJBLocal ejb;
+    @EJB
+    private UsuarioEJBLocal ejbUser;
     /**
      * Metodo RESTFul para crear un {@link Cliente}.
      * @param cliente El objeto Cliente con sus datos.
@@ -51,11 +57,25 @@ public class ClienteFacadeREST  {
     @POST
     @Consumes(MediaType.APPLICATION_XML)
     public void create(Cliente cliente) {
-        try {
-            ejb.createCliente(cliente);
-        } catch (CreateException ex) {
+       
+        try{
+            ejbUser.findUserByLogin(cliente.getLogin());
+            throw new YaExisteLoginException("Ya existe ese login");
+        } catch (UserNoExistException ex) {
+            
+            try {
+                ejb.createCliente(cliente);
+            } catch (CreateException ex1) {
+                Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> create() ERROR: "+ex.getMessage());
+                throw new InternalServerErrorException(ex.getMessage());
+            }
+            
+        } catch (SelectException ex) {
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> create() ERROR: "+ex.getMessage());
-            throw new InternalServerErrorException(ex);
+            throw new InternalServerErrorException(ex.getMessage());
+        }catch (YaExisteLoginException ex) {
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> create() ERROR: "+ex.getMessage());
+            throw new NotAuthorizedException(ex.getMessage());
         }
     }
     /**

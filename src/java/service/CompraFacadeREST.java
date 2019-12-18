@@ -55,7 +55,7 @@ public class CompraFacadeREST {
     }
 
     @POST
-    @Path("{idApunte}/{idCliente}")
+    @Path("comprar/{idApunte}/{idCliente}")
     @Consumes(MediaType.APPLICATION_XML)
     public void create(@PathParam("idApunte") Integer idApunte,@PathParam("idCliente") Integer idCliente, Compra compra) {
         try{

@@ -11,6 +11,7 @@ import exception.DeleteException;
 import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
+import exception.YaExisteLoginException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -114,39 +115,8 @@ public class ClienteEJB implements ClienteEJBLocal{
         }
         return resultado;
     }
-    /*
-    public List<T> findRange(int[] range) {
-    javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-    cq.select(cq.from(entityClass));
-    javax.persistence.Query q = getEntityManager().createQuery(cq);
-    q.setMaxResults(range[1] - range[0] + 1);
-    q.setFirstResult(range[0]);
-    return q.getResultList();
-    }
     
-    public int count() {
-    javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-    javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
-    cq.select(getEntityManager().getCriteriaBuilder().count(rt));
-    javax.persistence.Query q = getEntityManager().createQuery(cq);
-    return ((Long) q.getSingleResult()).intValue();
-    }
-    */
-    /*
-    public byte[] getArchivoById(Integer id){
-    byte[] bytes=null;
-    SerialBlob blob=null;
-    try{
-    blob=(SerialBlob) getEntityManager().createNamedQuery("getArchivoById").setParameter("idApunte", id).getSingleResult();
-    bytes=blob.getBytes(1, (int) blob.length());
-    }catch(ClassCastException e){
-    LOGGER.severe("ERROR: de caseteo"+2+" \n El archivo del apunte no se a castedo bien a un arrary de bytes \"byte[]\"");
-    }catch(SerialException e){
-    LOGGER.severe("ERROR:  serial"+2+" \n El archivo del apunte no se a castedo bien a un arrary de bytes \"byte[]\"");
-    }
-    return  bytes;
-    }
-    */
+    
     /**
      * Busca los clientes que han votado un {@link Apunte}.
      * @param id El ID de un {@link Apunte}.
@@ -165,7 +135,7 @@ public class ClienteEJB implements ClienteEJBLocal{
         return resultado;
     }
     
-    //De cliente
+    
     /**
      * Actualiza la contraseña de un cliente.
      * @param cliente Envia el objeto de un {@link Cliente}
@@ -181,19 +151,6 @@ public class ClienteEJB implements ClienteEJBLocal{
             throw new UpdateException(e.getMessage());
         }
     }
-    /*
-    @Override
-    public void actualizarCliente(Cliente cliente) throws UpdateException{
-    try{
-    em.merge(cliente);
-    em.flush();
-    }catch (Exception e){
-    LOGGER.severe("ClienteEJB -> actualizarCliente() "+e.getMessage());
-    throw new UpdateException(e.getMessage());
-    }
-    }
-    */
-    
     
     
 }

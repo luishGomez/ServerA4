@@ -8,6 +8,7 @@ package ejb;
 import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
+import exception.SelectException;
 import exception.UpdateException;
 import exception.UserNoExistException;
 import exception.WrongPasswordException;
@@ -41,14 +42,14 @@ public interface UsuarioEJBLocal {
      * Busca un Usuario por Login
      * @param login El Login de un Usuario a encontrar
      * @return Usuario
-     * @throws UserNoExistException si hay una excepcion durante el proceso
+     * @throws SelectException si hay una excepcion durante el proceso
      */
-    public User findUserByLogin(String login) throws UserNoExistException;
+    public User findUserByLogin(String login) throws SelectException,UserNoExistException;
     /**
      * Verifica que un Usuario existe comprobando su Login y Contraseña
      * @param usuario El Objeto Usuario que contiene los datos.
      * @return Usuario encontrado
-     * @throws WrongPasswordException si hay una excepcion durante el proceso
+     * @throws SelectException si hay una excepcion durante el proceso
      */
-    public User contraseniaCorrecta(User usuario) throws WrongPasswordException;
+    public User contraseniaCorrecta(User usuario) throws SelectException,WrongPasswordException;
 }

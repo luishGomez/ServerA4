@@ -19,7 +19,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * La clase que se encarga de la logica de los <b>usuarios</b> de la aplicacion.
  * @author Sergio
  */
 @Stateless

@@ -20,7 +20,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
+ * La clase que se encarga de la logica de las <b>ofertas</b> de la aplicacion.
  * @author Sergio
  */
 @Stateless
@@ -51,18 +51,6 @@ public  class OfertaEJB implements OfertaEJBLocal{
     @Override
     public void deleteOferta(Oferta oferta) throws DeleteException{
         try {
-            /*
-            pack=em.find(Pack.class, pack.getIdPack());
-            for(Apunte a:pack.getApuntes()){
-                a.getPacks().remove(pack);
-            }
-            pack=em.merge(pack);
-            em.flush();
-            Query q1 = em.createQuery ("DELETE FROM Pack a WHERE a.idPack = :idPack");
-            q1.setParameter ("idPack",pack.getIdPack());
-            int deleted1 = q1.executeUpdate ();
-            */
-            oferta=em.find(Oferta.class, oferta.getIdOferta());
             for(Pack p:oferta.getPacks()){
                 p.getOfertas().remove(oferta);
             }
@@ -71,7 +59,7 @@ public  class OfertaEJB implements OfertaEJBLocal{
             Query q1 = em.createQuery ("DELETE FROM Oferta a WHERE a.idOferta = :idOferta");
             q1.setParameter ("idOferta",oferta.getIdOferta());
             int deleted1 = q1.executeUpdate ();
-            //em.remove(em.find(Oferta.class, oferta.getIdOferta()));
+            
         } catch (Exception e) {
             throw new DeleteException(e.getMessage());
         }
@@ -124,6 +112,12 @@ public  class OfertaEJB implements OfertaEJBLocal{
         }
         return oferta;
     }
+    /**
+     * Inserta en una oferta un pack.
+     * @param oferta Objeto que contiene los datos de oferta.
+     * @param idPack El identificador de pack.
+     * @throws UpdateException Salta si ocurre un error al actualizar.
+     */
     @Override
     public void insertarPack(Oferta oferta, Integer idPack) throws UpdateException{
         try{
@@ -138,7 +132,13 @@ public  class OfertaEJB implements OfertaEJBLocal{
             LOGGER.severe("insertarApunte()" + e.getMessage());
             throw new UpdateException(e.getMessage());
         }
-    };
+    }
+    /**
+     * Eliminar en una oferta un pack.
+     * @param oferta Objeto que contiene los datos de oferta.
+     * @param idPack El identificador de pack.
+     * @throws UpdateException Salta si ocurre un error al actualizar.
+     */
     @Override
     public void eliminarPack(Oferta oferta, Integer idPack) throws UpdateException{
         try{
@@ -153,5 +153,5 @@ public  class OfertaEJB implements OfertaEJBLocal{
             LOGGER.severe("eliminarApunte()" + e.getMessage());
             throw new UpdateException(e.getMessage());
         }
-    };
+    }
 }

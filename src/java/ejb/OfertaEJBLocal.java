@@ -14,7 +14,7 @@ import exception.UpdateException;
 import java.util.List;
 
 /**
- *
+ * Es la interfaz EJB Local que maneja el CRUD de la entidad Oferta.
  * @author Sergio
  */
 public interface OfertaEJBLocal {
@@ -49,6 +49,18 @@ public interface OfertaEJBLocal {
      * @throws SelectException si hay una excepcion durante el proceso
      */
     public Oferta findOfertaById(Integer idOferta) throws SelectException;
+    /**
+     * Inserta en una oferta un pack.
+     * @param oferta Objeto que contiene los datos de oferta.
+     * @param idPack El identificador de pack.
+     * @throws UpdateException Salta si ocurre un error al actualizar.
+     */
     public void insertarPack(Oferta oferta, Integer idPack) throws UpdateException;
+    /**
+     * Eliminar en una oferta un pack.
+     * @param oferta Objeto que contiene los datos de oferta.
+     * @param idPack El identificador de pack.
+     * @throws UpdateException Salta si ocurre un error al actualizar.
+     */
     public void eliminarPack(Oferta oferta, Integer idPack) throws UpdateException;
 }

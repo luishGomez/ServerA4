@@ -23,10 +23,16 @@ import javax.crypto.Cipher;
 */
 
 /**
- *
- * @author Usuario
+ * Esta clase permite encriptar y resumir datos.
+ * @author Ricardo Peinado Lastra
  */
 public class Encriptador {
+    /**
+     * Desencripta un mensaje encriptado.
+     * @param mensaje El mensaje a descriptar.
+     * @return Retorna el mensaje en claro.
+     * @throws DescriptarException  Salta si ocurre un error al desencriptar.
+     */
     public String descriptar(String mensaje) throws DescriptarException{
         String frase =null;
         File file=new File("F:\\Clase 2DAM\\Cosas_print\\private.key");//Se tiene que cambiar
@@ -49,7 +55,12 @@ public class Encriptador {
         }
         return frase;
     }
-    
+    /**
+     * Encripta en mensaje en claro que metas.
+     * @param mensaje El mensaje en claro.
+     * @return El mensaje encriptado.
+     * @throws EncriptarException  Salta si ocurre un error al encriptar.
+     */
     public String encriptar(String mensaje) throws EncriptarException{
         String encriptado=null;
         try {
@@ -73,53 +84,12 @@ public class Encriptador {
         }
         return encriptado;
     }
-    public String descriptar2(byte[] bytesEncript) throws DescriptarException{
-        String frase =null;
-        File file=new File("F:\\Clase 2DAM\\Cosas_print\\private.key");//Se tiene que cambiar
-        try {
-            byte[] bytes=Files.readAllBytes(file.toPath());
-            //byte[] bytesEncript=mensaje.getBytes();
-            //byte[] bytesEncript=stringToBytes(mensaje);
-            EncodedKeySpec secretKeySpec = new  PKCS8EncodedKeySpec(bytes);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            
-            PrivateKey privateKey = keyFactory.generatePrivate(secretKeySpec);
-            
-            Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            frase=new String(cipher.doFinal(bytesEncript));
-            
-        } catch (Exception ex) {
-            System.out.println(ex.getCause()+" "+ex.getMessage());
-            throw new DescriptarException(ex.getMessage());
-        }
-        return frase;
-    }
-    
-    public byte[] encriptar2(String mensaje) throws EncriptarException{
-        String encriptado=null;
-        byte[] resu=null;
-        try {
-            
-            File file=new File("F:\\Clase 2DAM\\Cosas_print\\public.key");//se tiene que cambiar
-            byte[] bytes=Files.readAllBytes(file.toPath());
-            
-            EncodedKeySpec publicKeySpec = new  X509EncodedKeySpec(bytes);
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-            PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
-            
-            Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-            byte[] cipherText = cipher.doFinal(mensaje.getBytes());
-            resu=cipherText;
-            //encriptado= new String(cipherText);
-            encriptado= bytesToString(cipherText);
-            
-        } catch (Exception ex) {
-            throw new EncriptarException(ex.getMessage());
-        }
-        return resu;
-    }
+    /**
+     * Resume un mensaje.
+     * @param mensaje El texto a resumir.
+     * @return El texto resumido.
+     * @throws ResumirException  Salta si ocurre un error al resumir.
+     */
     public String resumir(String mensaje) throws ResumirException{
         MessageDigest messageDigest;
         String resultado = null;
@@ -135,6 +105,11 @@ public class Encriptador {
         }
         return resultado;
     }
+    /**
+     * Convierte una lista de bytes a Hexadecimal.
+     * @param resumen La colección de bytes.
+     * @return Los bytes en hexadecimal.
+     */
     static String hexadecimal(byte[] resumen) {
         String HEX = "";
         for (int i = 0; i < resumen.length; i++) {
@@ -145,30 +120,19 @@ public class Encriptador {
         }
         return HEX.toUpperCase();
     }
+    /**
+     * Convierte un texto en hexadeciaml en una lista de bytes.
+     * @param s El texto en hexadecimal.
+     * @return La coleccion en bytes.
+     */
     public static byte[] hexStringToByteArray(String s) {
-    int len = s.length();
-    byte[] data = new byte[len / 2];
-    for (int i = 0; i < len; i += 2) {
-        data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                             + Character.digit(s.charAt(i+1), 16));
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
     }
-    return data;
-}
     
-    public String bytesToString(byte[] bytes){
-        String retorno="";
-        for(Byte b:bytes){
-            retorno+=b;
-        }
-        return retorno;
-    }
-    public byte[] stringToBytes(String frase){
-        byte[] bytes=new byte[frase.length()];
-        int i=0;
-        for(char c:frase.toCharArray()){
-            bytes[i]=(byte) c;
-            i++;
-        }
-        return bytes;
-    }
 }

@@ -12,13 +12,10 @@ import entity.Compra;
 import entity.CompraId;
 import exception.CreateException;
 import exception.DeleteException;
-import exception.EnviarMailException;
-import exception.MontajeMailException;
 import exception.ResumirException;
 import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
-import exception.YaExisteLoginException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +27,7 @@ import javax.persistence.PersistenceContext;
 import mensajeria.EmailThread;
 
 /**
- * La clase que se encarga de la logia de los <b>clientes</b> de la aplicacion.
+ * La clase que se encarga de la logica de los <b>clientes</b> de la aplicacion.
  * @author Ricardo Peinado Lastra
  */
 @Stateless
@@ -165,6 +162,12 @@ public class ClienteEJB implements ClienteEJBLocal{
             throw new UpdateException(e.getMessage());
         }
     }
+    /**
+     * Permite al {@link Cliente} comprar un {@link Apunte}.
+     * @param cliente El objeto que contiene los datos de cliente.
+     * @param idApunte El identificador del de apunte.
+     * @throws CreateException Salta si ocurre un error al crear.
+     */
     @Override
     public void comprarApunte(Cliente cliente, Integer idApunte) throws CreateException{
         try{
@@ -183,6 +186,11 @@ public class ClienteEJB implements ClienteEJBLocal{
         }
         
     }
+    /**
+     * Renueva automaticamente la contraseña de un {@link Cliente}.
+     * @param cliente El objeto contiene los datos de cliente.
+     * @throws UpdateException Salta si ocurre un error al actualizar.
+     */
     @Override
     public void passwordForgot(Cliente cliente) throws UpdateException{
         int numero;
@@ -208,7 +216,6 @@ public class ClienteEJB implements ClienteEJBLocal{
             LOGGER.severe("ClienteEJB -> passwordForgot() "+e.getMessage());
             throw new UpdateException(e.getMessage());
         }
-        
-        
+         
     }
 }

@@ -7,7 +7,6 @@ package ejb;
 
 import entity.Apunte;
 import entity.Cliente;
-import entity.Compra;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.SelectCollectionException;
@@ -22,7 +21,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * La clase que se encarga de la logia de los <b>apuntes</b> de la aplicacion.
+ * La clase que se encarga de la logica de los <b>apuntes</b> de la aplicacion.
  * @author Ricardo Peinado Lastra
  */
 @Stateless
@@ -129,40 +128,7 @@ public class ApunteEJB implements ApunteEJBLocal{
         return resultado;
         
     }
-    /*
-    public List<T> findRange(int[] range) {
-    javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-    cq.select(cq.from(entityClass));
-    javax.persistence.Query q = getEntityManager().createQuery(cq);
-    q.setMaxResults(range[1] - range[0] + 1);
-    q.setFirstResult(range[0]);
-    return q.getResultList();
-    }
-    */
-    /*
-    public int count() {
-    javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-    javax.persistence.criteria.Root<T> rt = cq.from(entityClass);
-    cq.select(getEntityManager().getCriteriaBuilder().count(rt));
-    javax.persistence.Query q = getEntityManager().createQuery(cq);
-    return ((Long) q.getSingleResult()).intValue();
-    }
-    */
-    /*
-    public byte[] getArchivoById(Integer id){
-    byte[] bytes=null;
-    SerialBlob blob=null;
-    try{
-    blob=(SerialBlob) getEntityManager().createNamedQuery("getArchivoById").setParameter("idApunte", id).getSingleResult();
-    bytes=blob.getBytes(1, (int) blob.length());
-    }catch(ClassCastException e){
-    LOGGER.severe("ERROR: de caseteo"+2+" \n El archivo del apunte no se a castedo bien a un arrary de bytes \"byte[]\"");
-    }catch(SerialException e){
-    LOGGER.severe("ERROR:  serial"+2+" \n El archivo del apunte no se a castedo bien a un arrary de bytes \"byte[]\"");
-    }
-    return  bytes;
-    }
-    */
+    
     /**
      * Devuelve todos los apuntes de un creador.
      * @param id Es el ID de un {@link Cliente}.
@@ -199,47 +165,6 @@ public class ApunteEJB implements ApunteEJBLocal{
         }
         return resultado;
     }
-    /*
-    @Override
-    public void borrarApunte(Integer id) throws YaEstaVendidoException, DeleteException{
-    try{
-    Apunte apunte=em.find(Apunte.class, id);
-    if(!apunte.getCompras().isEmpty())
-    throw new YaEstaVendidoException();
-    else{
-    em.remove(em.merge(em.find(Apunte.class, id)));
-    }
-    }catch(Exception e){
-    LOGGER.severe("ApunteEJB -> borrarApunte() "+e.getMessage());
-    throw new DeleteException(e.getMessage());
-    }
-    }
-    */
-    /*
-    @Override
-    public Set <Apunte> getMisApuntes(Integer id)throws SelectCollectionException{
-    
-    Set <Apunte> apuntes=null;
-    try{
-    apuntes=em.find(Cliente.class, id).getApuntes();
-    }catch(Exception e){
-    LOGGER.severe("ApunteEJB -> getMisApuntes() "+e.getMessage());
-    throw new SelectCollectionException(e.getMessage());
-    }
-    return apuntes;
-    ////aqui nop
-    Set <Apunte> apuntes=null;
-    try{
-    if(em.find(Cliente.class, id).getApuntes()!=null)
-    apuntes=em.find(Cliente.class, id).getApuntes();
-    }catch(NullPointerException e){
-    apuntes=new HashSet <Apunte>();
-    }
-    return apuntes;
-    
-    ///aqui nop
-    }
-    */
     /**
      * Inserta una votación a un {@link Apunte}.
      * @param idCliente El ID de un {@link Cliente}.

@@ -5,6 +5,7 @@
 */
 package ejb;
 
+import encriptaciones.Encriptador;
 import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
@@ -23,7 +24,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public  class UsuarioEJB implements UsuarioEJBLocal{
-    
+    private Encriptador encriptador=new Encriptador();
     @PersistenceContext
     private  EntityManager em;
     
@@ -97,7 +98,8 @@ public  class UsuarioEJB implements UsuarioEJBLocal{
     public User contraseniaCorrecta(User usuario) throws SelectException,WrongPasswordException {
         User usuarioComprobado = null;
         try{
-            usuarioComprobado = (User) em.createNamedQuery("contraseniaCorrecta").setParameter("login", usuario.getLogin()).setParameter("contrasenia", usuario.getContrasenia()).getSingleResult();
+            String claveCifrada=encriptador.resumir(usuario.getContrasenia());
+            usuarioComprobado = (User) em.createNamedQuery("contraseniaCorrecta").setParameter("login", usuario.getLogin()).setParameter("contrasenia", claveCifrada).getSingleResult();
         }catch(NoResultException e){
             throw new WrongPasswordException(e.getMessage());
         }catch(Exception e){

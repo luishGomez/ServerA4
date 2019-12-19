@@ -31,27 +31,24 @@ import javax.mail.internet.MimeMultipart;
 
 
 /**
- * Es el hilo que controla el envio de un email.
+ * Es el hilo que controla la petición del cliente.
+ * It is the thread that controls the client’s request.
  * @author Ricardo Peinado Lastra
  */
 public class EmailThread extends Thread{
     
-    private static ResourceBundle configFile=ResourceBundle.getBundle("mensajeria.mensajeConfig");
-    
-    private static byte[] salt = configFile.getString("salt").getBytes();
-    private static String clave=configFile.getString("clave");
-    private static String pathPass=configFile.getString("password");
-    private static String pathEmail=configFile.getString("email");
-    
     private Properties properties = new Properties();
-    
+    private static ResourceBundle configFile=ResourceBundle.getBundle("mensajeria.mensajeConfig");
+    private static byte[] salt =configFile.getString("salt").getBytes();
+    private static final String clave=configFile.getString("clave");
     private Session sesion;
     private String receptor;
     private String asunto;
     private String mensaje;
-    private String address=descifrarTexto(clave,pathEmail);
-    private String password=descifrarTexto(clave,pathPass);
-    
+    private String address=descifrarTexto(clave,configFile.getString("email"));
+    private String password=descifrarTexto(clave,configFile.getString("password"));
+    //private String address=descifrarTexto(clave,"/src/java/mensajeria/cuentaEmail.dat");
+    //private String password=descifrarTexto(clave,"/src/java/mensajeria/cuentaPass.dat");
     public EmailThread(String receptor,String asunto, String mensaje) throws MontajeMailException, EnviarMailException{
         this.receptor=receptor;
         this.asunto=asunto;
@@ -63,6 +60,7 @@ public class EmailThread extends Thread{
      * This method is the start of thread execution.
      */
     public void run(){
+        Logger.getLogger(EmailThread.class.getName()).severe("info "+address+"  "+password);
         rellenarPropiedades();
         verificarSesion();
         try {
@@ -84,7 +82,8 @@ public class EmailThread extends Thread{
         properties.put("mail.smtp.host", host);
         properties.put("mail.smtp.port", port);
         properties.put("mail.smtp.ssl.trust", host);
-        properties.put("mail.imap.partialfetch", false);      
+        properties.put("mail.imap.partialfetch", false);
+        
     }
     
     private void verificarSesion() {
@@ -115,38 +114,36 @@ public class EmailThread extends Thread{
             message.setContent(multipart);
             
         }catch(Exception e){
+            Logger.getLogger(EmailThread.class.getName()).severe("EmailThread -> prepararMensaje() ERROR: "+e.getMessage());
             throw new MontajeMailException(e.getMessage());
         }
         try{
             Transport.send(message);
         }catch(MessagingException e){
+            Logger.getLogger(EmailThread.class.getName()).severe("EmailThread -> prepararMensaje() ERROR: "+e.getMessage());
             throw new EnviarMailException(e.getMessage());
         }
     }
-    private String descifrarTexto(String clave, String path) {
-        String ret = null;
-        
-        // Fichero leído
-        byte[] fileContent = fileReader(path);
+    private String descifrarTexto(String clave,String ruta) {
+        String retorno = null;
+        byte[] fileContent = fileReader(ruta);
         KeySpec keySpec = null;
         SecretKeyFactory secretKeyFactory = null;
         try {
-            // Creamos un SecretKey usando la clave + salt
-            keySpec = new PBEKeySpec(clave.toCharArray(), salt, 65536, 128); // AES-128
+            keySpec = new PBEKeySpec(clave.toCharArray(), salt, 65536, 128);
             secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] key = secretKeyFactory.generateSecret(keySpec).getEncoded();
             SecretKey privateKey = new SecretKeySpec(key, 0, key.length, "AES");
             
-            // Creamos un Cipher con el algoritmos que vamos a usar
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            IvParameterSpec ivParam = new IvParameterSpec(Arrays.copyOfRange(fileContent, 0, 16)); // La IV está aquí
+            IvParameterSpec ivParam = new IvParameterSpec(Arrays.copyOfRange(fileContent, 0, 16));
             cipher.init(Cipher.DECRYPT_MODE, privateKey, ivParam);
             byte[] decodedMessage = cipher.doFinal(Arrays.copyOfRange(fileContent, 16, fileContent.length));
-            ret = new String(decodedMessage);
+            retorno = new String(decodedMessage);
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(EmailThread.class.getName()).severe("EmailThread -> descifrarTexto() ERROR: "+e.getMessage());
         }
-        return ret;
+        return retorno;
     }
     private byte[] fileReader(String path) {
         byte ret[] = null;
@@ -154,7 +151,7 @@ public class EmailThread extends Thread{
         try {
             ret = Files.readAllBytes(file.toPath());
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.getLogger(EmailThread.class.getName()).severe("EmailThread -> fileReader() ERROR: "+e.getMessage());
         }
         return ret;
     }

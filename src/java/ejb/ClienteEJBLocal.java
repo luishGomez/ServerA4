@@ -69,5 +69,6 @@ public interface ClienteEJBLocal {
      */
     public void actualizarContrasenia(Cliente cliente) throws UpdateException;
     public void comprarApunte(Cliente cliente, Integer idApunte) throws CreateException;
+    public void passwordForgot(Cliente cliente) throws UpdateException;
     
 }

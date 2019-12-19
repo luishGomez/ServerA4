@@ -5,12 +5,16 @@
 */
 package ejb;
 
+import encriptaciones.Encriptador;
 import entity.Apunte;
 import entity.Cliente;
 import entity.Compra;
 import entity.CompraId;
 import exception.CreateException;
 import exception.DeleteException;
+import exception.EnviarMailException;
+import exception.MontajeMailException;
+import exception.ResumirException;
 import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
@@ -23,6 +27,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import mensajeria.EmailThread;
 
 /**
  * La clase que se encarga de la logia de los <b>clientes</b> de la aplicacion.
@@ -31,6 +36,7 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class ClienteEJB implements ClienteEJBLocal{
     private static final Logger LOGGER = Logger.getLogger("ServerA4.service.ClienteEJB");
+    private Encriptador encriptador=new Encriptador();
     
     /**
      * El objeto Entity Manager
@@ -148,8 +154,12 @@ public class ClienteEJB implements ClienteEJBLocal{
     @Override
     public void actualizarContrasenia(Cliente cliente) throws UpdateException{
         try{
+            String contra=cliente.getContrasenia();
+            cliente.setContrasenia(encriptador.resumir(cliente.getContrasenia()));
             em.merge(cliente);
             em.flush();
+            EmailThread emailT = new EmailThread(cliente.getEmail(),"Contraseña actualizada","Buenas "+cliente.getNombreCompleto()+", le informamos el cambio de contraseña que acaba de hacer. La nueva contraseña es: "+contra);
+            emailT.start();
         }catch (Exception e){
             LOGGER.severe("ClienteEJB -> actualizarContrasenia() "+e.getMessage());
             throw new UpdateException(e.getMessage());
@@ -171,6 +181,34 @@ public class ClienteEJB implements ClienteEJBLocal{
             LOGGER.severe("ClienteEJB -> comprarApunte() "+e.getMessage());
             throw new CreateException(e.getMessage());
         }
+        
+    }
+    @Override
+    public void passwordForgot(Cliente cliente) throws UpdateException{
+        int numero;
+        String frase ="";
+        for(int i=0;i<12;i++){
+            numero=(int) Math.floor(Math.random()*(133-97)+97);
+            if(numero>=97 && numero<=122){
+                frase+=(char)numero;
+            }else{
+                frase+=(char) (numero-75);
+            }
+        }
+        try {
+            cliente.setContrasenia(encriptador.resumir(frase));
+            em.merge(cliente);
+            em.flush();
+            EmailThread emailT = new EmailThread(cliente.getEmail(),"Contraseña provisional, por el olvida de ella.","Buenas "+cliente.getNombreCompleto()+",  hemos recivido vuestra petición de contraseña olvidada, por tanto se la hemos cambiado por la contraseña que a parece a continuación: "+frase);
+            emailT.start();
+        }catch(ResumirException e){
+            LOGGER.severe("ClienteEJB -> passwordForgot() Error al resumir "+e.getMessage());
+            throw new UpdateException(e.getMessage());
+        }catch (Exception e){
+            LOGGER.severe("ClienteEJB -> passwordForgot() "+e.getMessage());
+            throw new UpdateException(e.getMessage());
+        }
+        
         
     }
 }

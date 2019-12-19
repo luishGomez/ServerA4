@@ -9,6 +9,7 @@ import ejb.ClienteEJBLocal;
 import ejb.UsuarioEJBLocal;
 import entity.Apunte;
 import entity.Cliente;
+import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
 import exception.SelectCollectionException;
@@ -30,6 +31,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -220,6 +222,27 @@ public class ClienteFacadeREST  {
             ejb.comprarApunte(cliente, idApunte);
         } catch (CreateException ex) {
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> comprarApunte() ERROR: "+ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        
+    }
+    @GET
+    @Path("passwordForgot/{login}")
+    @Consumes(MediaType.APPLICATION_XML)
+    public void passwordForgot(@PathParam("login") String login){
+        try{
+            User user=ejbUser.findUserByLogin(login);
+            Cliente cliente=ejb.findCliente(user.getId());
+            ejb.passwordForgot(cliente);
+            
+        }catch(SelectException ex){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> passwordForgot() ERROR: "+ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }catch(UserNoExistException ex){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> passwordForgot() ERROR: "+ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
+        } catch (UpdateException ex) {
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> passwordForgot() ERROR: "+ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
         

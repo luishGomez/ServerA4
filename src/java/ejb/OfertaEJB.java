@@ -69,7 +69,7 @@ public  class OfertaEJB implements OfertaEJBLocal{
             oferta=em.merge(oferta);
             em.flush();
             Query q1 = em.createQuery ("DELETE FROM Oferta a WHERE a.idOferta = :idOferta");
-            q1.setParameter ("idPack",oferta.getIdOferta());
+            q1.setParameter ("idOferta",oferta.getIdOferta());
             int deleted1 = q1.executeUpdate ();
             //em.remove(em.find(Oferta.class, oferta.getIdOferta()));
         } catch (Exception e) {

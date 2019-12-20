@@ -3,7 +3,9 @@ package mensajeria;
 import exception.EnviarMailException;
 import exception.MontajeMailException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
@@ -125,6 +127,7 @@ public class EmailThread extends Thread{
         }
     }
     private String descifrarTexto(String clave,String ruta) {
+        //Logger.getLogger(EmailThread.class.getName()).severe(getClass().getResource(ruta).toString());
         String retorno = null;
         byte[] fileContent = fileReader(ruta);
         KeySpec keySpec = null;
@@ -150,9 +153,14 @@ public class EmailThread extends Thread{
         File file = new File(path);
         try {
             ret = Files.readAllBytes(file.toPath());
+            //ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(path));
+            //ret=(byte[]) objectInputStream.readObject();
+            
         } catch (IOException e) {
             Logger.getLogger(EmailThread.class.getName()).severe("EmailThread -> fileReader() ERROR: "+e.getMessage());
-        }
+        } //catch (ClassNotFoundException ex) {
+         //  Logger.getLogger(EmailThread.class.getName()).severe("EmailThread -> fileReader() ERROR casteo: "+ex.getMessage());
+        //}
         return ret;
     }
     

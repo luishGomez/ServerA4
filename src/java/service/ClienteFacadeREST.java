@@ -143,22 +143,7 @@ public class ClienteFacadeREST  {
         }
         return resultado;
     }
-    /*
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Cliente> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-    return super.findRange(new int[]{from, to});
-    }
     
-    
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-    return String.valueOf(super.count());
-    }
-    */
     /**
      * Metodo RESTFul que busca los cliente que han votado un apunte en especifico.
      * @param id El ID de un {@link Apunte}.
@@ -192,27 +177,7 @@ public class ClienteFacadeREST  {
             throw new InternalServerErrorException(ex);
         }
     }
-    /*
-    @PUT
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void actualizarCliente(Cliente cliente) {
-    try {
-    ejb.actualizarCliente(cliente);
-    } catch (UpdateException ex) {
-    Logger.getLogger(ClienteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    }
-    */
-    /* SE TRANSALDO
-    @GET
-    @Path("misApuntes/{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Set <Apunte> getMisApuntes(@PathParam("id") Integer id) {
-    return super.getMisApuntes(id);
-    }
-    
-    */
-    //comprarApunte
+   
     @POST
     @Path("comprar/{idApunte}")
     @Consumes(MediaType.APPLICATION_XML)

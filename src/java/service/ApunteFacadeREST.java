@@ -35,7 +35,7 @@ import javax.ws.rs.core.MediaType;
 @Path("apunte")
 public class ApunteFacadeREST  {
     private static final Logger LOGGER =
-            Logger.getLogger("javafxserverside");
+            Logger.getLogger("ApunteFacadeREST");
     /**
      * La referencia al objeto que maneja la logica de negocio de {@link Apunte}.
      */

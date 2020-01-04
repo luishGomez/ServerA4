@@ -14,6 +14,7 @@ import java.security.PublicKey;
 import java.security.spec.EncodedKeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.logging.Logger;
 import javax.crypto.Cipher;
 
 /*
@@ -27,6 +28,8 @@ import javax.crypto.Cipher;
  * @author Ricardo Peinado Lastra
  */
 public class Encriptador {
+    private static final Logger LOGGER =
+            Logger.getLogger("Encriptador");
     /**
      * Desencripta un mensaje encriptado.
      * @param mensaje El mensaje a descriptar.
@@ -50,7 +53,7 @@ public class Encriptador {
             frase=new String(cipher.doFinal(bytesEncript));
             
         } catch (Exception ex) {
-            System.out.println(ex.getCause()+" "+ex.getMessage());
+            LOGGER.severe(ex.getCause()+" "+ex.getMessage());
             throw new DescriptarException(ex.getMessage());
         }
         return frase;
@@ -80,6 +83,7 @@ public class Encriptador {
             
             
         } catch (Exception ex) {
+            LOGGER.severe(ex.getCause()+" "+ex.getMessage());
             throw new EncriptarException(ex.getMessage());
         }
         return encriptado;
@@ -101,6 +105,7 @@ public class Encriptador {
             resultado=hexadecimal(resumen);
             
         } catch (NoSuchAlgorithmException e) {
+            LOGGER.severe(e.getCause()+" "+e.getMessage());
             throw new ResumirException(e.getMessage());
         }
         return resultado;

@@ -49,7 +49,8 @@ public class CreadorDeCredenciales {
             // Guardamos el mensaje codificado: IV (16 bytes) + Mensaje
             byte[] combined = concatArrays(iv, encodedMessage);
             
-            fileWriter("F:\\Clase 2DAM\\Cosas_print\\"+nombreFichero, combined);
+            //fileWriter("F:\\Clase 2DAM\\Cosas_print\\"+nombreFichero, combined);
+             fileWriter(nombreFichero, combined);
             
             ret = new String(encodedMessage);
             
@@ -74,8 +75,10 @@ public class CreadorDeCredenciales {
     private static void fileWriter(String path, byte[] text) {
         try (FileOutputStream fos = new FileOutputStream(path)) {
             fos.write(text);
+            fos.close();
         } catch (IOException e) {
             e.printStackTrace();
+            
         }
     }
 }

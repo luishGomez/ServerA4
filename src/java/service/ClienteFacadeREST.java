@@ -191,15 +191,16 @@ public class ClienteFacadeREST  {
         }
         
     }
-    @PUT
+    @GET
     @Path("passwordForgot/{login}")
     @Consumes(MediaType.APPLICATION_XML)
-    //public void passwordForgot(@PathParam("login") String login){
-    public void passwordForgot(Cliente clienteVacio,@PathParam("login") String login){
+    public boolean passwordForgot(@PathParam("login") String login){
+        boolean resultado=false;
         try{
             User user=ejbUser.findUserByLogin(login);
             Cliente cliente=ejb.findCliente(user.getId());
             ejb.passwordForgot(cliente);
+            resultado=true;
         }catch(SelectException ex){
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> passwordForgot() ERROR: "+ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -210,6 +211,7 @@ public class ClienteFacadeREST  {
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> passwordForgot() ERROR: "+ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
+        return true;
     }
     
 }

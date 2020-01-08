@@ -16,16 +16,12 @@ import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
 import exception.UserNoExistException;
+import exception.WrongPasswordException;
 import exception.YaExisteLoginException;
-import exception.YaTieneCompradoException;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -211,7 +207,32 @@ public class ClienteFacadeREST  {
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> passwordForgot() ERROR: "+ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
-        return true;
+        return resultado;
+    }
+    @GET
+    @Path("iniciarSesion/{login}/{contrasenia}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Cliente iniciarSesion(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) throws WrongPasswordException {
+        Cliente usuarioComprobado = new Cliente();
+        try {
+            ejbUser.findUserByLogin(login);
+            
+            usuarioComprobado.setLogin(login);
+            usuarioComprobado.setContrasenia(contrasenia);
+            usuarioComprobado = (Cliente) ejbUser.contraseniaCorrecta(usuarioComprobado);
+            
+        } catch (WrongPasswordException ex) {
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> iniciarSesion() ERROR: "+ex.getMessage());
+            throw new NotAuthorizedException (ex.getMessage());
+        }catch(SelectException ex){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> iniciarSesion() ERROR: "+ex.getMessage());
+            throw new InternalServerErrorException (ex.getMessage());
+        } catch (UserNoExistException ex) {
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> iniciarSesion() ERROR: "+ex.getMessage());
+            throw new NotFoundException (ex.getMessage());
+        }
+        
+        return usuarioComprobado;
     }
     
 }

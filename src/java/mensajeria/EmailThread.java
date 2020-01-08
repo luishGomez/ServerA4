@@ -152,7 +152,6 @@ public class EmailThread extends Thread{
         byte ret[] = null;
         File file = new File(path);
         FileInputStream fis=null;
-        Logger.getLogger(EmailThread.class.getName()).severe("What??? "+path);
         try {
             // ret = Files.readAllBytes(file.toPath()); //bien??
             

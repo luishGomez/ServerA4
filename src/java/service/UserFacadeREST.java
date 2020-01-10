@@ -45,6 +45,7 @@ public class UserFacadeREST {
     @Consumes({MediaType.APPLICATION_XML})
     public void createUser(User usuario) {
         try {
+            usuario.setId(null);
             ejb.createUser(usuario);
         } catch (CreateException ex) {
             LOGGER.log(Level.SEVERE,

@@ -41,6 +41,7 @@ public class PackFacadeREST {
     @Consumes(MediaType.APPLICATION_XML)
     public void create(Pack pack) {
         try{
+            pack.setIdPack(null);
             ejb.createPack(pack);
         }catch(CreateException e){
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST create()"+e.getMessage());

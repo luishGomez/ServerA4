@@ -57,8 +57,8 @@ public class ClienteFacadeREST  {
     @POST
     @Consumes(MediaType.APPLICATION_XML)
     public void create(Cliente cliente) {
-        
         try{
+            cliente.setId(null);
             ejbUser.findUserByLogin(cliente.getLogin());
             throw new YaExisteLoginException("Ya existe ese login");
         } catch (UserNoExistException ex) {

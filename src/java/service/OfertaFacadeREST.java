@@ -49,6 +49,7 @@ public class OfertaFacadeREST{
     public void createOferta(Oferta oferta) {
         try {
             LOGGER.log(Level.INFO,"UserRESTful service: create {0}.",oferta);
+            oferta.setIdOferta(null);
             ejb.createOferta(oferta);
         } catch (CreateException ex) {
             LOGGER.log(Level.SEVERE,

@@ -50,7 +50,7 @@ public class ApunteFacadeREST  {
     @Consumes(MediaType.APPLICATION_XML)
     public void create(Apunte apunte) {
         try {
-            
+            apunte.setIdApunte(null);
             ejb.createApunte(apunte);
         } catch (CreateException ex) {
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ApunteFacadeRESTful -> create() ERROR: "+ex.getMessage());

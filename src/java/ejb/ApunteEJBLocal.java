@@ -73,4 +73,5 @@ public interface ApunteEJBLocal {
      * @throws UpdateException Salta si hay un error en la actualización.
      */
     public void votacion (Integer idCliente, Integer like, Apunte apunte) throws UpdateException;
+    public int cuantasCompras(Integer idApunte) throws SelectException;
 }

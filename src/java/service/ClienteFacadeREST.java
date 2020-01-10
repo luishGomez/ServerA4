@@ -18,6 +18,7 @@ import exception.UpdateException;
 import exception.UserNoExistException;
 import exception.WrongPasswordException;
 import exception.YaExisteLoginException;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -168,7 +169,11 @@ public class ClienteFacadeREST  {
     public void actualizarContrasenia(Cliente cliente) {
         try {
             ejb.actualizarContrasenia(cliente);
-        } catch (UpdateException ex) {
+            Date date = new Date();
+            Cliente nuevo=ejb.findCliente(cliente.getId());
+            nuevo.setUltimoCambioContrasenia(date);
+            ejb.editCliente(nuevo);
+        } catch (UpdateException | SelectException ex) {
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> actualizarContrasenia() ERROR: "+ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
@@ -189,7 +194,7 @@ public class ClienteFacadeREST  {
     }
     @GET
     @Path("passwordForgot/{login}")
-    @Consumes(MediaType.APPLICATION_XML)
+    @Produces(MediaType.TEXT_PLAIN)
     public boolean passwordForgot(@PathParam("login") String login){
         boolean resultado=false;
         try{
@@ -197,6 +202,9 @@ public class ClienteFacadeREST  {
             Cliente cliente=ejb.findCliente(user.getId());
             ejb.passwordForgot(cliente);
             resultado=true;
+            Date date = new Date();
+            cliente.setUltimoCambioContrasenia(date);
+            ejb.editCliente(cliente);
         }catch(SelectException ex){
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> passwordForgot() ERROR: "+ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());

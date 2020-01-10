@@ -190,6 +190,17 @@ public class ApunteEJB implements ApunteEJBLocal{
             throw new UpdateException(e.getMessage());
         }
     }
-    
+    @Override
+    public int cuantasCompras(Integer idApunte) throws SelectException{
+        int resultado=0;
+        try{
+            Apunte apunte = em.find(Apunte.class, idApunte);
+            resultado=apunte.getCompras().size();
+        }catch(Exception e){
+            LOGGER.severe("ApunteEJB -> cuantasCompras() "+e.getMessage());
+            throw new SelectException(e.getMessage());
+        }
+        return resultado;
+    }
     
 }

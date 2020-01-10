@@ -40,6 +40,7 @@ public class MateriaFacadeREST {
     @Consumes(MediaType.APPLICATION_XML)
     public void create(Materia materia) {
         try{
+            materia.setIdMateria(null);
             ejb.createMateria(materia);
         }catch(CreateException e){
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("MateriaREST create()"+e.getMessage());

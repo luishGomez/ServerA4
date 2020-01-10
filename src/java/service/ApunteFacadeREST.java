@@ -86,12 +86,12 @@ public class ApunteFacadeREST  {
                 LOGGER.log(Level.SEVERE,
                         "UserRESTful service: Exception reading apunte by id, {0}",
                         ex.getMessage());
-            throw new InternalServerErrorException(ex);
+                throw new InternalServerErrorException(ex);
             }
         } catch (DeleteException ex) {
             LOGGER.log(Level.SEVERE,
-                        "UserRESTful service: Exception deleting apunte by id, {0}",
-                        ex.getMessage());
+                    "UserRESTful service: Exception deleting apunte by id, {0}",
+                    ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
     }
@@ -206,42 +206,20 @@ public class ApunteFacadeREST  {
             throw new InternalServerErrorException(ex);
         }
     }
-    /*
+    
     @GET
-    @Path("misApuntes/{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Set <Apunte> getMisApuntes(@PathParam("id") Integer id) {
-    Set <Apunte> resultado = null;
-    try {
-    resultado=ejb.getMisApuntes(id);
-    } catch (SelectCollectionException ex) {
-    Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+    @Path("cuantasCompras/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public int cuantasCompras(@PathParam("id") Integer id) {
+        int resultado = 0;
+        try {
+            resultado=ejb.cuantasCompras(id);
+        } catch (SelectException ex) {
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ApunteFacadeRESTful -> cuantasCompras() ERROR: "+ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }
+        return resultado;
+        
     }
-    return resultado;
-    }
-    
-    @DELETE
-    @Path("borrarApunte/{id}")
-    public void borrarApunte(@PathParam("id") Integer id) {
-    try {
-    ejb.borrarApunte(id);
-    } catch (DeleteException ex) {
-    Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (YaEstaVendidoException ex) {
-    Logger.getLogger(ApunteFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    }
-    */
-    
-    /* DEL CLIENTE !!!!!
-    @GET
-    @Path("votantes/{id}")
-    @Produces({MediaType.APPLICATION_XML})
-    public List <Cliente> getVotantesId(@PathParam("id") Integer id) {
-    return super.getVotantesId(id);
-    }
-    */
-    
-    
     
 }

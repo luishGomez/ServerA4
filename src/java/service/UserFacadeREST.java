@@ -6,8 +6,11 @@
 package service;
 
 import ejb.UsuarioEJBLocal;
+import encriptaciones.Encriptador;
 import entity.User;
 import exception.CreateException;
+import exception.DescriptarException;
+import exception.EncriptarException;
 import exception.SelectException;
 import exception.UpdateException;
 import exception.UserNoExistException;
@@ -34,6 +37,7 @@ import javax.ws.rs.core.MediaType;
 @Path("user")
 public class UserFacadeREST {
     private static final Logger LOGGER = Logger.getLogger("servera4db.service.UserFacadeRest");
+    private Encriptador encriptador = new Encriptador();
     
     @EJB
     private UsuarioEJBLocal ejb;
@@ -127,13 +131,15 @@ public class UserFacadeREST {
     public User iniciarSesion(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) throws WrongPasswordException {
         User usuarioComprobado = new User();
         try {
+            String contrasenia2=encriptador.descriptar(contrasenia);
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("LA CONTRASEÑA!!!!!"+contrasenia2);
             usuarioComprobado.setLogin(login);
-            usuarioComprobado.setContrasenia(contrasenia);
+            usuarioComprobado.setContrasenia(contrasenia2);
             usuarioComprobado = ejb.findUserByLogin(login);
             
             usuarioComprobado = new User();
             usuarioComprobado.setLogin(login);
-            usuarioComprobado.setContrasenia(contrasenia);
+            usuarioComprobado.setContrasenia(contrasenia2);
             usuarioComprobado = ejb.contraseniaCorrecta(usuarioComprobado);
             
         } catch (WrongPasswordException ex) {
@@ -141,7 +147,7 @@ public class UserFacadeREST {
                     "UserRESTful service: Exception (WrongPasswordException) comprobar usuario by login and contrasenia, {0}",
                     ex.getMessage());
             throw new NotAuthorizedException (ex.getMessage());
-        }catch(SelectException ex){
+        }catch(SelectException  ex){
             LOGGER.log(Level.SEVERE,
                     "UserRESTful service: Exception (SelectException) comprobar usuario by login and contrasenia, {0}",
                     ex.getMessage());
@@ -151,6 +157,11 @@ public class UserFacadeREST {
                     "UserRESTful service: Exception (UserNoExistException) comprobar usuario by login and contrasenia, {0}",
                     ex.getMessage());
             throw new NotFoundException (ex.getMessage());
+        } catch (DescriptarException ex) {
+            LOGGER.log(Level.SEVERE,
+                    "UserRESTful service: Exception el descriptar",
+                    ex.getMessage());
+            throw new InternalServerErrorException (ex.getMessage());
         }
         
         return usuarioComprobado;

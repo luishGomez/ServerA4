@@ -5,6 +5,7 @@ import exception.MontajeMailException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.nio.file.Files;
 import java.security.spec.KeySpec;
@@ -151,24 +152,35 @@ public class EmailThread extends Thread{
     private byte[] fileReader(String path) {
         byte ret[] = null;
         File file = new File(path);
-        FileInputStream fis=null;
+        //FileInputStream fis=null; VERSION FUNCIONABLE
+        //NNUEVO
+        InputStream in = null;
         try {
             // ret = Files.readAllBytes(file.toPath()); //bien??
             
             //ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(path));
             //ret=(byte[]) objectInputStream.readObject();
             
+            /* VERSION FUNCIONABLE
             fis=new FileInputStream(path);
             ret=new byte[fis.available()];
             fis.read(ret);
+            */
+            in=EmailThread.class.getClassLoader().getResourceAsStream(path);
+            ret=new byte[in.available()];
+            in.read(ret);
             
         } catch (IOException e) {
             Logger.getLogger(EmailThread.class.getName()).severe("EmailThread -> fileReader() ERROR: "+e.getMessage());
         }finally{
             try{
+                /*VERSION FUNCIONABLE
                 if(fis!=null)
                     fis.close();
-                
+                */
+                //nuevo
+                if(in!=null)
+                    in.close();
             } catch (IOException ex) {
                 Logger.getLogger(EmailThread.class.getName()).severe("EmailThread -> fileReader() ERROR Al cerrar FileInputStream: "+ex.getMessage());
             }

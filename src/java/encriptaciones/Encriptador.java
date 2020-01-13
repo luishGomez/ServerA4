@@ -5,6 +5,7 @@ import exception.DescriptarException;
 import exception.EncriptarException;
 import exception.ResumirException;
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
@@ -14,8 +15,10 @@ import java.security.PublicKey;
 import java.security.spec.EncodedKeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javax.crypto.Cipher;
+import mensajeria.EmailThread;
 
 /*
 * To change this license header, choose License Headers in Project Properties.
@@ -28,6 +31,9 @@ import javax.crypto.Cipher;
  * @author Ricardo Peinado Lastra
  */
 public class Encriptador {
+    private static ResourceBundle configFile=ResourceBundle.getBundle("encriptaciones.encriptadorConfig");
+    private final String rutaPublica=configFile.getString("llavePublica");
+    private final String rutaPrivada=configFile.getString("llavePrivada");
     private static final Logger LOGGER =
             Logger.getLogger("Encriptador");
     /**
@@ -38,11 +44,13 @@ public class Encriptador {
      */
     public String descriptar(String mensaje) throws DescriptarException{
         String frase =null;
-        File file=new File("F:\\Clase 2DAM\\Cosas_print\\private.key");//Se tiene que cambiar
+        InputStream in = null;
+        byte[] bytes=null;
         try {
-            byte[] bytes=Files.readAllBytes(file.toPath());
+            in=Encriptador.class.getClassLoader().getResourceAsStream(rutaPrivada);
+            bytes=new byte[in.available()];
+            in.read(bytes);
             byte[] bytesEncript=hexStringToByteArray(mensaje);
-            //byte[] bytesEncript=stringToBytes(mensaje);
             EncodedKeySpec secretKeySpec = new  PKCS8EncodedKeySpec(bytes);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             
@@ -66,11 +74,12 @@ public class Encriptador {
      */
     public String encriptar(String mensaje) throws EncriptarException{
         String encriptado=null;
+        InputStream in = null;
+        byte[] bytes=null;
         try {
-            
-            File file=new File("F:\\Clase 2DAM\\Cosas_print\\public.key");//se tiene que cambiar
-            byte[] bytes=Files.readAllBytes(file.toPath());
-            
+            in=Encriptador.class.getClassLoader().getResourceAsStream(rutaPublica);
+            bytes=new byte[in.available()];
+            in.read(bytes);            
             EncodedKeySpec publicKeySpec = new  X509EncodedKeySpec(bytes);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);

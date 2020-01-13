@@ -7,11 +7,13 @@ package service;
 
 import ejb.ClienteEJBLocal;
 import ejb.UsuarioEJBLocal;
+import encriptaciones.Encriptador;
 import entity.Apunte;
 import entity.Cliente;
 import entity.User;
 import exception.CreateException;
 import exception.DeleteException;
+import exception.DescriptarException;
 import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
@@ -21,6 +23,7 @@ import exception.YaExisteLoginException;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -43,6 +46,7 @@ import javax.ws.rs.core.MediaType;
 
 @Path("cliente")
 public class ClienteFacadeREST  {
+    private Encriptador encriptador = new Encriptador();
     /**
      * La referencia al objeto que maneja la logica de negocio de {@link Apunte}
      */
@@ -168,12 +172,13 @@ public class ClienteFacadeREST  {
     @Consumes(MediaType.APPLICATION_XML)
     public void actualizarContrasenia(Cliente cliente) {
         try {
+            cliente.setContrasenia(encriptador.descriptar(cliente.getContrasenia()));
             ejb.actualizarContrasenia(cliente);
             Date date = new Date();
             Cliente nuevo=ejb.findCliente(cliente.getId());
             nuevo.setUltimoCambioContrasenia(date);
             ejb.editCliente(nuevo);
-        } catch (UpdateException | SelectException ex) {
+        } catch (UpdateException | SelectException | DescriptarException ex) {
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> actualizarContrasenia() ERROR: "+ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
@@ -223,10 +228,12 @@ public class ClienteFacadeREST  {
     public Cliente iniciarSesion(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) throws WrongPasswordException {
         Cliente usuarioComprobado = new Cliente();
         try {
+            String contrasenia2 =encriptador.descriptar(contrasenia);
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("LA CONTRASEÑA!!!!!"+contrasenia2);
             ejbUser.findUserByLogin(login);
             
             usuarioComprobado.setLogin(login);
-            usuarioComprobado.setContrasenia(contrasenia);
+            usuarioComprobado.setContrasenia(contrasenia2);
             usuarioComprobado = (Cliente) ejbUser.contraseniaCorrecta(usuarioComprobado);
             
         } catch (WrongPasswordException ex) {
@@ -238,6 +245,9 @@ public class ClienteFacadeREST  {
         } catch (UserNoExistException ex) {
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> iniciarSesion() ERROR: "+ex.getMessage());
             throw new NotFoundException (ex.getMessage());
+        } catch (DescriptarException ex) {
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> iniciarSesion() ERROR: "+ex.getMessage());
+            throw new InternalServerErrorException (ex.getMessage());
         }
         
         return usuarioComprobado;

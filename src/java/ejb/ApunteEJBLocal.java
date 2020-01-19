@@ -73,5 +73,11 @@ public interface ApunteEJBLocal {
      * @throws UpdateException Salta si hay un error en la actualización.
      */
     public void votacion (Integer idCliente, Integer like, Apunte apunte) throws UpdateException;
+    /**
+     * Cuenta cuantas compras tiene un determinado apunte.
+     * @param idApunte El identificador del apunte {@link Apunte}.
+     * @return Retorna la cantidad de compras.
+     * @throws SelectException Salta si ocurre algun error en la selección de datos.
+     */
     public int cuantasCompras(Integer idApunte) throws SelectException;
 }

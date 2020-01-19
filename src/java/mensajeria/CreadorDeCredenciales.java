@@ -16,8 +16,8 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- *
- * @author Usuario
+ * Es la clase que crea las credenciales del email en los ficheros.
+ * @author Ricardo Peinado Lastra
  */
 public class CreadorDeCredenciales {
     private static ResourceBundle configFile=ResourceBundle.getBundle("mensajeria.mensajeConfig");
@@ -28,6 +28,13 @@ public class CreadorDeCredenciales {
         String cifrarClave = cifrarTexto(clave,"abcd*1234","cuentaPass.dat");
        
     }
+     /**
+      * Cifra el texto que le pasemos en un determinado fichero.
+      * @param clave La clave para cifrar.
+      * @param mensaje El contenido.
+      * @param nombreFichero El nombre y tipo del fichero.
+      * @return Retorna el texto cifrado.
+      */
      public static String cifrarTexto(String clave, String mensaje,String nombreFichero) {
         String ret = null;
         KeySpec keySpec = null;
@@ -59,6 +66,12 @@ public class CreadorDeCredenciales {
         }
         return ret;
     }
+     /**
+      * Concatena arrays
+      * @param array1 El primer array
+      * @param array2 El segundo array.
+      * @return 
+      */
     private static byte[] concatArrays(byte[] array1, byte[] array2) {
         byte[] ret = new byte[array1.length + array2.length];
         System.arraycopy(array1, 0, ret, 0, array1.length);

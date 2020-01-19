@@ -190,6 +190,12 @@ public class ApunteEJB implements ApunteEJBLocal{
             throw new UpdateException(e.getMessage());
         }
     }
+    /**
+     * Cuenta cuantas compras tiene un determinado apunte.
+     * @param idApunte El identificador del apunte {@link Apunte}.
+     * @return Retorna la cantidad de compras.
+     * @throws SelectException Salta si ocurre algun error en la selección de datos.
+     */
     @Override
     public int cuantasCompras(Integer idApunte) throws SelectException{
         int resultado=0;

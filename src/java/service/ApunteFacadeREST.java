@@ -206,7 +206,11 @@ public class ApunteFacadeREST  {
             throw new InternalServerErrorException(ex);
         }
     }
-    
+    /**
+     * Metodo RESTFul que cuentas cuantas compras a tenido un apunte.
+     * @param id El ID de un {@link Apunte}
+     * @return Retorna la cantidad de compras de un apunte.
+     */
     @GET
     @Path("cuantasCompras/{id}")
     @Produces(MediaType.TEXT_PLAIN)

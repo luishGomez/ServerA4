@@ -183,7 +183,11 @@ public class ClienteFacadeREST  {
             throw new InternalServerErrorException(ex);
         }
     }
-   
+    /**
+     * Metodo RESTFul que permite comprar un apunte.
+     * @param cliente Los datos del cliente.
+     * @param idApunte El numero identificativo del apunte.
+     */
     @POST
     @Path("comprar/{idApunte}")
     @Consumes(MediaType.APPLICATION_XML)
@@ -197,6 +201,12 @@ public class ClienteFacadeREST  {
         }
         
     }
+    /**
+     * Metodo RESTFul que enuva la contraseña del usuario por una nueva creada 
+     * automaticamente y informa al email del usuario.
+     * @param login El login del usuario al que se refiere.
+     * @return Retorna un true si todo a salido bien.
+     */
     @GET
     @Path("passwordForgot/{login}")
     @Produces(MediaType.TEXT_PLAIN)
@@ -222,10 +232,17 @@ public class ClienteFacadeREST  {
         }
         return resultado;
     }
+    /**
+     * Metodo RESTFul que que permite iniciar sesión a un cliente.
+     * @param login El logind del cliente.
+     * @param contrasenia La contraseña del cliente.
+     * @return
+     * @throws WrongPasswordException 
+     */
     @GET
     @Path("iniciarSesion/{login}/{contrasenia}")
     @Produces({MediaType.APPLICATION_XML})
-    public Cliente iniciarSesion(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) throws WrongPasswordException {
+    public Cliente iniciarSesion(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia)  {
         Cliente usuarioComprobado = new Cliente();
         try {
             String contrasenia2 =encriptador.descriptar(contrasenia);

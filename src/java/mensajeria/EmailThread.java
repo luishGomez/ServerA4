@@ -75,7 +75,9 @@ public class EmailThread extends Thread{
         }
         
     }
-    
+    /**
+     * Rellena las propiedas para poder enviar un email por Mail.com
+     */
     private void rellenarPropiedades() {
         
         String host=configFile.getString("host");
@@ -88,7 +90,9 @@ public class EmailThread extends Thread{
         properties.put("mail.imap.partialfetch", false);
         
     }
-    
+    /**
+     * Verifica la sesión con las credenciales
+     */
     private void verificarSesion() {
         
         Authenticator autenticacion=new Authenticator() {
@@ -99,7 +103,14 @@ public class EmailThread extends Thread{
         };
         sesion = Session.getInstance(properties,autenticacion);
     }
-    
+    /**
+     * Prepara el mensaje.
+     * @param receptor A la persona que va dirijido.
+     * @param asunto El asunto del mensaje.
+     * @param mensaje El mensaje.
+     * @throws MontajeMailException Salta si se a cometido algun error al montar el mensaje.
+     * @throws EnviarMailException Salta si ocurre algun error en el envio.
+     */
     private void prepararMensaje(String receptor, String asunto, String mensaje) throws MontajeMailException, EnviarMailException {
         Message message=null;
         try{
@@ -127,8 +138,13 @@ public class EmailThread extends Thread{
             throw new EnviarMailException(e.getMessage());
         }
     }
+    /**
+     * Descifra las credenciales.
+     * @param clave La clave para descrifrarla.
+     * @param ruta La ruta del fichero que contiene la credencial.
+     * @return 
+     */
     private String descifrarTexto(String clave,String ruta) {
-        //Logger.getLogger(EmailThread.class.getName()).severe(getClass().getResource(ruta).toString());
         String retorno = null;
         byte[] fileContent = fileReader(ruta);
         KeySpec keySpec = null;
@@ -149,6 +165,11 @@ public class EmailThread extends Thread{
         }
         return retorno;
     }
+    /**
+     * Lee el fichero.
+     * @param path
+     * @return 
+     */
     private byte[] fileReader(String path) {
         byte ret[] = null;
         File file = new File(path);

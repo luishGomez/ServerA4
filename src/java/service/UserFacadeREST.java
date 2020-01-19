@@ -75,60 +75,18 @@ public class UserFacadeREST {
             throw new InternalServerErrorException(ex);
         }
     }
-    /**
-     * Metodo Get de Restful para buscar Usuario a partir de un xml
-     * @param login El Login del Usuario a ser encontrado
-     * @return Objeto Usuario con sus datos
-     * @throws exception.SelectException
-     */
-    /*
-    @GET
-    @Path("buscarPorLogin/{login}")
-    @Produces({MediaType.APPLICATION_XML})
-    public User findUserByLogin(@PathParam("login") String login) throws SelectException{
-    User usuario = null;
-    try {
-    usuario = ejb.findUserByLogin(login);
-    } catch (UserNoExistException ex) {
-    LOGGER.log(Level.SEVERE,
-    "UserRESTful service: Exception find user by login, {0}",
-    ex.getMessage());
-    throw new InternalServerErrorException(ex);
-    }
-    return usuario;
-    }
-    */
+    
     /**
      * Metodo Get de Restful para buscar Usuario a partir de un xml
      * @param login Login del Objeto a leer
      * @param contrasenia Contrasenia del Objeto a leer
      * @return Usuario con login existente y contraseña correcta
      * @throws WrongPasswordException si hay una excepcion durante el proceso
-     */
-    /*
-    @GET
-    @Path("contrasenia/{login}/{contrasenia}")
-    @Produces({MediaType.APPLICATION_XML})
-    public User contraseniaCorrecta(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) throws WrongPasswordException {
-    User usuarioComprobado = new User();
-    try {
-    usuarioComprobado.setLogin(login);
-    usuarioComprobado.setContrasenia(contrasenia);
-    usuarioComprobado = ejb.contraseniaCorrecta(usuarioComprobado);
-    } catch (WrongPasswordException ex) {
-    LOGGER.log(Level.SEVERE,
-    "UserRESTful service: Exception comprobar usuario by login and contrasenia, {0}",
-    ex.getMessage());
-    throw new InternalServerErrorException(ex);
-    }
-    
-    return usuarioComprobado;
-    }
-    */
+     */    
     @GET
     @Path("iniciarSesion/{login}/{contrasenia}")
     @Produces({MediaType.APPLICATION_XML})
-    public User iniciarSesion(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) throws WrongPasswordException {
+    public User iniciarSesion(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) {
         User usuarioComprobado = new User();
         try {
             String contrasenia2=encriptador.descriptar(contrasenia);

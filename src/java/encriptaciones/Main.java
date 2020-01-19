@@ -20,8 +20,8 @@ import java.util.logging.Logger;
 */
 
 /**
- *
- * @author 2dam
+ * Crea la clave privada como la publica.
+ * @author Ricardo Peinado Lastra
  */
 public class Main {
     public static void main(String[] args) {
@@ -40,7 +40,10 @@ public class Main {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+    /**
+     * Guarda la clave privada.
+     * @param privateKey  La clave privada.
+     */
     private static void guardarClavePrivada(PrivateKey privateKey) {
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(privateKey.getEncoded());
         try {
@@ -53,7 +56,10 @@ public class Main {
         }
         
     }
-    
+    /**
+     * Guarda la clabe publica.
+     * @param publicKey La clave publica.
+     */
     private static void guardarClavePublica(PublicKey publicKey) {
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(publicKey.getEncoded());
         try {

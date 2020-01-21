@@ -7,6 +7,7 @@ package service;
 
 import com.sun.xml.wss.impl.misc.Base64;
 import ejb.ApunteEJBLocal;
+import encriptaciones.Encriptador;
 import entity.Apunte;
 import entity.Cliente;
 import exception.CreateException;
@@ -232,9 +233,9 @@ public class ApunteFacadeREST  {
     @Produces(MediaType.TEXT_PLAIN)
     public String getArchivoDelApunte(@PathParam("id") Integer id) {
         String resultado = null;
-        try {
+        try {           
             Apunte apunte=ejb.findApunte(id);
-            resultado=Base64.encode(apunte.getArchivo());            
+            resultado=hexadecimal(apunte.getArchivo());            
         } catch (SelectException ex) {
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ApunteFacadeRESTful -> find() ERROR: "+ex.getMessage());
             throw new InternalServerErrorException(ex);
@@ -242,5 +243,47 @@ public class ApunteFacadeREST  {
         return resultado;
         
     }
-    
+    @POST
+    @Path("createApunteAndroid/{archivo}")
+    @Consumes(MediaType.APPLICATION_XML)
+    public void createApunteAndroid(Apunte apunte,@PathParam("archivo") String archivo) {
+        try {
+            LOGGER.info("Se va a crear un apunte desde android: "+archivo);
+            apunte.setIdApunte(null);
+            apunte.setArchivo(hexStringToByteArray(archivo));
+            ejb.createApunte(apunte);
+        } catch (CreateException ex) {
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ApunteFacadeRESTful -> create() ERROR: "+ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }
+    }
+    /**
+     * Convierte una lista de bytes a Hexadecimal.
+     * @param resumen La colección de bytes.
+     * @return Los bytes en hexadecimal.
+     */
+    static String hexadecimal(byte[] resumen) {
+        String HEX = "";
+        for (int i = 0; i < resumen.length; i++) {
+            String h = Integer.toHexString(resumen[i] & 0xFF);
+            if (h.length() == 1)
+                HEX += "0";
+            HEX += h;
+        }
+        return HEX.toUpperCase();
+    }
+    /**
+     * Convierte un texto en hexadeciaml en una lista de bytes.
+     * @param s El texto en hexadecimal.
+     * @return La coleccion en bytes.
+     */
+    public static byte[] hexStringToByteArray(String s) {
+        int len = s.length();
+        byte[] data = new byte[len / 2];
+        for (int i = 0; i < len; i += 2) {
+            data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+                    + Character.digit(s.charAt(i+1), 16));
+        }
+        return data;
+    }
 }

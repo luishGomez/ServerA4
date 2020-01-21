@@ -89,10 +89,51 @@ public class UserFacadeREST {
     public User iniciarSesion(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) {
         User usuarioComprobado = new User();
         try {
+            LOGGER.severe("LA CONTRASEÑA: "+contrasenia);
             String contrasenia2=encriptador.descriptar(contrasenia);
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("LA CONTRASEÑA!!!!!"+contrasenia2);
             usuarioComprobado.setLogin(login);
             usuarioComprobado.setContrasenia(contrasenia2);
+            usuarioComprobado = ejb.findUserByLogin(login);
+            
+            usuarioComprobado = new User();
+            usuarioComprobado.setLogin(login);
+            usuarioComprobado.setContrasenia(contrasenia2);
+            usuarioComprobado = ejb.contraseniaCorrecta(usuarioComprobado);
+            
+        } catch (WrongPasswordException ex) {
+            LOGGER.log(Level.SEVERE,
+                    "UserRESTful service: Exception (WrongPasswordException) comprobar usuario by login and contrasenia, {0}",
+                    ex.getMessage());
+            throw new NotAuthorizedException (ex.getMessage());
+        }catch(SelectException  ex){
+            LOGGER.log(Level.SEVERE,
+                    "UserRESTful service: Exception (SelectException) comprobar usuario by login and contrasenia, {0}",
+                    ex.getMessage());
+            throw new InternalServerErrorException (ex.getMessage());
+        } catch (UserNoExistException ex) {
+            LOGGER.log(Level.SEVERE,
+                    "UserRESTful service: Exception (UserNoExistException) comprobar usuario by login and contrasenia, {0}",
+                    ex.getMessage());
+            throw new NotFoundException (ex.getMessage());
+        } catch (DescriptarException ex) {
+            LOGGER.log(Level.SEVERE,
+                    "UserRESTful service: Exception el descriptar",
+                    ex.getMessage());
+            throw new InternalServerErrorException (ex.getMessage());
+        }
+        
+        return usuarioComprobado;
+    }
+    @GET
+    @Path("iniciarSesionAndroid/{login}/{contrasenia}")
+    @Produces({MediaType.APPLICATION_XML})
+    public User iniciarSesionAndroid(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) {
+        User usuarioComprobado = new User();
+        try {
+            LOGGER.severe("LA CONTRASEÑA: "+contrasenia);
+            String contrasenia2=encriptador.descriptarAndroid(contrasenia);
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("LA CONTRASEÑA!!!!!"+contrasenia2);
             usuarioComprobado = ejb.findUserByLogin(login);
             
             usuarioComprobado = new User();

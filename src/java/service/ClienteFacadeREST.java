@@ -8,6 +8,7 @@ package service;
 import ejb.ClienteEJBLocal;
 import ejb.UsuarioEJBLocal;
 import encriptaciones.Encriptador;
+import encriptaciones.KeyGetter;
 import entity.Apunte;
 import entity.Cliente;
 import entity.User;
@@ -268,6 +269,54 @@ public class ClienteFacadeREST  {
         }
         
         return usuarioComprobado;
+    }
+    @GET
+    @Path("iniciarSesionAndroid/{login}/{contrasenia}")
+    @Produces({MediaType.APPLICATION_XML})
+    public Cliente iniciarSesionAndroid(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia)  {
+        Cliente usuarioComprobado = new Cliente();
+        try {
+            String contrasenia2 =encriptador.descriptarAndroid(contrasenia);
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("LA CONTRASEÑA!!!!!"+contrasenia2);
+            ejbUser.findUserByLogin(login);
+            
+            usuarioComprobado.setLogin(login);
+            usuarioComprobado.setContrasenia(contrasenia2);
+            usuarioComprobado = (Cliente) ejbUser.contraseniaCorrecta(usuarioComprobado);
+            
+        } catch (WrongPasswordException ex) {
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> iniciarSesion() ERROR: "+ex.getMessage());
+            throw new NotAuthorizedException (ex.getMessage());
+        }catch(SelectException ex){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> iniciarSesion() ERROR: "+ex.getMessage());
+            throw new InternalServerErrorException (ex.getMessage());
+        } catch (UserNoExistException ex) {
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> iniciarSesion() ERROR: "+ex.getMessage());
+            throw new NotFoundException (ex.getMessage());
+        } catch (DescriptarException ex) {
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> iniciarSesion() ERROR: "+ex.getMessage());
+            throw new InternalServerErrorException (ex.getMessage());
+        }
+        
+        return usuarioComprobado;
+    }
+    /**
+     * Retorna la clave publica de la aplicación.
+     * @return La llave en hexadecimal
+     */
+    @GET
+    @Path("publicKey")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getPublicKey(){
+        String resultado=null;
+        try{
+            KeyGetter kg=new KeyGetter();
+            resultado=kg.getLlavePublica();
+        }catch(Exception ex){
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> getPublicKey() ERROR: "+ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return resultado;
     }
     
 }

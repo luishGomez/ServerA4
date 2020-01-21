@@ -1,6 +1,7 @@
 package encriptaciones;
 
 
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 import exception.DescriptarException;
 import exception.EncriptarException;
 import exception.ResumirException;
@@ -57,6 +58,30 @@ public class Encriptador {
             PrivateKey privateKey = keyFactory.generatePrivate(secretKeySpec);
             
             Cipher cipher = Cipher.getInstance("RSA");
+            cipher.init(Cipher.DECRYPT_MODE, privateKey);
+            frase=new String(cipher.doFinal(bytesEncript));
+            
+        } catch (Exception ex) {
+            LOGGER.severe(ex.getCause()+" "+ex.getMessage());
+            throw new DescriptarException(ex.getMessage());
+        }
+        return frase;
+    }
+    public String descriptarAndroid(String mensaje) throws DescriptarException{
+        String frase =null;
+        InputStream in = null;
+        byte[] bytes=null;
+        try {
+            in=Encriptador.class.getClassLoader().getResourceAsStream(rutaPrivada);
+            bytes=new byte[in.available()];
+            in.read(bytes);
+            byte[] bytesEncript=hexStringToByteArray(mensaje);
+            EncodedKeySpec secretKeySpec = new  PKCS8EncodedKeySpec(bytes);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            
+            PrivateKey privateKey = keyFactory.generatePrivate(secretKeySpec);
+            
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             frase=new String(cipher.doFinal(bytesEncript));
             

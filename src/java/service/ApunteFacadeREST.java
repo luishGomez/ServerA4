@@ -5,6 +5,7 @@
 */
 package service;
 
+import com.sun.xml.wss.impl.misc.Base64;
 import ejb.ApunteEJBLocal;
 import entity.Apunte;
 import entity.Cliente;
@@ -220,6 +221,22 @@ public class ApunteFacadeREST  {
             resultado=ejb.cuantasCompras(id);
         } catch (SelectException ex) {
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ApunteFacadeRESTful -> cuantasCompras() ERROR: "+ex.getMessage());
+            throw new InternalServerErrorException(ex);
+        }
+        return resultado;
+        
+    }
+    
+    @GET
+    @Path("archivo/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getArchivoDelApunte(@PathParam("id") Integer id) {
+        String resultado = null;
+        try {
+            Apunte apunte=ejb.findApunte(id);
+            resultado=Base64.encode(apunte.getArchivo());            
+        } catch (SelectException ex) {
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ApunteFacadeRESTful -> find() ERROR: "+ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
         return resultado;

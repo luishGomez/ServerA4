@@ -5,9 +5,7 @@
 */
 package service;
 
-import com.sun.xml.wss.impl.misc.Base64;
 import ejb.ApunteEJBLocal;
-import encriptaciones.Encriptador;
 import entity.Apunte;
 import entity.Cliente;
 import exception.CreateException;
@@ -244,15 +242,14 @@ public class ApunteFacadeREST  {
         
     }
     @POST
-    @Path("createApunteAndroid/{archivo}")
+    @Path("createApunteAndroid")
     @Consumes(MediaType.APPLICATION_XML)
-    public void createApunteAndroid(Apunte apunte,@PathParam("archivo") String archivo) {
+    public void createApunteAndroid(Apunte apunte) {
         try {
-            LOGGER.info("Se va a crear un apunte desde android: "+archivo);
+            LOGGER.info("Se va a crear un apunte desde android: ");
             apunte.setIdApunte(null);
-            apunte.setArchivo(hexStringToByteArray(archivo));
             ejb.createApunte(apunte);
-        } catch (CreateException ex) {
+        } catch (CreateException  ex) {
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ApunteFacadeRESTful -> create() ERROR: "+ex.getMessage());
             throw new InternalServerErrorException(ex);
         }

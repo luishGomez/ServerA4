@@ -69,9 +69,13 @@ public class ClienteFacadeREST  {
         } catch (UserNoExistException ex) {
             
             try {
+                cliente.setContrasenia(encriptador.descriptar(cliente.getContrasenia()));
                 ejb.createCliente(cliente);
             } catch (CreateException ex1) {
                 Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> create() ERROR: "+ex.getMessage());
+                throw new InternalServerErrorException(ex.getMessage());
+            } catch (DescriptarException ex1) {
+                Logger.getLogger(ApunteFacadeREST.class.getName()).severe("ClienteFacadeRESTful -> create() ERROR al descriptar: "+ex.getMessage());
                 throw new InternalServerErrorException(ex.getMessage());
             }
             

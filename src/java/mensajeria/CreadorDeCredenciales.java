@@ -24,7 +24,7 @@ public class CreadorDeCredenciales {
     private static byte[] salt =configFile.getString("salt").getBytes();
     private static final String clave=configFile.getString("clave");
      public static void main(String[] args) {
-        String cifrarTexto = cifrarTexto(clave,"equipo4Deply@email.com","cuentaEmail.dat");
+        String cifrarTexto = cifrarTexto(clave,"asdDe4@mail.com","cuentaEmail.dat");
         String cifrarClave = cifrarTexto(clave,"abcd*1234","cuentaPass.dat");
        
     }

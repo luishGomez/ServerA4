@@ -49,6 +49,7 @@ public class ClienteEJB implements ClienteEJBLocal{
     @Override
     public void createCliente(Cliente cliente) throws CreateException {
         try{
+            cliente.setContrasenia(encriptador.resumir(cliente.getContrasenia()));
             em.persist(cliente);
         }catch (Exception e){
             LOGGER.severe("ClienteEJB -> createCliente() "+e.getMessage());

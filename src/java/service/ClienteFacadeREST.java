@@ -250,7 +250,6 @@ public class ClienteFacadeREST  {
         Cliente usuarioComprobado = new Cliente();
         try {
             String contrasenia2 =encriptador.descriptar(contrasenia);
-            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("LA CONTRASEÑA!!!!!"+contrasenia2);
             ejbUser.findUserByLogin(login);
             
             usuarioComprobado.setLogin(login);
@@ -286,7 +285,6 @@ public class ClienteFacadeREST  {
         Cliente usuarioComprobado = new Cliente();
         try {
             String contrasenia2 =encriptador.descriptarAndroid(contrasenia);
-            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("LA CONTRASEÑA!!!!!"+contrasenia2);
             ejbUser.findUserByLogin(login);
             
             usuarioComprobado.setLogin(login);

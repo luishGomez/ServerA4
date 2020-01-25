@@ -89,9 +89,7 @@ public class UserFacadeREST {
     public User iniciarSesion(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) {
         User usuarioComprobado = new User();
         try {
-            LOGGER.severe("LA CONTRASEÑA: "+contrasenia);
             String contrasenia2=encriptador.descriptar(contrasenia);
-            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("LA CONTRASEÑA!!!!!"+contrasenia2);
             usuarioComprobado.setLogin(login);
             usuarioComprobado.setContrasenia(contrasenia2);
             usuarioComprobado = ejb.findUserByLogin(login);

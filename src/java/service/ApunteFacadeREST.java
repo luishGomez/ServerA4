@@ -130,29 +130,6 @@ public class ApunteFacadeREST  {
         }
         return resultado;
     }
-    /*
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Apunte> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-    return super.findRange(new int[]{from, to});
-    }
-    
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-    return String.valueOf(super.count());
-    }
-    */
-    /*
-    @GET
-    @Path("archivo/{id}")
-    @Produces({MediaType.APPLICATION_XML})
-    public byte[] getArchivoById(@PathParam("id") Integer id) {
-    return super.getArchivoById(id);
-    }
-    */
     /**
      * Metodo RESTFul que busca los apuntes creados por un {@link Cliente}.
      * @param id El ID de un{@link Cliente}.
@@ -225,7 +202,11 @@ public class ApunteFacadeREST  {
         return resultado;
         
     }
-    
+    /**
+     * Devuelve el archivo del apunte en un String
+     * @param id El codigo del apunte.
+     * @return Devuelve los bytes del pdf en hexadecimal
+     */
     @GET
     @Path("archivo/{id}")
     @Produces(MediaType.TEXT_PLAIN)
@@ -241,6 +222,10 @@ public class ApunteFacadeREST  {
         return resultado;
         
     }
+    /**
+     * Permite crear un apunte desde android.
+     * @param apunte Los datos del apunte.
+     */
     @POST
     @Path("createApunteAndroid")
     @Consumes(MediaType.APPLICATION_XML)

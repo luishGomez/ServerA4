@@ -241,8 +241,7 @@ public class ClienteFacadeREST  {
      * Metodo RESTFul que que permite iniciar sesión a un cliente.
      * @param login El logind del cliente.
      * @param contrasenia La contraseña del cliente.
-     * @return
-     * @throws WrongPasswordException 
+     * @return Los datos del cliente
      */
     @GET
     @Path("iniciarSesion/{login}/{contrasenia}")
@@ -274,6 +273,12 @@ public class ClienteFacadeREST  {
         
         return usuarioComprobado;
     }
+    /**
+     * Es la versión android para iniciar sesión un cliente.
+     * @param login El login del cliente.
+     * @param contrasenia La contraseña de la cuenta del cliente.
+     * @return  Los datos del cliente.
+     */
     @GET
     @Path("iniciarSesionAndroid/{login}/{contrasenia}")
     @Produces({MediaType.APPLICATION_XML})

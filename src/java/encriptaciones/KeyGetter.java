@@ -13,13 +13,16 @@ import java.util.logging.Logger;
 import javax.xml.bind.DatatypeConverter;
 
 /**
- *
- * @author Usuario
+ *  Permite coger la llave publica.
+ * @author Ricardo Peinado Lastra
  */
 public class KeyGetter {
     private static ResourceBundle configFile=ResourceBundle.getBundle("encriptaciones.encriptadorConfig");
     private final String rutaPublica=configFile.getString("llavePublica");
-    
+    /**
+     * Retorna la llave publica en hexadecimal.
+     * @return  La llave en hexadecimal.
+     */
     public String getLlavePublica(){
         String laClave=null;
         InputStream in = null;
@@ -43,7 +46,11 @@ public class KeyGetter {
         //return Base64.encode(bytes);
         return hexadecimal(bytes);
     }
-    
+    /**
+     * Convierte un array de bytes en un String en hexadecimal.
+     * @param resumen Los bytes convertir.
+     * @return El string de los bytes en hexadecimal.
+     */
     static String hexadecimal(byte[] resumen) {
         String HEX = "";
         for (int i = 0; i < resumen.length; i++) {

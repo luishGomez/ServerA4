@@ -174,13 +174,8 @@ public class EmailThread extends Thread{
         byte ret[] = null;
         File file = new File(path);
         //FileInputStream fis=null; VERSION FUNCIONABLE
-        //NNUEVO
         InputStream in = null;
         try {
-            // ret = Files.readAllBytes(file.toPath()); //bien??
-            
-            //ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(path));
-            //ret=(byte[]) objectInputStream.readObject();
             
             /* VERSION FUNCIONABLE
             fis=new FileInputStream(path);
@@ -199,16 +194,12 @@ public class EmailThread extends Thread{
                 if(fis!=null)
                     fis.close();
                 */
-                //nuevo
                 if(in!=null)
                     in.close();
             } catch (IOException ex) {
                 Logger.getLogger(EmailThread.class.getName()).severe("EmailThread -> fileReader() ERROR Al cerrar FileInputStream: "+ex.getMessage());
             }
         }
-        //catch (ClassNotFoundException ex) {
-        //  Logger.getLogger(EmailThread.class.getName()).severe("EmailThread -> fileReader() ERROR casteo: "+ex.getMessage());
-        //}
         return ret;
     }
     

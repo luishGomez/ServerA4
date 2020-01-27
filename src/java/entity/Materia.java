@@ -15,12 +15,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * Clase entity de Materia.
  * @author Luis
  */
 @NamedQuery(
-    name="findAllMateria",
-    query="SELECT m FROM Materia m ORDER BY m.idMateria")
+        name="findAllMateria",
+        query="SELECT m FROM Materia m ORDER BY m.idMateria")
 @Entity
 @Table(name="materia",schema="serverA4db")
 @XmlRootElement
@@ -36,36 +36,60 @@ public class Materia implements Serializable{
     private String descripcion;
     @OneToMany(cascade=ALL,mappedBy="materia")
     private Set<Apunte> apuntes;
-    
+    /**
+     * Devuelve el valor de idMateria.
+     * @return Id de la materia.
+     */
     public Integer getIdMateria() {
         return idMateria;
     }
-    
+    /**
+     * Le da un valor a idMateria.
+     * @param idMateria Id de la materia.
+     */
     public void setIdMateria(Integer idMateria) {
         this.idMateria = idMateria;
     }
-    
+    /**
+     * Devuelve el valor de titulo.
+     * @return Título de la materia.
+     */
     public String getTitulo() {
         return titulo;
     }
-    
+    /**
+     * Le da un valor a titulo.
+     * @param titulo Título de la materia.
+     */
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-    
+    /**
+     * Devuelve el valor de descripcion.
+     * @return Descripción de la materia.
+     */
     public String getDescripcion() {
         return descripcion;
     }
-    
+    /**
+     * Le da un valor a descripcion.
+     * @param descripcion Descripción de la materia.
+     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
+    /**
+     * Devuelve el valor de apuntes.
+     * @return Apuntes de la materia.
+     */
     @XmlTransient
     public Set<Apunte> getApuntes() {
         return apuntes;
     }
-    
+    /**
+     * Le da un valor a apuntes.
+     * @param apuntes Apuntes de la materia.
+     */
     public void setApuntes(Set<Apunte> apuntes) {
         this.apuntes = apuntes;
     }

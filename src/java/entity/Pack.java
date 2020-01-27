@@ -20,12 +20,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * Clase entity de Pack.
  * @author Luis
  */
 @NamedQuery(
-    name="findAllPack",
-    query="SELECT p FROM Pack p ORDER BY p.idPack")
+        name="findAllPack",
+        query="SELECT p FROM Pack p ORDER BY p.idPack")
 @Entity
 @Table(name="pack",schema="serverA4db")
 @XmlRootElement
@@ -47,58 +47,94 @@ public class Pack implements Serializable{
     private Set<Apunte> apuntes;
     @ManyToMany(mappedBy="packs",fetch=EAGER,cascade=CascadeType.REMOVE)
     private Set<Oferta> ofertas;
-
+    /**
+     * Devuelve el valor de idPack.
+     * @return Id del pack.
+     */
     public Integer getIdPack() {
         return idPack;
     }
-
+    /**
+     * Le da un valor a idPack.
+     * @param idPack Id del pack.
+     */
     public void setIdPack(Integer idPack) {
         this.idPack = idPack;
     }
-
+    /**
+     * Devuelve el valor de titulo.
+     * @return Título del pack.
+     */
     public String getTitulo() {
         return titulo;
     }
-
+    /**
+     * Le da un valor a titulo.
+     * @param titulo Título del pack.
+     */
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-
+    /**
+     * Devuelve el valor de descripcion.
+     * @return Descripción del pack.
+     */
     public String getDescripcion() {
         return descripcion;
     }
-
+    /**
+     * Le da un valor a descripcion.
+     * @param descripcion Descripción del pack.
+     */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-
+    /**
+     * Devuelve el valor de fechaModificacion.
+     * @return Fecha de modificación del pack.
+     */
     public Date getFechaModificacion() {
         return fechaModificacion;
     }
-
+    /**
+     * Le da un valor a fechaModificacion.
+     * @param fechaModificacion Fecha de modificación del pack.
+     */
     public void setFechaModificacion(Date fechaModificacion) {
         this.fechaModificacion = fechaModificacion;
     }
-
     
+    /**
+     * Devuelve el valor de apuntes.
+     * @return Apuntes del pack.
+     */
     public Set<Apunte> getApuntes() {
         return apuntes;
     }
-
+    /**
+     * Le da un valor a apuntes.
+     * @param apuntes Apuntes del pack.
+     */
     public void setApuntes(Set<Apunte> apuntes) {
         this.apuntes = apuntes;
     }
-
+    /**
+     * Devuelve el valor de ofertas.
+     * @return Ofertas del pack.
+     */
     @XmlTransient
     public Set<Oferta> getOfertas() {
         return ofertas;
     }
-
+    /**
+     * Le da un valor a ofertas.
+     * @param ofertas Ofertas del pack.
+     */
     public void setOfertas(Set<Oferta> ofertas) {
         this.ofertas = ofertas;
     }
-
-   @Override
+    
+    @Override
     public int hashCode() {
         int hash = 0;
         hash += (idPack != null ? idPack.hashCode() : 0);

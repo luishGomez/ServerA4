@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import ejb.MateriaEJBLocal;
@@ -27,15 +22,20 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
+ * Clase de servicio RESTful de la entidad Materia.
  * @author Luis
  */
 @Path("materia")
 public class MateriaFacadeREST {
-
+    /**
+     * Objeto que maneja la lógica del CRUD de Materia.
+     */
     @EJB
     private MateriaEJBLocal ejb;
-    
+    /**
+     * Método para crear una materia en la base de datos.
+     * @param materia Objeto materia para insertar en la base de datos.
+     */
     @POST
     @Consumes(MediaType.APPLICATION_XML)
     public void create(Materia materia) {
@@ -47,7 +47,10 @@ public class MateriaFacadeREST {
             throw new InternalServerErrorException(e);
         }
     }
-
+    /**
+     * Método para editar una materia de la base de datos.
+     * @param materia Objeto materia editado.
+     */
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void edit(Materia materia) {
@@ -58,7 +61,10 @@ public class MateriaFacadeREST {
             throw new InternalServerErrorException(e);
         }
     }
-
+    /**
+     * Método para eliminar una materia de la base de datos.
+     * @param id Id de la materia que se desea eliminar.
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
@@ -69,7 +75,11 @@ public class MateriaFacadeREST {
             throw new InternalServerErrorException(e);
         }
     }
-
+    /**
+     * Método para buscar una materia de la base de datos.
+     * @param id Id de la materia que se desea buscar.
+     * @return Objeto materia buscado.
+     */
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_XML)
@@ -83,7 +93,10 @@ public class MateriaFacadeREST {
         }
         return materia;
     }
-
+    /**
+     * Método para buscar todas las materias de la base de datos.
+     * @return Colección con todas las materias.
+     */
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public Set<Materia> findAll() {

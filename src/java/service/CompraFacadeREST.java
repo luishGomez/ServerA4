@@ -24,23 +24,25 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.PathSegment;
 
 /**
- *
+ * Clase de servicio RESTful de la entidad Compra.
  * @author Luis
  */
 @Path("compra")
 public class CompraFacadeREST {
-
+    /**
+     * Objeto que maneja la lógica del CRUD de Compra.
+     */
     @EJB
     private CompraEJBLocal ejb;
-
+    
     private CompraId getPrimaryKey(PathSegment pathSegment) {
         /*
-         * pathSemgent represents a URI path segment and any associated matrix parameters.
-         * URI path part is supposed to be in form of 'somePath;clienteId=clienteIdValue;apunteId=apunteIdValue'.
-         * Here 'somePath' is a result of getPath() method invocation and
-         * it is ignored in the following code.
-         * Matrix parameters are used as field names to build a primary key instance.
-         */
+        * pathSemgent represents a URI path segment and any associated matrix parameters.
+        * URI path part is supposed to be in form of 'somePath;clienteId=clienteIdValue;apunteId=apunteIdValue'.
+        * Here 'somePath' is a result of getPath() method invocation and
+        * it is ignored in the following code.
+        * Matrix parameters are used as field names to build a primary key instance.
+        */
         entity.CompraId key = new entity.CompraId();
         javax.ws.rs.core.MultivaluedMap<String, String> map = pathSegment.getMatrixParameters();
         java.util.List<String> clienteId = map.get("clienteId");
@@ -53,7 +55,12 @@ public class CompraFacadeREST {
         }
         return key;
     }
-
+    /**
+     * Método para crear una compra en la base de datos.
+     * @param idApunte Id del apunte comprado.
+     * @param idCliente Id del comprador.
+     * @param compra Objeto compra.
+     */
     @PUT
     @Path("comprar/{idApunte}/{idCliente}")
     @Consumes(MediaType.APPLICATION_XML)
@@ -65,7 +72,10 @@ public class CompraFacadeREST {
             throw new InternalServerErrorException(e);
         }
     }
-
+    /**
+     * Método para editar una compra de la base de datos.
+     * @param compra Objeto compra editado.
+     */
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void edit(Compra compra) {
@@ -76,7 +86,10 @@ public class CompraFacadeREST {
             throw new InternalServerErrorException(e);
         }
     }
-
+    /**
+     * Método para eliminar una compra de la base de datos.
+     * @param id Id de la compra que se desea eliminar.
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") PathSegment id) {
@@ -87,21 +100,10 @@ public class CompraFacadeREST {
             throw new InternalServerErrorException(e);
         }
     }
-    /*
-    @GET
-    @Path("{id}")
-    @Produces(MediaType.APPLICATION_XML)
-    public Compra find(@PathParam("id") PathSegment id) {
-        entity.CompraId key = getPrimaryKey(id);
-        Compra compra = null;
-        try{
-            compra = ejb.findCompra(key);
-        }catch(SelectException e){
-            throw new InternalServerErrorException(e);
-        }
-        return compra;
-    }
-    */
+    /**
+     * Método para buscar todas las materias de la base de datos.
+     * @return Colección con todas las compras.
+     */
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public Set<Compra> findAll() {
@@ -114,7 +116,11 @@ public class CompraFacadeREST {
         }
         return compras;
     }
-
+    /**
+     * Método para buscar las compras por el id del cliente de la base de datos.
+     * @param idCliente Id del cliente que se desea buscar las compras.
+     * @return Colección con las compras buscadas.
+     */
     @GET
     @Path("byCliente/{id}")
     @Produces(MediaType.APPLICATION_XML)

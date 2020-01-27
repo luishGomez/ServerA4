@@ -77,7 +77,6 @@ public class Apunte implements Serializable {
     @NotNull
     @ManyToOne
     private Cliente creador;
-    //JAVI QUITO
     @OneToMany(cascade=ALL,mappedBy="apunte")
     private Set <Compra> compras;
     @ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.REMOVE)

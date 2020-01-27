@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import ejb.PackEJBLocal;
@@ -28,15 +23,20 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
+ * Clase de servicio RESTful de la entidad Pack.
  * @author Luis
  */
 @Path("pack")
 public class PackFacadeREST {
-
+    /**
+     * Objeto que maneja la lógica del CRUD de Pack.
+     */
     @EJB
     private PackEJBLocal ejb;
-    
+    /**
+     * Método para crear un pack en la base de datos.
+     * @param pack Objeto pack para insertar en la base de datos.
+     */
     @POST
     @Consumes(MediaType.APPLICATION_XML)
     public void create(Pack pack) {
@@ -48,7 +48,10 @@ public class PackFacadeREST {
             throw new InternalServerErrorException(e);
         }
     }
-
+    /**
+     * Método para editar un pack de la base de datos.
+     * @param pack Objeto pack editado.
+     */
     @PUT
     @Consumes(MediaType.APPLICATION_XML)
     public void edit(Pack pack) {
@@ -59,7 +62,10 @@ public class PackFacadeREST {
             throw new InternalServerErrorException(e);
         }
     }
-
+    /**
+     * Método para eliminar un pack de la base de datos.
+     * @param id Id del pack que se desea eliminar.
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
@@ -70,7 +76,11 @@ public class PackFacadeREST {
             throw new InternalServerErrorException(e);
         }
     }
-
+    /**
+     * Método para buscar un pack de la base de datos.
+     * @param id Id del pack que se desea buscar.
+     * @return Objeto pack buscado.
+     */
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_XML)
@@ -84,7 +94,10 @@ public class PackFacadeREST {
         }
         return pack;
     }
-
+    /**
+     * Método para buscar todos los packs de la base de datos.
+     * @return Colección con todos los packs.
+     */
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public Set<Pack> findAll() {
@@ -97,6 +110,11 @@ public class PackFacadeREST {
         }
         return packs;
     }
+    /**
+     * Método para insertar un apunte a un pack.
+     * @param pack Objeto pack al que se le quiere insertar un apunte.
+     * @param idApunte Id del apunte que se quiere insertar.
+     */
     @PUT
     @Path("insertarApunte/{idApunte}")
     @Consumes(MediaType.APPLICATION_XML)
@@ -108,6 +126,11 @@ public class PackFacadeREST {
             throw new InternalServerErrorException(e);
         }
     }
+    /**
+     * Método para eliminar un apunte de un pack.
+     * @param pack Objeto pack al que se el quiere eliminar un apunte.
+     * @param idApunte Id del apunte que se quiere eliminar.
+     */
     @PUT
     @Path("eliminarApunte/{idApunte}")
     @Consumes(MediaType.APPLICATION_XML)
@@ -119,6 +142,11 @@ public class PackFacadeREST {
             throw new InternalServerErrorException(e);
         }
     }
+    /**
+     * Método para obtener la oferta del pack.
+     * @param idPack Id del pack del que queremos obtener la oferta.
+     * @return Objeto oferta del pack.
+     */
     @GET
     @Path("oferta/{idPack}")
     @Produces(MediaType.APPLICATION_XML)

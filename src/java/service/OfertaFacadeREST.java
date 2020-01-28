@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package service;
 
 import ejb.OfertaEJBLocal;
@@ -28,7 +23,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
+ * Es la clase de servicio Web RESTful que expone las operaciones CRUD de las
+ * ofertas.
  * @author Sergio
  */
 
@@ -48,12 +44,12 @@ public class OfertaFacadeREST{
     @Consumes({MediaType.APPLICATION_XML})
     public void createOferta(Oferta oferta) {
         try {
-            LOGGER.log(Level.INFO,"UserRESTful service: create {0}.",oferta);
+            LOGGER.log(Level.INFO,"OfertaRESTful service: create {0}.",oferta);
             oferta.setIdOferta(null);
             ejb.createOferta(oferta);
         } catch (CreateException ex) {
             LOGGER.log(Level.SEVERE,
-                    "UserRESTful service: Exception creating oferta, {0}",
+                    "OfertaRESTful service: Exception creating oferta, {0}",
                     ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
@@ -70,11 +66,11 @@ public class OfertaFacadeREST{
     public Oferta findOfertaById(@PathParam("idOferta") Integer idOferta)  throws SelectException{
         Oferta oferta = null;
         try {
-            LOGGER.log(Level.INFO,"UserRESTful service: find User by id={0}.",idOferta);
+            LOGGER.log(Level.INFO,"OfertaRESTful service: find User by id={0}.",idOferta);
             oferta = ejb.findOfertaById(idOferta);
         } catch (SelectException ex) {
             LOGGER.log(Level.SEVERE,
-                    "UserRESTful service: Exception reading oferta by idOferta, {0}",
+                    "OfertaRESTful service: Exception reading oferta by idOferta, {0}",
                     ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
@@ -89,17 +85,17 @@ public class OfertaFacadeREST{
     public void deleteOferta(@PathParam("idOferta") Integer idOferta) {
         try {
             try {
-                LOGGER.log(Level.INFO,"UserRESTful service: find User by id={0}.",idOferta);
+                LOGGER.log(Level.INFO,"OfertaRESTful service: find User by id={0}.",idOferta);
                 ejb.deleteOferta(ejb.findOfertaById(idOferta));
             } catch (SelectException ex) {
                 LOGGER.log(Level.SEVERE,
-                        "UserRESTful service: Exception reading user by id, {0}",
+                        "OfertaRESTful service: Exception reading user by id, {0}",
                         ex.getMessage());
                 throw new InternalServerErrorException(ex);
             }
         } catch (DeleteException ex) {
             LOGGER.log(Level.SEVERE,
-                    "UserRESTful service: Exception deleting oferta by idOferta, {0}",
+                    "OfertaRESTful service: Exception deleting oferta by idOferta, {0}",
                     ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
@@ -113,11 +109,11 @@ public class OfertaFacadeREST{
     public List<Oferta> findAllOfertas(){
         List<Oferta> ofertas = null;
         try {
-            LOGGER.log(Level.INFO,"UserRESTful service: find User by id={0}.");
+            LOGGER.log(Level.INFO,"OfertaRESTful service: find User by id={0}.");
             ofertas = ejb.findAllOfertas();
         } catch (SelectCollectionException ex) {
             LOGGER.log(Level.SEVERE,
-                    "UserRESTful service: Exception reading list ofertas by idOferta, {0}",
+                    "OfertaRESTful service: Exception reading list ofertas by idOferta, {0}",
                     ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
@@ -132,11 +128,11 @@ public class OfertaFacadeREST{
     @Consumes({MediaType.APPLICATION_XML})
     public void updateOferta(Oferta oferta) {
         try {
-            LOGGER.log(Level.INFO,"UserRESTful service: find User by id={0}.",oferta);
+            LOGGER.log(Level.INFO,"OfertaRESTful service: find User by id={0}.",oferta);
             ejb.updateOferta(oferta);
         } catch (UpdateException ex) {
             LOGGER.log(Level.SEVERE,
-                    "UserRESTful service: Exception update oferta by Object oferta, {0}",
+                    "OfertaRESTful service: Exception update oferta by Object oferta, {0}",
                     ex.getMessage());
             throw new InternalServerErrorException(ex);
         }
@@ -146,7 +142,7 @@ public class OfertaFacadeREST{
     @Consumes(MediaType.APPLICATION_XML)
     public void insertarPack(Oferta oferta,@PathParam("idPack") Integer idPack) {
         try{
-            LOGGER.log(Level.INFO,"UserRESTful service: find User by id={0}.",oferta.getIdOferta());
+            LOGGER.log(Level.INFO,"OfertaRESTful service: find User by id={0}.",oferta.getIdOferta());
             ejb.insertarPack(oferta, idPack);
         }catch(UpdateException e){
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST insertarApunte()"+e.getMessage());
@@ -158,10 +154,10 @@ public class OfertaFacadeREST{
     @Consumes(MediaType.APPLICATION_XML)
     public void eliminarPack(Oferta oferta,@PathParam("idPack") Integer idPack) {
         try{
-            LOGGER.log(Level.INFO,"UserRESTful service: find User by id={0}.",oferta.getIdOferta());
+            LOGGER.log(Level.INFO,"OfertaRESTful service: find User by id={0}.",oferta.getIdOferta());
             ejb.eliminarPack(oferta, idPack);
         }catch(UpdateException e){
-            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST eliminarApunte()"+e.getMessage());
+            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("OfertaRESTful eliminarApunte()"+e.getMessage());
             throw new InternalServerErrorException(e);
         }
     }

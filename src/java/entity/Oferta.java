@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * Clase entity para las ofertas.
  * @author sergio
  */
 @Entity

@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ * Clase entity para los usuarios
  * @author sergio
  */
 

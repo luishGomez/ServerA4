@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package service;
 
 import ejb.UsuarioEJBLocal;
@@ -31,7 +26,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 /**
- *
+ * Es la clase de servicio Web RESTful que expone las operaciones CRUD de los Users
  * @author Sergio
  */
 @Path("user")
@@ -81,7 +76,6 @@ public class UserFacadeREST {
      * @param login Login del Objeto a leer
      * @param contrasenia Contrasenia del Objeto a leer
      * @return Usuario con login existente y contraseña correcta
-     * @throws WrongPasswordException si hay una excepcion durante el proceso
      */    
     @GET
     @Path("iniciarSesion/{login}/{contrasenia}")
@@ -123,15 +117,20 @@ public class UserFacadeREST {
         
         return usuarioComprobado;
     }
+    /**
+     * Metodo Get de Restful para buscar Usuario a partir de un xml para clientes
+     * android.
+     * @param login Login del Objeto a leer
+     * @param contrasenia Contrasenia del Objeto a leer
+     * @return Usuario con login existente y contraseña correcta
+     */ 
     @GET
     @Path("iniciarSesionAndroid/{login}/{contrasenia}")
     @Produces({MediaType.APPLICATION_XML})
     public User iniciarSesionAndroid(@PathParam("login") String login,@PathParam("contrasenia")String contrasenia) {
         User usuarioComprobado = new User();
         try {
-            LOGGER.severe("LA CONTRASEÑA: "+contrasenia);
             String contrasenia2=encriptador.descriptarAndroid(contrasenia);
-            Logger.getLogger(ApunteFacadeREST.class.getName()).severe("LA CONTRASEÑA!!!!!"+contrasenia2);
             usuarioComprobado = ejb.findUserByLogin(login);
             
             usuarioComprobado = new User();

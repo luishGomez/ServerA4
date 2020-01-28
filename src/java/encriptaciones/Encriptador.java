@@ -1,13 +1,10 @@
 package encriptaciones;
 
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 import exception.DescriptarException;
 import exception.EncriptarException;
 import exception.ResumirException;
-import java.io.File;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,7 +16,6 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 import javax.crypto.Cipher;
-import mensajeria.EmailThread;
 
 /*
 * To change this license header, choose License Headers in Project Properties.

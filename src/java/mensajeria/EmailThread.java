@@ -3,11 +3,8 @@ package mensajeria;
 import exception.EnviarMailException;
 import exception.MontajeMailException;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.nio.file.Files;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
 import java.util.Properties;
@@ -50,8 +47,6 @@ public class EmailThread extends Thread{
     private String mensaje;
     private String address=descifrarTexto(clave,configFile.getString("email"));
     private String password=descifrarTexto(clave,configFile.getString("password"));
-    //private String address=descifrarTexto(clave,"/src/java/mensajeria/cuentaEmail.dat");
-    //private String password=descifrarTexto(clave,"/src/java/mensajeria/cuentaPass.dat");
     public EmailThread(String receptor,String asunto, String mensaje) throws MontajeMailException, EnviarMailException{
         this.receptor=receptor;
         this.asunto=asunto;
@@ -142,7 +137,7 @@ public class EmailThread extends Thread{
      * Descifra las credenciales.
      * @param clave La clave para descrifrarla.
      * @param ruta La ruta del fichero que contiene la credencial.
-     * @return 
+     * @return
      */
     private String descifrarTexto(String clave,String ruta) {
         String retorno = null;
@@ -168,7 +163,7 @@ public class EmailThread extends Thread{
     /**
      * Lee el fichero.
      * @param path
-     * @return 
+     * @return
      */
     private byte[] fileReader(String path) {
         byte ret[] = null;
@@ -192,7 +187,7 @@ public class EmailThread extends Thread{
             try{
                 /*VERSION FUNCIONABLE
                 if(fis!=null)
-                    fis.close();
+                fis.close();
                 */
                 if(in!=null)
                     in.close();

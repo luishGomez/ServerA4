@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mensajeria;
 
 import java.io.FileOutputStream;
@@ -56,7 +51,7 @@ public class CreadorDeCredenciales {
             // Guardamos el mensaje codificado: IV (16 bytes) + Mensaje
             byte[] combined = concatArrays(iv, encodedMessage);
             
-            //fileWriter("F:\\Clase 2DAM\\Cosas_print\\"+nombreFichero, combined);
+            //fileWriter("F:\\Clase 2DAM\\Cosas_print\\"+nombreFichero, combined); versión antigua
              fileWriter(nombreFichero, combined);
             
             ret = new String(encodedMessage);

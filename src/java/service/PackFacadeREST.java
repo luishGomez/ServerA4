@@ -8,6 +8,7 @@ import exception.DeleteException;
 import exception.SelectCollectionException;
 import exception.SelectException;
 import exception.UpdateException;
+import java.util.Date;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -42,6 +43,7 @@ public class PackFacadeREST {
     public void create(Pack pack) {
         try{
             pack.setIdPack(null);
+            pack.setFechaModificacion(new Date());
             ejb.createPack(pack);
         }catch(CreateException e){
             Logger.getLogger(ApunteFacadeREST.class.getName()).severe("PackREST create()"+e.getMessage());

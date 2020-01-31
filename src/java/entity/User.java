@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @Entity
-@Table(name = "usuario", schema = "serverA4DB", uniqueConstraints = @UniqueConstraint(columnNames = {"login"}))
+@Table(name = "usuario", schema = "serverA4db", uniqueConstraints = @UniqueConstraint(columnNames = {"login"}))
 @NamedQueries({
     @NamedQuery(
             name="findUserByLogin",

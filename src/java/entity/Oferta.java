@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author sergio
  */
 @Entity
-@Table(name = "oferta", schema = "serverA4DB")
+@Table(name = "oferta", schema = "serverA4db")
 @NamedQueries({
    @NamedQuery(name="findAllOfertas",
             query="SELECT u FROM Oferta u ORDER BY u.idOferta DESC"

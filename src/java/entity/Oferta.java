@@ -49,7 +49,7 @@ public class Oferta implements Serializable{
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFin;
     @ManyToMany(fetch = FetchType.EAGER,cascade=CascadeType.REMOVE)
-    @JoinTable(name = "oferta_pack", schema = "serverA4DB",joinColumns = @JoinColumn(name="ofertas_idOferta", referencedColumnName="idOferta"),
+    @JoinTable(name = "oferta_pack", schema = "serverA4db",joinColumns = @JoinColumn(name="ofertas_idOferta", referencedColumnName="idOferta"),
             inverseJoinColumns = @JoinColumn(name = "packs_idPack", referencedColumnName="idPack"))
     private Set<Pack> packs;
     @NotNull
